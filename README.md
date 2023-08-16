@@ -1,5 +1,11 @@
 # 42_webserv
 
+## Usage
+
+```
+./webserv [configuration file]
+```
+
 ## What is an HTTP server?
 The primary function of a web server is to store, process, and deliver web pages to clients (usually web browsers). The communication between client and server takes place using the Hypertext Transfer Protocol (HTTP).
 
