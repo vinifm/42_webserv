@@ -23,13 +23,14 @@
 - [ ] your server should work with one cgi (php-cgi, python, and so forth).
 
 ## error management
-[ ] files must end with ".conf"
+- [ ] files must end with ".conf"
 
-## nginx configuration
+# NGINX configuration
 - directives: a statement that controls nginx's behaviour;
 - block: group of directives in a context.
 
-- **`listen`**: Sets the address and port for IP. Both address and port, or only address or only port can be specified. An address may also be a hostname.
+### [`listen address[:port]; listen port`](http://nginx.org/en/docs/http/ngx_http_core_module.html#listen)
+Sets the address and port for IP. Both address and port, or only address or only port can be specified. An address may also be a hostname.
 ```
 	listen 127.0.0.1:8000;
 	listen 127.0.0.1;
@@ -38,8 +39,30 @@
 	listen localhost:8000;
 ```
 
-- **`location`**: specifies how the server should handle requests for specific URIs.
-- **`root`**: Sets the root directory for requests.
+### [`server_name name ...;`](http://nginx.org/en/docs/http/ngx_http_core_module.html#server_name)
+Define the domain names or IP addresses that a specific server block should respond to. It determines which virtual server configuration should be used to handle incoming requests based on the value of the Host header in the HTTP request.
+```
+	server_name	example.org
+				www.example.org
+				""
+				192.168.1.1;
+```
+
+### [`error_page code ... uri;`](http://nginx.org/en/docs/http/ngx_http_core_module.html#error_page)
+Defines the URI that will be shown for the specified errors.
+```
+	error_page 404				/404.html;
+	error_page 500 502 503 504	/50x.html;
+```
+
+### [`client_max_body_size size;`](http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size)
+Sets the maximum allowed size of the client request body. If the size in a request exceeds the configured value, the 413 (Request Entity Too Large) error is returned to the client. Please be aware that browsers cannot correctly display this error. Setting size to 0 disables checking of client request body size.
+
+## [`location uri {...}`](http://nginx.org/en/docs/http/ngx_http_core_module.html#location)
+Specifies how the server should handle requests for specific URIs.
+
+### [`root path;`](http://nginx.org/en/docs/http/ngx_http_core_module.html#root)
+Sets the root directory for requests.
 ```
 	location /i/ {
 		root /data/w3;
@@ -47,7 +70,38 @@
 ```
 Here, the `/data/w3/i/foo.gif` file will be sent in response to the `/i/foo.gif` request.
 
+### [`limit_except method ...`](http://nginx.org/en/docs/http/ngx_http_core_module.html#limit_except)
+Define a list of accepted http methods for the route.
+```
+	limit_except GET POST;
+```
+The above example limits all methods *except* GET and POST.
+Obs.: syntax is different than Nginx's for the sake of simplicity.
+
+### [`index file ...`](http://nginx.org/en/docs/http/ngx_http_index_module.html#index)
+Set a default file to answer if the request is a directory. The first available file is returned.
+```
+	location /dir {
+		index first.html second.html;
+	}
+```
+
+### [`autoindex on | off;`](http://nginx.org/en/docs/http/ngx_http_autoindex_module.html#autoindex)
+Enables or disables the directory listing output. Directory listing displays the contents of a directory when an index file (like index.html) is not found.
+
+### `redirect page`[^1]
+Define a http redirection.
+```
+	location /uri {
+		redirect /new/path
+	}
+```
+
+### `cgi`[^1]
+Execute cgi based on certain file extension (for example .php).
+
 ## References
-- [NGINX Begginer's Guide: Configuration File’s Structure;](http://nginx.org/en/docs/beginners_guide.html#conf_structure)
 - [NGINX: How nginx processes a request;](http://nginx.org/en/docs/http/request_processing.html)
-- [Digital Ocean: Understanding the Nginx Configuration File Structure and Configuration Contexts;](https://www.digitalocean.com/community/tutorials/understanding-the-nginx-configuration-file-structure-and-configuration-contexts)
+- [NGINX Begginer's Guide: Configuration File’s Structure;](http://nginx.org/en/docs/beginners_guide.html#conf_structure)
+
+[^1]: Custom configuration for this web server. Not available in NGINX.
