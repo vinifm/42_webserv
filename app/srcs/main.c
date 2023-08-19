@@ -1,20 +1,19 @@
-#include <Webserv.hpp>
+#include <Utils.hpp>
 
 int main(void)
 {
-	Socket	s;
+	// LOAD SOME CONFIG FILES JUST FOR TEST
+	Socket	server(8080, "www/default/");
 
-	s.init(PORT);
+	server.init();
 	while (true)
 	{
-		if (s.wait_request())
+		if (server.wait_request())
 		{
-			std::string	response = s.load_page("www/default2/index.html");
-			if (response.empty())
-				return (0);
-			s.send_response(response);
+			if (server.request_is_valid())
+				server.send_response("");
 		}
 	}
-	s.deinit();
+	server.deinit();
 	return (0);
 }
