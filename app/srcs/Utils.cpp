@@ -1,5 +1,6 @@
 #include <Utils.hpp>
 
+// USED TO SPLIT THE URI AND EXTRAT DOMAIN, PORT AND ROUTE (http://|localhost:|80/|blabla);
 std::vector<std::string> *ft_split(std::string str, char delimiter)
 {
 	size_t start = 0;
@@ -15,13 +16,53 @@ std::vector<std::string> *ft_split(std::string str, char delimiter)
 	return (out);
 }
 
-void	print_list(std::string title, std::vector<std::string> *list)
+// PRINT MESSAGE WITH CURRENT DATE AND HOUR
+void	print_log(std::string file_name, std::string message)
 {
-	std::vector<std::string>::iterator	it;
+	time_t	now = time(0);;
+	tm 		*ltm = localtime(&now);
 
-	std::cout << title << std::endl;
-	for (it = list->begin(); it < list->end(); it++)
+	std::cout << 1900 + ltm->tm_year << "/"
+			  << 1 + ltm->tm_mon << "/"
+			  << 1 + ltm->tm_mday;
+	std::cout << " ";
+	std::cout	<< ltm->tm_hour << ":"
+				<< ltm->tm_min << ":"
+				<< ltm->tm_sec;
+	std::cout << " [ ";
+	std::cout << file_name;
+	std::cout << " ] : ";
+	std::cout << message << std::endl;
+}
+
+// PRINT INITIAL BANNER
+void	print_banner(void)
+{
+	std::string		path;
+	std::fstream	file;
+	std::string		line;
+
+	path = "banner";
+	file.open(path);
+	if (!file.is_open())
 	{
-		std::cout << *it << std::endl;
+		std::cout << "webserv banner file not found!" << std::endl;
+		return ;
 	}
+	while (!file.eof())
+	{
+		getline(file, line);
+		std::cout << line << std::endl;
+	}
+}
+
+// CONVERTERS
+
+// int to std::string
+std::string	itos(int n)
+{
+	std::ostringstream s;
+
+	s << n;
+	return (s.str());
 }

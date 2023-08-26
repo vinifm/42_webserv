@@ -7,8 +7,8 @@ class Socket
 {
 private:
 
-	int						_server_fd;
-	struct sockaddr_in		_server_settings;
+	int						_endpoint_connection_socket_fd;
+	struct sockaddr_in		_address_struct;
 	int						_server_port;
 	std::string				_server_root;
 
@@ -17,7 +17,7 @@ private:
 	std::string				_request_server_name;
 	std::string				_request_route;
 
-	int						socket_fd;
+	int						connection_socket_fd;
 
 	std::string				_response_str;
 
@@ -28,7 +28,7 @@ public:
 
 	//METHODS
 	int				init();
-	int				wait_request();
+	int				get_next_connection();
 	int				request_is_valid();
 	std::string		load_page();
 	int				send_response(std::string root);

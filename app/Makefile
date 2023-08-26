@@ -30,24 +30,33 @@ re:
 #                           *
 #    TESTERS & SHORTCUTS    *
 #                           *
+#   this part is temporary  *
+#     for debug reasons!    *
+#                           *
 #****************************
 run:
-	./$(NAME)
+	@clear
+	@./$(NAME)
 
 runr:
-	make re
-	./$(NAME)
+	@make re
+	@clear
+	@./$(NAME)
 
 runs:
-	valgrind ./$(NAME)
+	@clear
+	@valgrind ./$(NAME)
 
 runrs:
 	make re
-	valgrind ./$(NAME)
+	@clear
+	@valgrind ./$(NAME)
 
 runl:
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --trace-children-skip='*/bin/*,*/sbin/*' --trace-children=yes ./$(NAME)
+	@clear
+	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --trace-children-skip='*/bin/*,*/sbin/*' --trace-children=yes ./$(NAME)
 
 runrl:
-	make re
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --trace-children-skip='*/bin/*,*/sbin/*' --trace-children=yes ./$(NAME)
+	@make re
+	@clear
+	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --trace-children-skip='*/bin/*,*/sbin/*' --trace-children=yes ./$(NAME)

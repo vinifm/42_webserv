@@ -60,84 +60,16 @@ std::string	extract_server_name(std::string url)
 	return (server_name);
 }
 
-/*****************
-*                *
-*    METHODS     *
-*                *
-*****************/
-int	Socket::init()
-{
-	int		opt = 1;
-
-	if ((this->_server_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
-	{
-		perror("socket failed");
-		exit(EXIT_FAILURE);
-	}
-
-	if (setsockopt(this->_server_fd, SOL_SOCKET,
-					SO_REUSEADDR | SO_REUSEPORT, &opt,
-					sizeof(opt))) {
-		perror("setsockopt, port setting failed");
-		exit (EXIT_FAILURE);
-	}
-	this->_server_settings.sin_family = AF_INET;
-	this->_server_settings.sin_addr.s_addr = INADDR_ANY;
-	this->_server_settings.sin_port = htons(this->_server_port);
-
-	if (bind(this->_server_fd, (struct sockaddr*) &this->_server_settings,
-			sizeof(this->_server_settings)) < 0)
-	{
-		perror("bind failed");
-		exit(EXIT_FAILURE);
-	}
-
-	if (listen(this->_server_fd, 3) < 0)
-	{
-		perror("listen");
-		exit(EXIT_FAILURE);
-	}
-	return (0);
-}
-
-int	Socket::wait_request()
-{
-	// CHECK IF THE SERVER RECEIVED SOME PACKEAGE
-	int		addrlen = sizeof(this->_server_settings);
-	int		n_bytes_read;
-	
-	if ((this->socket_fd = accept(this->_server_fd, (struct sockaddr*) &this->_server_settings, (socklen_t*)&addrlen)) < 0)
-	{
-		perror("accept");
-		return (0);
-	}
-	n_bytes_read = read(this->socket_fd, this->_request_str, 1024);
-	this->_request_url = extract_url(std::string (this->_request_str));
-	this->_request_route = extract_route(this->_request_url);
-	this->_request_server_name = extract_server_name(this->_request_url);
-	return (1);
-}
-
-int	Socket::request_is_valid(void)
-{
-	// if (this->_request_route.empty())
-	// 	return (0);
-	std::cout << "#" << this->_request_route << "#" << std::endl;
-	if (this->_request_route == "")
-		return (1);
-	return (1);
-}
-
 std::string	Socket::load_page()
 {
 	//VARS
-	std::string		html;
 	std::string		http_header = " \
 		'HTTP/1.1 200 OK'\n \
 		'Content-Type: text/html; charset=UTF-8',\n \
 		'Content-Encoding: UTF-8',\n \
 		'Accept-Ranges: bytes',\n \
 		'Connection: keep-alive',\n\n";
+	std::string		html;
 	std::fstream	page_fd;
 	std::string		path;
 	//CREATE PATH
@@ -147,7 +79,7 @@ std::string	Socket::load_page()
 	page_fd.open(path, std::ios::in);
 	if (!page_fd.is_open())
 	{
-		std::cout << "Load Page Error: Invalid Page Path!" << std::endl;
+		print_log("socket.cpp", "Load Page Error: Invalid Page Path!");
 		return (NULL);
 	}
 	//LOAD PATH
@@ -163,31 +95,146 @@ std::string	Socket::load_page()
 	return (response);
 }
 
+/*****************
+*                *
+*    METHODS     *
+*                *
+*****************/
+int	Socket::init()
+{
+	std::string	msg;
+
+	print_log("socket.cpp", "webserv is on ✅");
+/////// 1) CREATE ENDPOINT_SOCKET;
+	if ((this->_endpoint_connection_socket_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+	{
+		print_log("socket.cpp", "socket failed");
+		exit(EXIT_FAILURE);
+	}
+	msg = "endpoint socket created successfuly (fd is ";
+	msg.append(itos(this->_endpoint_connection_socket_fd));
+	msg.append(")");
+	print_log("socket.cpp", msg);
+
+/////// 2) MODIFY ENDPOINT_SOCKET BEHAVIOR;
+	int			opt = 1;
+	if (setsockopt(this->_endpoint_connection_socket_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt)))
+	{
+		print_log("socket.cpp", "setsockopt, port setting failed");
+		exit (EXIT_FAILURE);
+	}
+
+/////// 3) SET ADDRESS_STRUCTURE AND BIND ENDPOINT SOCKET;
+	this->_address_struct.sin_family = AF_INET; // (IP family)
+	this->_address_struct.sin_addr.s_addr = INADDR_ANY; // (localhost)
+	this->_address_struct.sin_port = htons(this->_server_port);
+
+	if (bind(this->_endpoint_connection_socket_fd, (struct sockaddr*) &this->_address_struct, sizeof(this->_address_struct)) < 0)
+	{
+		print_log("socket.cpp", "bind failed");
+		exit(EXIT_FAILURE);
+	}
+	msg = "endpoint socket (fd ";
+	msg.append(itos(this->_endpoint_connection_socket_fd));
+	msg.append(") was binded with address (localhost) and port (");
+	msg.append(itos(this->_server_port));
+	msg.append(") successfully");
+	print_log("socket.cpp", msg);
+
+/////// 4) SET ENDPOINT_SOCKET AS PASSIVE MODE (JUST RECEIVE REQUEST);
+	if (listen(this->_endpoint_connection_socket_fd, 3) < 0)
+	{
+		print_log("socket.cpp", "listen");
+		exit(EXIT_FAILURE);
+	}
+	msg = "endpoint socket (fd ";
+	msg.append(itos(this->_endpoint_connection_socket_fd));
+	msg.append(") is now in listen(passive) mode! (Can't try connect, it will just receive connection requests)");
+	print_log("socket.cpp", msg);
+	return (0);
+}
+
+int	Socket::get_next_connection()
+{
+	std::string	msg;
+/////// 5) EXTRACT FIRST CONNECTION OF (LISTENING PENDING CONNECTIONS 'QUEUE', GENERATED WHEN THE BROWSER TRY CONNECT() WITH SERVER);
+	int		addrlen = sizeof(this->_address_struct);
+	int		n_bytes_read;
+	
+	if ((this->connection_socket_fd = accept(this->_endpoint_connection_socket_fd, (struct sockaddr*) &this->_address_struct, (socklen_t*)&addrlen)) < 0)
+	{
+		print_log("socket.cpp", "accept");
+		return (0);
+	}
+	msg = "a new connection was started, connection_socket_fd is ";
+	msg.append(itos(this->connection_socket_fd));
+	print_log("socket.cpp", msg);
+
+/////// 6) EXTRACT URL, ROUTE, PORT, SERVERNAME FROM BROWSER REQUEST;
+	n_bytes_read = read(this->connection_socket_fd, this->_request_str, 1024);
+	this->_request_url = extract_url(std::string (this->_request_str));
+	this->_request_route = extract_route(this->_request_url);
+	this->_request_server_name = extract_server_name(this->_request_url);
+	return (1);
+}
+
+/////// 7) CHECK IF REQUEST IS VALID;
+int	Socket::request_is_valid(void)
+{
+	std::string	msg;
+
+	// if (this->_request_route.empty())
+	// 	return (0);
+	// std::cout << "#" << this->_request_route << "#" << std::endl;
+	if (this->_request_route == "")
+		return (1);
+	msg = "uri of connection identified by connect_pipe_fd (";
+	msg.append(itos(this->connection_socket_fd));
+	msg.append (") is valid, let's try to serve the root files");
+	print_log("socket.cpp", msg);
+	return (1);
+}
+
+
+/////// 8) IF REQUEST IS VALID, SEND A VALID RESPONSE;
 int	Socket::send_response(std::string root)
 {
-	std::cout << "server_route:" << this->_server_root << " & root: " << root << std::endl;
+	std::string	msg;
+	// std::cout << "server_route:" << this->_server_root << " & root: " << root << std::endl;
 	// if (!root.empty())
 	// 	this->_server_root = root;
 	
 	this->_response_str = this->load_page();
 	if (this->_response_str.empty())
 		return (0);
-	send(this->socket_fd, this->_response_str.c_str(),strlen(this->_response_str.c_str()), 0);
+	send(this->connection_socket_fd, this->_response_str.c_str(),strlen(this->_response_str.c_str()), 0);
+	msg = "one response was sent to connection identified by connection_socket_fd ";
+	msg.append(itos(this->connection_socket_fd));
+	print_log("socket.cpp", msg);
 	reinit();
 	return (0);
 }
 
+/////// 9) PREPARE FOR A NEW CONNECTION;
 int	Socket::reinit()
 {
-	close(this->socket_fd);
+	std::string	msg;
+
+	close(this->connection_socket_fd);
+	msg = "connection identified by connection_socket_fd ";
+	msg.append(itos(this->connection_socket_fd));
+	msg.append (" was closed");
+	print_log("socket.cpp", msg);
 	this->_request_route = "";
 	this->_request_url = "";
 	this->_request_server_name = "";
 	return (0);
 }
 
+/////// 10) SHUTDOWN ENDPOINT_SOCKET;
 int	Socket::deinit(void)
 {
-	shutdown(this->_server_fd, SHUT_RDWR);
+	print_log("socket.cpp", "endpoint socket was destroyed successfuly");
+	shutdown(this->_endpoint_connection_socket_fd, SHUT_RDWR);
 	return (0);
 }
