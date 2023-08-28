@@ -50,8 +50,7 @@ Default: `listen *:80 | *:8000`
 
 Sets the address and port for IP. Both address and port, or only address or only port can be specified. An address may also be a hostname.
 ```
-	listen 127.0.0.1:8000	:x:	:white_check_mark:
-redirect	---
+	listen 127.0.0.1:8000
 	listen 127.0.0.1
 	listen 8000
 	listen *:8000
