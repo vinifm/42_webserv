@@ -17,23 +17,20 @@ std::vector<std::string> *ft_split(std::string str, char delimiter)
 }
 
 // PRINT MESSAGE WITH CURRENT DATE AND HOUR
-void	print_log(std::string file_name, std::string message)
+void	print_log(std::string file_name, std::string status)
 {
 	time_t				now = time(0);;
 	tm 					*ltm = localtime(&now);
-	ostringstream		msg;
+	std::ostringstream	msg;
 
-	msg << 1900 + ltm->tm_year << "/"
-			  << 1 + ltm->tm_mon << "/"
-			  << 1 + ltm->tm_mday;
+	msg << 1900 + ltm->tm_year << "/" << 1 + ltm->tm_mon << "/" << 1 + ltm->tm_mday;
 	msg << " ";
-	msg	<< ltm->tm_hour << ":"
-				<< ltm->tm_min << ":"
-				<< ltm->tm_sec;
+	msg	<< ltm->tm_hour << ":" << ltm->tm_min << ":" << ltm->tm_sec;
 	msg << " [ ";
 	msg << file_name;
 	msg << " ] : ";
-	std::cout << BOLD_YELLOW << msg << RESET_COLOR << std::endl;
+	msg << status;
+	std::cout << BOLD_YELLOW << msg.str() << RESET_COLOR << std::endl;
 }
 
 // PRINT INITIAL BANNER
