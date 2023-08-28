@@ -47,7 +47,7 @@
 //*******************
 std::vector<std::string>	*ft_split(std::string str, char delimiter);
 void						print_log(std::string file_name, std::string message);
-void						print_banner(void);
+void                        print_banner(void);
 std::string					itos(int n);
 
 #endif

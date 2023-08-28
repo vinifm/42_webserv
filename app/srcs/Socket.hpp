@@ -30,7 +30,7 @@ public:
 	int				init();
 	int				get_next_connection();
 	int				request_is_valid();
-	std::string		load_page();
+	std::string		load_file();
 	int				send_response(std::string root);
 	int				reinit();
 	int				deinit();

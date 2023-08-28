@@ -23,6 +23,7 @@ void	print_log(std::string file_name, std::string status)
 	tm 					*ltm = localtime(&now);
 	std::ostringstream	msg;
 
+	// build message to print
 	msg << 1900 + ltm->tm_year << "/" << 1 + ltm->tm_mon << "/" << 1 + ltm->tm_mday;
 	msg << " ";
 	msg	<< ltm->tm_hour << ":" << ltm->tm_min << ":" << ltm->tm_sec;

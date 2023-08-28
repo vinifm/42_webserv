@@ -16,72 +16,69 @@ Socket::~Socket(void)
 *      UTILS     *
 *                *
 *****************/
-std::string	extract_url(std::string full_request)
-{
-	std::vector<std::string>			*request_split;
-	std::vector<std::string>::iterator	it;
-	size_t								found;
-	std::string							url;
-	
-	request_split = ft_split(full_request, ' ');
-	for (it = request_split->begin(); it < request_split->end(); it++)
-	{
-		found = (*it).find("http://", 0);
-		if (found != std::string::npos)
-		{
-			url = (*it).substr(0, (*it).find("\n") - 1);
-			return ((*it));
-		}
-	}
-	return ("");
-}
-
 std::string	extract_route(std::string url)
 {
-	std::string	tmp;
-	std::string	route;
+	std::vector<std::string>	*request_split;
+	std::string					route="";
 
-	route = "";
-	tmp = url.replace(0, 7, "");
-	if (tmp.find("/") == std::string::npos)
-		return ("");
-	route = tmp.substr(tmp.find("/"), tmp.find("Accept-Encoding") - 16);
+	request_split = ft_split(url, ' ');
+	route = request_split->at(1);
 	return (route);
 }
 
-std::string	extract_server_name(std::string url)
+std::string		generate_header(std::string file)
 {
-	std::string	tmp;
-	std::string	server_name;
+	std::ostringstream	header;
+	std::string			content_type;
+	std::string			exit_status;
 
-	server_name = "";
-	tmp = url.replace(0, 7, "");
-	server_name = tmp.substr(0, tmp.find(":"));
-	return (server_name);
+	// get file extension
+	content_type = file.substr(file.find(".") + 1, file.length());
+
+	exit_status = "200-OK";
+	header << " \
+	'HTTP/1.1 "<< exit_status <<"'\n \
+	'Content-Type: text/" << content_type <<"; charset=UTF-8',\n \
+	'Content-Encoding: UTF-8',\n \
+	'Accept-Ranges: bytes',\n \
+	'Connection: keep-alive',\n\n";
+	return (header.str());
 }
 
-std::string	Socket::load_page()
+std::string	Socket::load_file()
 {
-	//VARS
-	std::string		http_header = " \
-		'HTTP/1.1 200 OK'\n \
-		'Content-Type: text/html; charset=UTF-8',\n \
-		'Content-Encoding: UTF-8',\n \
-		'Accept-Ranges: bytes',\n \
-		'Connection: keep-alive',\n\n";
 	std::string		html;
 	std::fstream	page_fd;
 	std::string		path;
-	//CREATE PATH
+	std::string		http_header;
+	std::string 	msg;
+
+	//IDENTIFY PATH
+	std::string file;
+
+	file = this->_request_route;
+	if (file == "/")
+		file = "index.html";
+	else
+		file = file.substr(1, file.length());
 	path = this->_server_root;
-	path.append("index.html");
+	path.append(file);
+
+
 	//PARSE PATH
 	page_fd.open(path, std::ios::in);
 	if (!page_fd.is_open())
 	{
-		print_log("socket.cpp", "Load Page Error: Invalid Page Path!");
-		return (NULL);
+		msg = "Load Page Error: Invalid Page Path! (";
+		msg.append(path);
+		msg.append(")");
+		print_log("socket.cpp", msg);
+		page_fd.open("www/404/index.html");
 	}
+
+	//GENERATE HEADER
+	html.append(generate_header(file));
+
 	//LOAD PATH
 	while (!page_fd.eof())
 	{
@@ -90,6 +87,7 @@ std::string	Socket::load_page()
 		html.append(line);
 		html.append("\n");
 	}
+
 	//PREPARE RESPONSE
 	std::string response = http_header.append(html);
 	return (response);
@@ -176,42 +174,21 @@ int	Socket::get_next_connection()
 
 /////// 6) EXTRACT URL, ROUTE, PORT, SERVERNAME FROM BROWSER REQUEST;
 	n_bytes_read = read(this->connection_socket_fd, this->_request_str, 1024);
-	this->_request_url = extract_url(std::string (this->_request_str));
-	this->_request_route = extract_route(this->_request_url);
-	this->_request_server_name = extract_server_name(this->_request_url);
+	this->_request_route = extract_route(std::string (this->_request_str));
 	std::cout << this->_request_str << std::endl;
 	return (1);
 }
-
-/////// 7) CHECK IF REQUEST IS VALID;
-int	Socket::request_is_valid(void)
-{
-	std::string	msg;
-
-	// if (this->_request_route.empty())
-	// 	return (0);
-	// std::cout << "#" << this->_request_route << "#" << std::endl;
-	if (this->_request_route == "")
-		return (1);
-	msg = "uri of connection identified by connect_pipe_fd (";
-	msg.append(itos(this->connection_socket_fd));
-	msg.append (") is valid, let's try to serve the root files");
-	print_log("socket.cpp", msg);
-	return (1);
-}
-
 
 /////// 8) IF REQUEST IS VALID, SEND A VALID RESPONSE;
 int	Socket::send_response(std::string root)
 {
 	std::string	msg;
-	// std::cout << "server_route:" << this->_server_root << " & root: " << root << std::endl;
-	// if (!root.empty())
-	// 	this->_server_root = root;
 	
-	this->_response_str = this->load_page();
-	if (this->_response_str.empty())
-		return (0);
+	msg = "uri of connection identified by connect_pipe_fd (";
+	msg.append(itos(this->connection_socket_fd));
+	msg.append (") is valid, let's try to serve the root files");
+	print_log("socket.cpp", msg);
+	this->_response_str = load_file();
 	send(this->connection_socket_fd, this->_response_str.c_str(),strlen(this->_response_str.c_str()), 0);
 	msg = "one response was sent to connection identified by connection_socket_fd ";
 	msg.append(itos(this->connection_socket_fd));
