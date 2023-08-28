@@ -78,7 +78,8 @@ class CgiHandler {
 				~UnsupportedCGI(void) throw () {};
 
 				const char* what() const throw() {
-					return ("Unsupported CGI extension: " + _extension).c_str(); 
+					return ("Unsupported CGI extension: ");
+
 				};
 		};
 };

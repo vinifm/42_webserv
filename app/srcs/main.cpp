@@ -3,7 +3,7 @@
 int main(void)
 {
 	print_banner();
-	Socket	server(8080, "www/default/");
+	Socket	server(8080, "www/default2/");
 
 	server.init();
 	while (true)

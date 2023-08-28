@@ -10,7 +10,7 @@ BCyan			= '\033[1;36m'    # Cyan
 
 
 CC				= c++
-CFLAGS			= -g -Wall -Wextra -Werror -std=c++98 -MMD -MP -pedantic
+CFLAGS			= -std=c++98
 RM 				= rm -rf
 
 SRC				= main.cpp CgiHandler.cpp FileParser.cpp Http.cpp Request.cpp Response.cpp \
