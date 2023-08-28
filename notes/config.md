@@ -29,76 +29,116 @@
 - directives: a statement that controls nginx's behaviour;
 - block: group of directives in a context.
 
+## Contexts:
+### The server context may have these directives:
+- [listen](#listen-addressport-listen-port)
+- [server_name](#server_name-name)
+- [location](#location-uri)
+
+### The location context may have these directives:
+- [limit_except](#limit_except-method)
+- [redirect](#redirect-page1)
+
+- [location](#location-uri) <sub><sup>(For the sake of simplicity, not in this project)</sup></sub>
+
+### Both may have these directives:
+- [root](#root-path)
+- [index](#index-file)
+- [autoindex](#autoindex-on--off)
+- [client_max_body_size](#client_max_body_size-size)
+- [error_page](#error_page-code--uri)
+
+
 ### [`listen address[:port]; listen port`](http://nginx.org/en/docs/http/ngx_http_core_module.html#listen)
+Default: `listen *:80 | *:8000`
+
 Sets the address and port for IP. Both address and port, or only address or only port can be specified. An address may also be a hostname.
 ```
-	listen 127.0.0.1:8000;
-	listen 127.0.0.1;
-	listen 8000;
-	listen *:8000;
-	listen localhost:8000;
+	listen 127.0.0.1:8000
+	listen 127.0.0.1
+	listen 8000
+	listen *:8000
+	listen localhost:8000
 ```
 
 ### [`server_name name ...;`](http://nginx.org/en/docs/http/ngx_http_core_module.html#server_name)
+Default: `server_name ""`
+
 Define the domain names or IP addresses that a specific server block should respond to. It determines which virtual server configuration should be used to handle incoming requests based on the value of the Host header in the HTTP request.
 ```
 	server_name	example.org
 				www.example.org
 				""
-				192.168.1.1;
+				192.168.1.1
 ```
-
-### [`error_page code ... uri;`](http://nginx.org/en/docs/http/ngx_http_core_module.html#error_page)
-Defines the URI that will be shown for the specified errors.
-```
-	error_page 404				/404.html;
-	error_page 500 502 503 504	/50x.html;
-```
-
-### [`client_max_body_size size;`](http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size)
-Sets the maximum allowed size of the client request body. If the size in a request exceeds the configured value, the 413 (Request Entity Too Large) error is returned to the client. Please be aware that browsers cannot correctly display this error. Setting size to 0 disables checking of client request body size.
-
-## [`location uri {...}`](http://nginx.org/en/docs/http/ngx_http_core_module.html#location)
-Specifies how the server should handle requests for specific URIs.
 
 ### [`root path;`](http://nginx.org/en/docs/http/ngx_http_core_module.html#root)
+Default: `root html`
+
 Sets the root directory for requests.
 ```
 	location /i/ {
-		root /data/w3;
+		root /data/w3
 	}
 ```
 Here, the `/data/w3/i/foo.gif` file will be sent in response to the `/i/foo.gif` request.
 
-### [`limit_except method ...`](http://nginx.org/en/docs/http/ngx_http_core_module.html#limit_except)
-Define a list of accepted http methods for the route.
-```
-	limit_except GET POST;
-```
-The above example limits all methods *except* GET and POST.
-Obs.: syntax is different than Nginx's for the sake of simplicity.
-
 ### [`index file ...`](http://nginx.org/en/docs/http/ngx_http_index_module.html#index)
+Default: `index index.html`
+
 Set a default file to answer if the request is a directory. The first available file is returned.
 ```
 	location /dir {
-		index first.html second.html;
+		index first.html second.html
 	}
 ```
 
 ### [`autoindex on | off;`](http://nginx.org/en/docs/http/ngx_http_autoindex_module.html#autoindex)
+Default: `autoindex off`
+
 Enables or disables the directory listing output. Directory listing displays the contents of a directory when an index file (like index.html) is not found.
 
+### [`error_page code ... uri;`](http://nginx.org/en/docs/http/ngx_http_core_module.html#error_page)
+Default: `---`
+
+Defines the URI that will be shown for the specified errors.
+```
+	error_page 404				/404.html
+	error_page 500 502 503 504	/50x.html
+```
+
+### [`client_max_body_size size;`](http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size)
+Default: `client_max_body_size 1m`
+
+Sets the maximum allowed size of the client request body. If the size in a request exceeds the configured value, the 413 (Request Entity Too Large) error is returned to the client. Please be aware that browsers cannot correctly display this error. Setting size to 0 disables checking of client request body size.
+
+### `cgi`[^1]
+Execute cgi based on certain file extension (for example .php).
+
+## [`location uri {...}`](http://nginx.org/en/docs/http/ngx_http_core_module.html#location)
+Default: `---`
+
+Specifies how the server should handle requests for specific URIs.
+
+### [`limit_except method ...`](http://nginx.org/en/docs/http/ngx_http_core_module.html#limit_except)
+Default: `---`
+
+Define a list of accepted http methods for the route.
+```
+	limit_except GET POST
+```
+The above example limits all methods *except* GET and POST.
+Obs.: syntax is different than Nginx's for the sake of simplicity.
+
 ### `redirect page`[^1]
+Default: `---`
+
 Define a http redirection.
 ```
 	location /uri {
 		redirect /new/path
 	}
 ```
-
-### `cgi`[^1]
-Execute cgi based on certain file extension (for example .php).
 
 ## References
 - [NGINX: How nginx processes a request;](http://nginx.org/en/docs/http/request_processing.html)
