@@ -30,39 +30,28 @@
 - block: group of directives in a context.
 
 ## Contexts:
+If not specified in a location block, server directives are used. If also not specified, default values are considered.
 
 | Directive | Default | Quantity | Server | Location |
 |---|---|---|---|---|
-| [listen](#listen-addressport-listen-port) | `listen *:80` | 1+ | :white_check_mark: | :x: |
-| [server_name](#server_name-name) | `server_name ""`	| 1 | :white_check_mark: | :x: |
-| [location](#location-uri) | `---` | 1+ | :white_check_mark: | :x: |
-|  |  |  |  |  |
-
-### The server context may have these directives:
-- [listen](#listen-addressport-listen-port)
-- [server_name](#server_name-name)
-- [location](#location-uri)
-
-### The location context may have these directives:
-- [limit_except](#limit_except-method)
-- [redirect](#redirect-page1)
-
-- [location](#location-uri) <sub><sup>(For the sake of simplicity, not in this project)</sup></sub>
-
-### Both may have these directives:
-- [root](#root-path)
-- [index](#index-file)
-- [autoindex](#autoindex-on--off)
-- [client_max_body_size](#client_max_body_size-size)
-- [error_page](#error_page-code--uri)
-
+| [listen](#listen-addressport-listen-port)				| `listen *:80`				| 1+ | :white_check_mark:	| :x: |
+| [server_name](#server_name-name)						| `server_name ""`			| 1  | :white_check_mark:	| :x: |
+| [location](#location-uri)								| `---`						| 1+ | :white_check_mark:	| :x:[^1] |
+| [root](#root-path)									| `root html`				| 1  | :white_check_mark:	| :white_check_mark: |
+| [index](#index-file)									| `index index.html`		| 1  | :white_check_mark:	| :white_check_mark: |
+| [autoindex](#autoindex-on--off)						| `autoindex off`			| 1  | :white_check_mark:	| :white_check_mark: |
+| [client_max_body_size](#client_max_body_size-size)	| `client_max_body_size 1m`	| 1  | :white_check_mark:	| :white_check_mark: |
+| [error_page](#error_page-code--uri)					| `---`						| 1+ | :white_check_mark:	| :white_check_mark: |
+| [limit_except](#limit_except-method)					| `---`						| 1  | :x:					| :white_check_mark: |
+| [redirect](#redirect-page1)							| `---`						| 1  | :x:					| :white_check_mark: |
 
 ### [`listen address[:port]; listen port`](http://nginx.org/en/docs/http/ngx_http_core_module.html#listen)
 Default: `listen *:80 | *:8000`
 
 Sets the address and port for IP. Both address and port, or only address or only port can be specified. An address may also be a hostname.
 ```
-	listen 127.0.0.1:8000
+	listen 127.0.0.1:8000	:x:	:white_check_mark:
+redirect	---
 	listen 127.0.0.1
 	listen 8000
 	listen *:8000
@@ -120,7 +109,7 @@ Default: `client_max_body_size 1m`
 
 Sets the maximum allowed size of the client request body. If the size in a request exceeds the configured value, the 413 (Request Entity Too Large) error is returned to the client. Please be aware that browsers cannot correctly display this error. Setting size to 0 disables checking of client request body size.
 
-### `cgi`[^1]
+### `cgi`[^2]
 Execute cgi based on certain file extension (for example .php).
 
 ## [`location uri {...}`](http://nginx.org/en/docs/http/ngx_http_core_module.html#location)
@@ -138,7 +127,7 @@ Define a list of accepted http methods for the route.
 The above example limits all methods *except* GET and POST.
 Obs.: syntax is different than Nginx's for the sake of simplicity.
 
-### `redirect page`[^1]
+### `redirect page`[^2]
 Default: `---`
 
 Define a http redirection.
@@ -152,4 +141,5 @@ Define a http redirection.
 - [NGINX: How nginx processes a request;](http://nginx.org/en/docs/http/request_processing.html)
 - [NGINX Begginer's Guide: Configuration File’s Structure;](http://nginx.org/en/docs/beginners_guide.html#conf_structure)
 
-[^1]: Custom configuration for this web server. Not available in NGINX.
+[^1]: For the sake of simplicity, the location directive is only available in the server context.
+[^2]: Custom configuration for this web server. Not available in NGINX.
