@@ -151,6 +151,7 @@ int	Socket::init()
 	msg.append(itos(this->_endpoint_connection_socket_fd));
 	msg.append(") is now in listen(passive) mode! (Can't try connect, it will just receive connection requests)");
 	print_log("socket.cpp", msg);
+	std::cout << std::endl;
 	return (0);
 }
 
@@ -161,6 +162,8 @@ int	Socket::get_next_connection()
 	int		addrlen = sizeof(this->_address_struct);
 	int		n_bytes_read;
 	
+	msg = "waiting a 'request' be done...";
+	print_log("socket.cpp", msg);
 	if ((this->connection_socket_fd = accept(this->_endpoint_connection_socket_fd, (struct sockaddr*) &this->_address_struct, (socklen_t*)&addrlen)) < 0)
 	{
 		print_log("socket.cpp", "accept");
@@ -168,6 +171,7 @@ int	Socket::get_next_connection()
 	}
 	msg = "a new connection was started, connection_socket_fd is ";
 	msg.append(itos(this->connection_socket_fd));
+	msg.append (" and 'request' is: \n\n");
 	print_log("socket.cpp", msg);
 
 /////// 6) EXTRACT URL, ROUTE, PORT, SERVERNAME FROM BROWSER REQUEST;
@@ -175,6 +179,7 @@ int	Socket::get_next_connection()
 	this->_request_url = extract_url(std::string (this->_request_str));
 	this->_request_route = extract_route(this->_request_url);
 	this->_request_server_name = extract_server_name(this->_request_url);
+	std::cout << this->_request_str << std::endl;
 	return (1);
 }
 
@@ -210,7 +215,9 @@ int	Socket::send_response(std::string root)
 	send(this->connection_socket_fd, this->_response_str.c_str(),strlen(this->_response_str.c_str()), 0);
 	msg = "one response was sent to connection identified by connection_socket_fd ";
 	msg.append(itos(this->connection_socket_fd));
+	msg.append(" and response is: ");
 	print_log("socket.cpp", msg);
+	std::cout << this->_response_str << std::endl;
 	reinit();
 	return (0);
 }
@@ -228,6 +235,7 @@ int	Socket::reinit()
 	this->_request_route = "";
 	this->_request_url = "";
 	this->_request_server_name = "";
+	std::cout << std::endl;
 	return (0);
 }
 

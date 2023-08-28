@@ -6,7 +6,7 @@
 NAME=webserv
 SOURCES= srcs/Socket.cpp \
 		srcs/Utils.cpp \
-		 srcs/main.c
+		 srcs/main.cpp
 FLAGS= -Wall -Wextra -Werror -std=c++98 -g3
 
 #***************
