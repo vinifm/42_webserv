@@ -7,7 +7,7 @@
 - [ ] Setup routes with one or multiple of the following rules/configuration (routes wont be using regexp):
 	- [ ] define a list of accepted http methods for the route.
 	- [ ] define a http redirection.
-	- [ ] define a directory or a file from where the file should be searched (for example, if url /kapouet is rooted to /tmp/www, url /kapouet/pouic/toto/pouet is /tmp/www/pouic/toto/pouet).
+	- [ ] define a directory or a file from where the file should be searched (for example, if url /kapouet is rooted to /tm	/www, url /kapouet/pouic/toto/pouet is /tmp/www/pouic/toto/pouet).
 	- [ ] turn on or off directory listing.
 	- [ ] set a default file to answer if the request is a directory.
 	- [ ] execute cgi based on certain file extension (for example .php).
@@ -30,6 +30,14 @@
 - block: group of directives in a context.
 
 ## Contexts:
+
+| Directive | Default | Quantity | Server | Location |
+|---|---|---|---|---|
+| [listen](#listen-addressport-listen-port) | `listen *:80` | 1+ | :white_check_mark: | :x: |
+| [server_name](#server_name-name) | `server_name ""`	| 1 | :white_check_mark: | :x: |
+| [location](#location-uri) | `---` | 1+ | :white_check_mark: | :x: |
+|  |  |  |  |  |
+
 ### The server context may have these directives:
 - [listen](#listen-addressport-listen-port)
 - [server_name](#server_name-name)
