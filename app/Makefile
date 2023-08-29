@@ -1,30 +1,87 @@
+#*****************************
+#                            *
+#    WEBSERV_KINGS - TOUR    *
+#                            *
+#*****************************
+# The project try to implement MVC software arquitecture for a better organization and make software more manutanable.
+#
+# M (srcs/model): all classes, and builtin functions to make application works;
+# V (srcs/view): everything about user interface, our pages and configuration files that deal direct with what the user will see on screen;
+# C (srcs/controller): all files that control the software flow, and how models and view connect themselves and the "business rules" of our software;
+#
+# enjoy the webserv_kings! Thank you very much!
+# By lipi, vini and acapela-
+
 #*************
 #            *
 #    VARS    *
 #            *
 #*************
 NAME=webserv
-SOURCES= srcs/Socket.cpp \
-		srcs/Utils.cpp \
-		 srcs/main.cpp
 FLAGS= -Wall -Wextra -Werror -std=c++98 -g3
+BANNER_PATH=.banner
+SOURCES=	srcs/model/Socket.cpp \
+			srcs/model/Utils.cpp \
+			srcs/controller/main.cpp
 
-#***************
-#              *
-#    TARGET    *
-#              *
-#***************
-$(NAME):
-	c++ -Isrcs $(SOURCES) -o $(NAME)
+#*******************
+#                  *
+#     PALLETE      *
+#                  *
+#*******************
+WHITE				=	\e[00m
+GREEN				=	\e[32m
+RED					=	\e[91m
+YELLOW				=	\e[033m
+BLUE				=	\e[34m
+
+#*****************
+#                *
+#   MANDATORY    *
+#    TARGETS     *
+#                *
+#*****************
+$(NAME): $(BANNER_PATH)
+	c++ -Isrcs/model $(FLAGS) $(SOURCES) -o $(NAME)
 
 all: $(NAME)
 
-fclean:
-	rm -rfd $(NAME)
+bonus: all
 
 re:
 	make fclean
 	make
+
+clean:
+	find . -maxdepth 1 -type f ! -name "Makefile" ! -name "webserv" ! -name ".banner" ! -name "log" -delete
+
+fclean:
+	make clean
+	rm -rfd $(NAME) .banner log
+
+.PHONY: all clean fclean re
+
+#******************
+#                 *
+#     SPECIAL     *
+#     TARGETS     *
+#                 *
+#******************
+$(BANNER_PATH):
+	@printf "\
+                                                               \n\
+                                                               \n\
+                                                               \n\
+  ██╗       ██╗███████╗██████╗  ██████╗███████╗██████╗ ██╗   ██╗\n\
+  ██║  ██╗  ██║██╔════╝██╔══██╗██╔════╝██╔════╝██╔══██╗██║   ██║\n\
+  ╚██╗████╗██╔╝█████╗  ██████╦╝╚█████╗ █████╗  ██████╔╝╚██╗ ██╔╝\n\
+   ████╔═████║ ██╔══╝  ██╔══██╗ ╚═══██╗██╔══╝  ██╔══██╗ ╚████╔╝ \n\
+   ╚██╔╝ ╚██╔╝ ███████╗██████╦╝██████╔╝███████╗██║  ██║  ╚██╔╝  \n\
+    ╚═╝   ╚═╝  ╚══════╝╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝   ╚═╝   \n\
+                    By lipi, vini & acapela-                    \n\
+                                                               \n\
+                                                               \n\
+" > $(BANNER_PATH)
 
 #****************************
 #                           *
