@@ -18,11 +18,29 @@
 #            *
 #*************
 NAME=webserv
-FLAGS= -Wall -Wextra -Werror -std=c++98 -g3
+FLAGS=-Wall -Wextra -Werror -std=c++98 -g3
 BANNER_PATH=.banner
-SOURCES=	srcs/model/socket/Socket.cpp \
-			srcs/model/Utils.cpp \
-			srcs/controller/main.cpp
+SOURCES=Conf.cpp \
+		Request.cpp \
+		Response.cpp \
+		RequestUtils.cpp \
+		StatusLine.cpp \
+		Socket.cpp \
+		Utils.cpp \
+		main.cpp
+INCLUDES_PATH=-I./srcs/model/ -I./srcs/model/socket/ -I./srcs/model/parse/
+INCLUDES=Conf.hpp \
+		Request.hpp \
+		Response.hpp \
+		StatusLine.hpp \
+		Socket.hpp \
+		Utils.hpp
+OBJECTS_DIR=.objects
+OBJECTS= $(SOURCES:%.cpp=$(OBJECTS_DIR)/%.o)
+DS= $(SOURCES:%.cpp=$(OBJETS_DIR)/%.d)
+
+vpath %.cpp srcs srcs/model srcs/model/socket srcs/model/parse srcs/controller
+vpath %.hpp srcs srcs/model srcs/model/socket srcs/model/parse srcs/controller
 
 #*******************
 #                  *
@@ -41,10 +59,20 @@ BLUE				=	\e[34m
 #    TARGETS     *
 #                *
 #*****************
-$(NAME): $(BANNER_PATH)
-	c++ -Isrcs/model -Isrcs/model/socket -Isrcs/model/parse $(FLAGS) $(SOURCES) -o $(NAME)
-
 all: $(NAME)
+
+$(NAME): $(BANNER_PATH) $(OBJECTS_DIR) $(OBJECTS)
+	c++ $(FLAGS) $(OBJECTS) -o $(NAME)
+
+$(OBJECTS_DIR):
+	mkdir -p $(OBJECTS_DIR)
+	mkdir -p srcs/model
+	mkdir -p srcs/model/parse
+	mkdir -p srcs/model/socket
+	mkdir -p srcs/controller
+
+$(OBJECTS_DIR)/%.o: %.cpp
+	c++ $(FLAGS) -c $< -o $@ $(INCLUDES_PATH)
 
 bonus: all
 
@@ -54,6 +82,7 @@ re:
 
 clean:
 	find . -maxdepth 1 -type f ! -name "Makefile" ! -name "webserv" ! -name ".banner" ! -name "log" -delete
+	rm -rfd $(OBJECTS_DIR)
 
 fclean:
 	make clean
@@ -91,29 +120,32 @@ $(BANNER_PATH):
 #     for debug reasons!    *
 #                           *
 #****************************
+DEFAULT=srcs/view/conf/default
 run:
 	@clear
-	@./$(NAME)
+	@./$(NAME) $(DEFAULT)
 
 runr:
 	@make re
 	@clear
-	@./$(NAME)
+	@./$(NAME) $(DEFAULT)
 
 runs:
 	@clear
-	@valgrind ./$(NAME)
+	@valgrind ./$(NAME) $(DEFAULT)
 
 runrs:
 	make re
 	@clear
-	@valgrind ./$(NAME)
+	@valgrind ./$(NAME) $(DEFAULT)
 
 runl:
 	@clear
-	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --trace-children-skip='*/bin/*,*/sbin/*' --trace-children=yes ./$(NAME)
+	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --trace-children-skip='*/bin/*,*/sbin/*' --trace-children=yes ./$(NAME) $(DEFAULT)
 
 runrl:
 	@make re
 	@clear
-	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --trace-children-skip='*/bin/*,*/sbin/*' --trace-children=yes ./$(NAME)
+	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --trace-children-skip='*/bin/*,*/sbin/*' --trace-children=yes ./$(NAME) $(DEFAULT)
+
+-include $(DS)

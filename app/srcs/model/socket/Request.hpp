@@ -1,10 +1,12 @@
 #ifndef REQUEST_HPP
 #define REQUEST_HPP
 
+#include <Utils.hpp>
+
 class Request
 {
 private:
-	char		_str[1024];
+	std::string	_str;
 	std::string	_route;
 	std::string	_method;
 
@@ -15,9 +17,11 @@ public:
 	Request(std::string request_str);
 
 	//methods
+	void		extract(void);
+	int			executeRequest(void);
 
 	//getters & setters
-	std::string	getStr(void);
+	std::string	toString(void);
 	void		setStr(std::string str);
 	std::string	getRoute(void);
 	void		setRoute(std::string route);

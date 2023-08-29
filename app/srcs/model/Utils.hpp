@@ -17,12 +17,7 @@
 
 //containers
 #include <vector>
-
-//webserv
-#include <ConfFile.hpp>
-#include <Request.hpp>
-#include <Socket.hpp>
-#include <Response.hpp>
+#include <map>
 
 //colors
 # define BLACK "\033[0;30m"
