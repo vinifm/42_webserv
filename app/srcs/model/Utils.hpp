@@ -19,7 +19,10 @@
 #include <vector>
 
 //webserv
+#include <ConfFile.hpp>
+#include <Request.hpp>
 #include <Socket.hpp>
+#include <Response.hpp>
 
 //colors
 # define BLACK "\033[0;30m"

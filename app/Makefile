@@ -20,7 +20,7 @@
 NAME=webserv
 FLAGS= -Wall -Wextra -Werror -std=c++98 -g3
 BANNER_PATH=.banner
-SOURCES=	srcs/model/Socket.cpp \
+SOURCES=	srcs/model/socket/Socket.cpp \
 			srcs/model/Utils.cpp \
 			srcs/controller/main.cpp
 
@@ -42,7 +42,7 @@ BLUE				=	\e[34m
 #                *
 #*****************
 $(NAME): $(BANNER_PATH)
-	c++ -Isrcs/model $(FLAGS) $(SOURCES) -o $(NAME)
+	c++ -Isrcs/model -Isrcs/model/socket -Isrcs/model/parse $(FLAGS) $(SOURCES) -o $(NAME)
 
 all: $(NAME)
 
