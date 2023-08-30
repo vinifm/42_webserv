@@ -1,0 +1,14 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "build webserv",
+			"type": "shell",
+			"command": "make -C app",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+		}
+	]
+}

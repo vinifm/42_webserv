@@ -20,9 +20,16 @@
 NAME=webserv
 FLAGS= -Wall -Wextra -Werror -std=c++98 -g3
 BANNER_PATH=.banner
-SOURCES=	srcs/model/socket/Socket.cpp \
-			srcs/model/Utils.cpp \
+PARSE_SRCS =	ErrorPages.cpp \
+				Listen.cpp \
+				Location.cpp \
+				Parser.cpp \
+				Server.cpp
+PARSE = $(addprefix "srcs/model/parse/", $(PARSE_SRCS))
+SOURCES= $(PARSE) \
 			srcs/controller/main.cpp
+# srcs/model/socket/Socket.cpp \
+			# srcs/model/Utils.cpp
 
 #*******************
 #                  *
@@ -117,3 +124,8 @@ runrl:
 	@make re
 	@clear
 	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --trace-children-skip='*/bin/*,*/sbin/*' --trace-children=yes ./$(NAME)
+
+runf:
+	@make re
+	@clear
+	@./$(NAME) ../conf/example.conf

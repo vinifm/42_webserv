@@ -21,7 +21,7 @@ int main(int argc, char **argv)
 {
 	Parser parser;
 	//1) load_conf_file
-	if (argc <= 1)
+	if (argc != 2)
 	{
 		std::cerr << "error: invalid number of args!" << std::endl;
 		return (1);

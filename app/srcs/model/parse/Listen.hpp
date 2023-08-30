@@ -10,9 +10,12 @@ public:
 	Listen();
 	~Listen();
 
+	void	initListen(const std::stringstream& values);
+
 private:
-	std::string	_address;
-	int			_port;
+	// std::string	_address;
+	// int			_port;
+
 };
 
 #endif

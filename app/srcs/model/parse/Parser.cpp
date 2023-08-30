@@ -14,14 +14,14 @@ static std::string trim(const std::string& line)
 
 	size_t end = trimmed.find_last_not_of(" \t");
 	if (end != std::string::npos) {
-		trimmed = trimmed.substr(0, end);
+		trimmed = trimmed.substr(0, end + 1);
 	}
 	return trimmed;
 }
 
 void	Parser::parseConfigFile(const std::string filename)
 {
-	_inputFile.open(filename, std::ifstream::in);
+	_inputFile.open(filename.c_str(), std::ifstream::in);
 	if (_checkFileExtension(filename) == false) {
 		std::cerr << "Error: not a .conf file" << std::endl;
 		return ;
@@ -34,7 +34,7 @@ void	Parser::parseConfigFile(const std::string filename)
 	while (std::getline(_inputFile, _line)) {
 		_line = trim(_line);
 		if (_line.compare("server {") == 0) {
-			_parseServer();
+			_addServer();
 		}
 	}
 	_inputFile.close();
@@ -54,8 +54,10 @@ bool	Parser::_checkFileExtension(const std::string& filename) const
 	return false;
 }
 
-void	Parser::_parseServer()
+void	Parser::_addServer()
 {
+	Server server;
+	server.initServer(_inputFile);
 
 }
 

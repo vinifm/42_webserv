@@ -22,7 +22,7 @@ private:
 	std::string			_line;
 
 	bool	_checkFileExtension(const std::string& filename) const;
-	void	_parseServer();
+	void	_addServer();
 };
 
 #endif

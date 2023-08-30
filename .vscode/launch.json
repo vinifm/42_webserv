@@ -1,0 +1,24 @@
+{
+	// https://code.visualstudio.com/docs/editor/debugging#_launch-configurations
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Webserv Debug",
+			"type": "cppdbg",
+			"request": "launch",	// start program in debug mode;
+			"program": "${workspaceFolder}/app/webserv",
+			"cwd": "${workspaceFolder}/app/",
+			"args": ["../conf/example.conf"],
+			// "externalConsole": true,
+			"MIMode": "gdb",
+			"setupCommands": [
+				{
+					"description": "Enable pretty-printing for gdb",
+					"text": "-enable-pretty-printing",
+					"ignoreFailures": true
+				}
+			],
+			"preLaunchTask": "build webserv",
+		}
+	]
+}
