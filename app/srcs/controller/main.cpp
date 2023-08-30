@@ -2,6 +2,8 @@
 #include <Response.hpp>
 #include <Socket.hpp>
 
+std::map <int, std::string> *g_http_codes;
+
 void	requests_loop(Socket socket)
 {
 	while (true)
@@ -10,13 +12,13 @@ void	requests_loop(Socket socket)
 		{
 			if (socket.get_next_connection())
 			{
-				if (socket.requestProcessor().executeRequest() == 0)
-					socket.send_response();
+				Response response;
+				if (socket.requestProcessor().executeRequest(socket.parserProcessor(), response) == 0)
+					socket.send_response(response);
 			}
 		}
 		catch(const std::exception& e)
 		{
-			std::string 
 			print_log("main.cpp", "Error: error exception was activated in socket");
 		}
 	}
@@ -24,25 +26,30 @@ void	requests_loop(Socket socket)
 
 int main(int argc, char **argv)
 {
-	//1) load_conf_file
+	//0) setting http codes;
+	std::map<int, std::string> http_codes;
+	g_http_codes = &http_codes;
+
+	//1) load_parser_file
 	if (argc <= 1)
 	{
 		std::cout << "error: invalid number of args!" << std::endl;
 		return (1);
 	}
-	Conf conf(argv[1]);
+	Parser parser(argv[1]);
 
-	if (conf.is_valid() == 0)
+	if (parser.is_valid() == 0)
 	{
-		std::cout << "error: configuration file is invalid!" << std::endl;
+		std::cout << "error:  file is invalid!" << std::endl;
 		return (1);
 	}
-	conf.setPort(8080);
-	conf.setRoot("srcs/view/www/default");
+	parser.setPort(8080);
+	parser.setRoot("srcs/view/www/default/");
+	// parser.setRoot("srcs/view/www/examples/serve_image_example/");
 	print_banner();
 
-	//2) if configuration file is ok, init socket using conf file datas
-	Socket	socket(conf);
+	//2) if parseriguration file is ok, init socket using Parser file datas
+	Socket	socket(parser);
 	socket.init();
 
 	//3) loop for process requests

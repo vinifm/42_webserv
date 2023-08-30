@@ -1,19 +1,20 @@
 #ifndef STATUSLINE_HPP
 #define STATUSLINE_HPP
 
-#include <Utils.hpp>
+#include <Webserv.hpp>
 
 class StatusLine
 {
 private:
-	std::string						_protocol;
-	std::map<int, std::string>		_code;
-	std::string						_result;
+	std::string									_protocol;
+	std::map<int, std::string>::iterator		_code;
+	std::string									_result;
 
 public:
 	//occf
 	StatusLine(void);
 	~StatusLine(void);
+	StatusLine(std::string protocol, std::map<int, std::string>::iterator code, std::string result);
 
 	//getters & setters
 	std::string		getProtocol(void);
@@ -22,7 +23,7 @@ public:
 	void			setResult(std::string result);
 	int				getCode(void);
 	std::string		getCodeMessage(void);
-	void			setCode(std::map<int, std::string> code);
+	void			setCode(std::map<int, std::string>::iterator code);
 	std::string		toString(void);
 
 };

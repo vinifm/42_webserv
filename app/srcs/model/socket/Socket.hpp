@@ -1,10 +1,10 @@
 #ifndef SOCKET_HPP
 #define SOCKET_HPP
 
-#include <Conf.hpp>
+#include <Parser.hpp>
 #include <Request.hpp>
 #include <Response.hpp>
-#include <Utils.hpp>
+#include <Webserv.hpp>
 
 class Socket
 {
@@ -12,25 +12,26 @@ private:
 	struct sockaddr_in		_address_struct;
 	int						_endpoint_connection_socket_fd;
 	int						_connection_socket_fd;
-	Conf					_conf;
+	Parser					_parser;
 	Request 				_request;
-	Response 				_response;
 
 public:
 	//occf
 	Socket(void);
 	~Socket(void);
-	Socket(Conf Conf);
+	Socket(Parser parser);
 
 	//methods
 	int				init(void);
 	int				get_next_connection(void);
-	int				send_response(void);
+	int				send_response(Response &response);
 	int				clean_for_next_connection(void);
 	int				deinit(void);
 
 	//getters & setters
-	Request	requestProcessor(void);
+	Request		requestProcessor(void);
+	Response	responseProcessor(void);
+	Parser		parserProcessor(void);
 
 };
 

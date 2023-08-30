@@ -2,24 +2,65 @@
 
 int is_directory(std::string path)
 {
-    (void) path;
-    return (0);
+	(void) path;
+	return (0);
 }
 
 int is_file(std::string path)
 {
-    (void) path;
-    return (1);
+	(void) path;
+	return (1);
 }
 
-std::string generate_autoindex()
+int is_root(std::string path)
 {
-    return (std::string("<h1>autoindex</h1>"));
+	if (path == "/")
+		return (1);
+	return (0);
 }
+
+std::string generate_autoindex(std::string path)
+{
+	(void) path;
+	return (std::string("<h1>autoindex</h1>"));
+}
+
+std::string	extract_route(std::string url)
+{
+	std::vector<std::string>	*request_split;
+	std::string					route="";
+
+	request_split = ft_split(url, ' ');
+	route = request_split->at(1);
+	return (route);
+}
+
+std::string	load_file_bytes_in_body(std::string path)
+{
+	(void) path;
+	std::ifstream file(path.c_str());
+	 if (!file.is_open())
+	{
+		std::string msg;
+		msg = "Load Page Error: Invalid Page Path! (";
+		msg.append(path);
+		msg.append(")");
+		print_log("RequestUtils.cpp", msg);
+	}
+	std::stringstream buffer;
+	buffer << file.rdbuf();
+	return (buffer.str());
+}
+
+void		error_404(Response &response)
+{
+	(void) response;
+}
+
 
 /*****************
 *                *
-*      UTILS     *
+*      Webserv     *
 *                *
 *****************/
 // 	std::string	msg;
@@ -32,13 +73,13 @@ std::string generate_autoindex()
 // 	std::stringstream buffer;
 // 	buffer << image.rdbuf();
 // 	std::stringstream response;
-// 	response << "\
-// 	HTTP/1.1 200 OK\n\
-// 	Accept-Ranges: bytes\n\
-// 	Connection: close\n\
-// 	Content-Length: 6500\n\
-// 	Content-Type: jpg\n\
-// 	Last-Modified: Mon, 28 Aug 2023 19:50:25 GMT\n\
+// 	response << "
+// 	HTTP/1.1 200 OK\n
+// 	Accept-Ranges: bytes\n
+// 	Connection: close\n
+// 	Content-Length: 6500\n
+// 	Content-Type: jpg\n
+// 	Last-Modified: Mon, 28 Aug 2023 19:50:25 GMT\n
 // 	Server: webserv\n\n";
 // 	response << image.rdbuf();
 // 	this->_response_str = response.str();
@@ -59,22 +100,22 @@ std::string generate_autoindex()
 // 	exit_status = "200 OK";
 // 	if (content_type.substr(0, 4) == "text")
 // 	{
-// 		header << " \
-// 		'HTTP/1.1 "<< exit_status <<"'\n \
-// 		'Content-Type:" << content_type <<"',\n \
-// 		'Content-Encoding: UTF-8',\n \
-// 		'Accept-Ranges: bytes',\n \
+// 		header << " 
+// 		'HTTP/1.1 "<< exit_status <<"'\n 
+// 		'Content-Type:" << content_type <<"',\n 
+// 		'Content-Encoding: UTF-8',\n 
+// 		'Accept-Ranges: bytes',\n 
 // 		'Connection: keep-alive',\n\n";
 // 	}
 // 	else
 // 	{
-// 		header << "\
-// HTTP/1.1 "<< exit_status <<"\n\
-// Accept-Ranges: bytes\n\
-// Connection: close\n\
-// Content-Length: " << len << "\n\
-// Content-Type: jpg\n\
-// Last-Modified: Mon, 28 Aug 2023 19:50:25 GMT\n\
+// 		header << "
+// HTTP/1.1 "<< exit_status <<"\n
+// Accept-Ranges: bytes\n
+// Connection: close\n
+// Content-Length: " << len << "\n
+// Content-Type: jpg\n
+// Last-Modified: Mon, 28 Aug 2023 19:50:25 GMT\n
 // Server: webserv\n\n";
 // 	}
 // 	return (header.str());

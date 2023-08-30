@@ -1,9 +1,9 @@
-#ifndef CONF_HPP
-#define CONF_HPP
+#ifndef Parser_HPP
+#define Parser_HPP
 
-#include <Utils.hpp>
+#include <Webserv.hpp>
 
-class Conf
+class Parser
 {
 private:
 	std::string	_root;
@@ -11,9 +11,9 @@ private:
 
 public:
 	//occf
-	Conf(void);
-	~Conf(void);
-	Conf(std::string path);
+	Parser(void);
+	~Parser(void);
+	Parser(std::string path);
 
 	//methods
 	int				is_valid(void);

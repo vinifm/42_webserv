@@ -6,7 +6,7 @@
 # The project try to implement MVC software arquitecture for a better organization and make software more manutanable.
 #
 # M (srcs/model): all classes, and builtin functions to make application works;
-# V (srcs/view): everything about user interface, our pages and configuration files that deal direct with what the user will see on screen;
+# V (srcs/view): everything about user interface, our pages and Parseriguration files that deal direct with what the user will see on screen;
 # C (srcs/controller): all files that control the software flow, and how models and view connect themselves and the "business rules" of our software;
 #
 # enjoy the webserv_kings! Thank you very much!
@@ -20,21 +20,21 @@
 NAME=webserv
 FLAGS=-Wall -Wextra -Werror -std=c++98 -g3
 BANNER_PATH=.banner
-SOURCES=Conf.cpp \
+SOURCES=Parser.cpp \
 		Request.cpp \
 		Response.cpp \
 		RequestUtils.cpp \
 		StatusLine.cpp \
 		Socket.cpp \
-		Utils.cpp \
+		Webserv.cpp \
 		main.cpp
 INCLUDES_PATH=-I./srcs/model/ -I./srcs/model/socket/ -I./srcs/model/parse/
-INCLUDES=Conf.hpp \
+INCLUDES=Parser.hpp \
 		Request.hpp \
 		Response.hpp \
 		StatusLine.hpp \
 		Socket.hpp \
-		Utils.hpp
+		Webserv.hpp
 OBJECTS_DIR=.objects
 OBJECTS= $(SOURCES:%.cpp=$(OBJECTS_DIR)/%.o)
 DS= $(SOURCES:%.cpp=$(OBJETS_DIR)/%.d)
@@ -120,8 +120,9 @@ $(BANNER_PATH):
 #     for debug reasons!    *
 #                           *
 #****************************
-DEFAULT=srcs/view/conf/default
+DEFAULT=srcs/view/Parser/default
 run:
+	@make
 	@clear
 	@./$(NAME) $(DEFAULT)
 
@@ -131,6 +132,7 @@ runr:
 	@./$(NAME) $(DEFAULT)
 
 runs:
+	@make
 	@clear
 	@valgrind ./$(NAME) $(DEFAULT)
 
@@ -140,6 +142,7 @@ runrs:
 	@valgrind ./$(NAME) $(DEFAULT)
 
 runl:
+	@make
 	@clear
 	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --trace-children-skip='*/bin/*,*/sbin/*' --trace-children=yes ./$(NAME) $(DEFAULT)
 

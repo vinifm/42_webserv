@@ -1,7 +1,9 @@
 #ifndef REQUEST_HPP
 #define REQUEST_HPP
 
-#include <Utils.hpp>
+#include <Parser.hpp>
+#include <Response.hpp>
+#include <Webserv.hpp>
 
 class Request
 {
@@ -9,6 +11,7 @@ private:
 	std::string	_str;
 	std::string	_route;
 	std::string	_method;
+	std::string	_type;
 
 public:
 	//occf
@@ -17,8 +20,10 @@ public:
 	Request(std::string request_str);
 
 	//methods
-	void		extract(void);
-	int			executeRequest(void);
+	void	extract(void);
+	int		executeRequest(Parser parser, Response& response);
+	void	setResponseHeader(Response& response);
+	void	setResponseBody(std::string path, Response& response);
 
 	//getters & setters
 	std::string	toString(void);
@@ -27,7 +32,19 @@ public:
 	void		setRoute(std::string route);
 	std::string	getMethod(void);
 	void		setMethod(std::string method);
+	std::string	getType(void);
+	void		setType(std::string type);
 
 };
+
+	//utils
+	int				is_directory(std::string path);
+	int				is_file(std::string path);
+	int				is_root(std::string path);
+	std::string		generate_autoindex(std::string path);
+	std::string		extract_route(std::string url);
+	std::string		load_file_bytes_in_body(std::string path);
+	void			error_404(Response &response);
+
 
 #endif
