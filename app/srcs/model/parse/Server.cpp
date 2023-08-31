@@ -10,32 +10,36 @@ void	Server::initServer(std::ifstream& inputFile)
 
 	while (std::getline(inputFile, line)) {
 		std::stringstream ss(line);
-		ss >> directive;
-		if (directive.compare("listen") == 0)
+		if (!(ss >> directive))
+			continue;
+		std::cout << "directive: " << directive << std::endl;
+		if (directive == "listen")
 			_setListen(ss);
-		else if (directive.compare("root") == 0)
+		else if (directive == "root")
 			_setRoot();
-		else if (directive.compare("server_name") == 0)
+		else if (directive == "server_name")
 			_setServerName();
-		else if (directive.compare("error_page") == 0)
+		else if (directive == "error_page")
 			_setErrorPage();
-		else if (directive.compare("client_max_body_size") == 0)
+		else if (directive == "client_max_body_size")
 			_setClientSize();
-		else if (directive.compare("location") == 0)
+		else if (directive == "location")
 			_setLocation();
-		else if (line.compare("};") == 0)
+		else if (line == "};")
 			return ;
 		else
+			// fechar fd
 			throw std::runtime_error("invalid directive");
+		directive = "\0";
 	}
 	throw std::runtime_error("unclosed server block");
 }
 
-void	Server::_setListen(const std::stringstream& values)
+void	Server::_setListen(std::stringstream& values)
 {
 	Listen new_listen;
 	new_listen.initListen(values);
-	_listens.push_back(new_listen);
+	// _listens.push_back(new_listen);
 }
 
 void	Server::_setRoot()

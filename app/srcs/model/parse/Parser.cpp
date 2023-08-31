@@ -58,7 +58,7 @@ void	Parser::_addServer()
 {
 	Server server;
 	server.initServer(_inputFile);
-
+	// _server.push_back(server);
 }
 
 bool	Parser::getIsValid() const { return _isValid; }

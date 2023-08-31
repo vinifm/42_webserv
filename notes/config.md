@@ -50,11 +50,11 @@ Default: `listen *:80 | *:8000`
 
 Sets the address and port for IP. Both address and port, or only address or only port can be specified. An address may also be a hostname.
 ```
-	listen 127.0.0.1:8000
+	listen 127.0.0.1:80
 	listen 127.0.0.1
-	listen 8000
+	listen 80
 	listen *:8000
-	listen localhost:8000
+	listen localhost:80
 ```
 
 ### [`server_name name ...;`](http://nginx.org/en/docs/http/ngx_http_core_module.html#server_name)
