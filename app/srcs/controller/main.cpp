@@ -24,6 +24,16 @@ void	requests_loop(Socket socket)
 	}
 }
 
+void	init_parser_for_test(Parser& parser)
+{
+	parser.setPort(8080);
+	parser.setRoot("srcs/view/www/default/");
+
+	parser._location.push_back(Location("/", "srcs/view/www/default/", true));
+	parser._location.push_back(Location("/image", "srcs/view/www/examples/serve_image_example/", false));
+}
+
+
 int main(int argc, char **argv)
 {
 	//0) setting http codes;
@@ -43,9 +53,9 @@ int main(int argc, char **argv)
 		std::cout << "error:  file is invalid!" << std::endl;
 		return (1);
 	}
-	parser.setPort(8080);
-	parser.setRoot("srcs/view/www/default/");
-	// parser.setRoot("srcs/view/www/examples/serve_image_example/");
+	init_parser_for_test(parser);
+
+	std::cout << "#" << parser._location[1]._root << "#" << std::endl;
 	print_banner();
 
 	//2) if parseriguration file is ok, init socket using Parser file datas

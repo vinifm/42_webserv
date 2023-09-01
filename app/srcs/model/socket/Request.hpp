@@ -1,6 +1,7 @@
 #ifndef REQUEST_HPP
 #define REQUEST_HPP
 
+#include <Utils.hpp>
 #include <Parser.hpp>
 #include <Response.hpp>
 #include <Webserv.hpp>
@@ -38,13 +39,14 @@ public:
 };
 
 	//utils
-	int				is_directory(std::string path);
-	int				is_file(std::string path);
-	int				is_root(std::string path);
 	std::string		generate_autoindex(std::string path);
 	std::string		extract_route(std::string url);
+	std::string		extract_method(std::string url);
 	std::string		load_file_bytes_in_body(std::string path);
+
+	//errors
 	void			error_404(Response &response);
+	void			error_403(Response &response);
 
 
 #endif

@@ -27,20 +27,22 @@ SOURCES=Parser.cpp \
 		StatusLine.cpp \
 		Socket.cpp \
 		Webserv.cpp \
+		Utils.cpp \
 		main.cpp
-INCLUDES_PATH=-I./srcs/model/ -I./srcs/model/socket/ -I./srcs/model/parse/
+INCLUDES_PATH=-I./srcs/model/ -I./srcs/model/socket/ -I./srcs/model/parse/ -I./srcs/controller/utils
 INCLUDES=Parser.hpp \
 		Request.hpp \
 		Response.hpp \
 		StatusLine.hpp \
 		Socket.hpp \
+		Utils.hpp \
 		Webserv.hpp
 OBJECTS_DIR=.objects
 OBJECTS= $(SOURCES:%.cpp=$(OBJECTS_DIR)/%.o)
 DS= $(SOURCES:%.cpp=$(OBJETS_DIR)/%.d)
 
-vpath %.cpp srcs srcs/model srcs/model/socket srcs/model/parse srcs/controller
-vpath %.hpp srcs srcs/model srcs/model/socket srcs/model/parse srcs/controller
+vpath %.cpp srcs srcs/model srcs/model/socket srcs/model/parse srcs/controller srcs/controller/utils
+vpath %.hpp srcs srcs/model srcs/model/socket srcs/model/parse srcs/controller srcs/controller/utils
 
 #*******************
 #                  *
@@ -69,6 +71,7 @@ $(OBJECTS_DIR):
 	mkdir -p srcs/model
 	mkdir -p srcs/model/parse
 	mkdir -p srcs/model/socket
+	mkdir -p srcs/controller/utils
 	mkdir -p srcs/controller
 
 $(OBJECTS_DIR)/%.o: %.cpp

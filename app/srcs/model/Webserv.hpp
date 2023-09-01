@@ -5,8 +5,9 @@
 #include <iostream>
 #include <stdlib.h>
 #include <cstring>
-#include <unistd.h>
 #include <sstream>
+#include <unistd.h>
+#include <sys/stat.h>
 
 //socket libs
 #include <sys/socket.h>

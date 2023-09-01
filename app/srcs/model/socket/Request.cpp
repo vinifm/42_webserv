@@ -58,15 +58,14 @@ void		Request::setMethod(std::string method)
 //methods
 void Request::extract(void)
 {
-	// this->setMethod();
-	// this->setMethod();
+	this->setMethod(extract_method(this->_str.c_str()));
 	this->setRoute(extract_route(this->_str.c_str()));
 }
 
 int Request::executeRequest(Parser parser, Response& response)
 {
 	std::string	path;
-	if (is_root(this->getRoute()))
+	if (this->getRoute() == "/")
 		path = parser.getRoot().append("index.html");
 	else
 		path = parser.getRoot().append(this->getRoute());
@@ -87,7 +86,7 @@ void	Request::setResponseHeader(Response& response)
 
 void	Request::setResponseBody(std::string path, Response& response)
 {
-	if (is_root(this->getRoute()) || is_file(path))
+	if (this->getRoute() == "/" || 1)
 	{
 		this->setType("file");
 		response.setBody(load_file_bytes_in_body(path));
@@ -100,7 +99,7 @@ void	Request::setResponseBody(std::string path, Response& response)
 	else
 	{
 		this->setType("404");
-		error_404(response);
+		// error_404(response);
 	}
 }
 
