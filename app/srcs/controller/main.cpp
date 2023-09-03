@@ -10,7 +10,8 @@ void	requests_loop(Socket socket)
 	{
 		try
 		{
-			if (socket.get_next_connection())
+			int	talk_fd = socket.get_next_connection();
+			if (talk_fd > 0)
 			{
 				Response response;
 				if (socket.requestProcessor().executeRequest(socket.parserProcessor(), response) == 0)
@@ -19,7 +20,10 @@ void	requests_loop(Socket socket)
 		}
 		catch(const std::exception& e)
 		{
-			print_log("main.cpp", "Error: error exception was activated in socket");
+			std::string error = "Error: error exception was activated in socket (";
+			error.append(e.what());
+			error.append(")");
+			print_log("main.cpp", error);
 		}
 	}
 }
@@ -28,9 +32,10 @@ void	init_parser_for_test(Parser& parser)
 {
 	parser.setPort(8080);
 	parser.setRoot("srcs/view/www/default/");
-
+	parser._index.push_back("index.html");
+	parser._index.push_back("index.php");
 	parser._location.push_back(Location("/", "srcs/view/www/default/", true));
-	parser._location.push_back(Location("/image", "srcs/view/www/examples/serve_image_example/", false));
+	parser._location.push_back(Location("/image", "srcs/view/www/examples/serve_image_example/", true));
 }
 
 
@@ -55,7 +60,7 @@ int main(int argc, char **argv)
 	}
 	init_parser_for_test(parser);
 
-	std::cout << "#" << parser._location[1]._root << "#" << std::endl;
+	// std::cout << "#" << parser._location[1]._root << "#" << std::endl;
 	print_banner();
 
 	//2) if parseriguration file is ok, init socket using Parser file datas

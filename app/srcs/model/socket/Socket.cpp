@@ -88,9 +88,8 @@ int	Socket::get_next_connection()
 	n_bytes_read = read(this->_connection_socket_fd, request_str, 1024);
 	tmp = std::string(request_str);
 	this->_request.setStr(tmp);
-	this->_request.extract();
 	std::cout << this->_request.toString() << std::endl;
-	return (n_bytes_read);
+	return (this->_connection_socket_fd);
 }
 
 int	Socket::send_response(Response &response)

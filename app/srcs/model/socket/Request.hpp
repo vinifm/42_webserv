@@ -21,10 +21,9 @@ public:
 	Request(std::string request_str);
 
 	//methods
-	void	extract(void);
 	int		executeRequest(Parser parser, Response& response);
 	void	setResponseHeader(Response& response);
-	void	setResponseBody(std::string path, Response& response);
+	void	setResponseBody(Parser& parser, Response& response);
 
 	//getters & setters
 	std::string	toString(void);
@@ -43,10 +42,13 @@ public:
 	std::string		extract_route(std::string url);
 	std::string		extract_method(std::string url);
 	std::string		load_file_bytes_in_body(std::string path);
+	std::string		add_final_bar(std::string root);
+	std::string		del_final_bar(std::string root);
+	std::string		fix_route(Parser& parser, std::string route);
 
 	//errors
-	void			error_404(Response &response);
-	void			error_403(Response &response);
+	std::string		error_404(Response &response);
+	std::string		error_403(Response &response);
 
 
 #endif

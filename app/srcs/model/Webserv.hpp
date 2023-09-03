@@ -8,6 +8,7 @@
 #include <sstream>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <dirent.h>
 
 //socket libs
 #include <sys/socket.h>

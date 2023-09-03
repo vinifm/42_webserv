@@ -23,13 +23,47 @@ std::string	load_file_bytes_in_body(std::string path)
 	return (buffer.str());
 }
 
-std::string	extract_route(std::string url)
+std::string	fix_route(Parser& parser, std::string route)
 {
-	std::vector<std::string>	*request_split;
-	std::string					route="";
+	if (route == "/" || route == "")
+	{
+		route = "./";
+		route = route.append(parser.getRoot());
+		add_final_bar(route);
+	}
+	if (route[0] == '/')
+	{
+		route = del_final_bar(parser.getRoot()).append(route);
+	}
+	return (route);
+}
 
-	request_split = ft_split(url, ' ');
+std::string	extract_route(std::string request)
+{
+	std::string					route="";
+	std::string					referer="";
+	std::vector<std::string>	*request_split;
+
+	request_split = NULL;
+	request_split = ft_split(request, ' ');
 	route = request_split->at(1);
+	for(std::vector<std::string>::iterator it = (*request_split).begin(); it < (*request_split).end(); it++)
+	{
+		if ((*it).find("Referer:") != std::string::npos)
+		{
+			it++;
+			std::string url = (*it);
+			url = url.substr(0, url.find("\n") - 1);
+			int	start = url.find_last_of(':');
+			referer = url.substr(start, url.length());
+			start = referer.find_first_of('/');
+			referer = referer.substr(start, referer.length());
+			if (referer == "/" || route.find(referer) != std::string::npos)
+				break ;
+			referer.append(route);
+			return (referer);
+		}
+	}
 	return (route);
 }
 
@@ -41,4 +75,40 @@ std::string	extract_method(std::string url)
 	request_split = ft_split(url, ' ');
 	method = request_split->at(0);
 	return (method);
+}
+
+std::string	add_final_bar(std::string root)
+{
+	if (root.empty())
+		return (root);
+	else
+	{
+		if (root[root.length() - 1] != '/')
+			root.append("/");
+	}
+	return (root);
+}
+
+std::string	del_final_bar(std::string root)
+{
+	if (root.empty())
+		return (root);
+	else
+	{
+		if (root[root.length() - 1] == '/')
+			root = root.substr(0, root.length() - 1);
+	}
+	return (root);
+}
+
+std::string	error_404(Response& response)
+{
+	(void) response;
+	return ("<h1>404</h1>");
+}
+
+std::string	error_403(Response& response)
+{
+	(void) response;
+	return ("<h1>403</h1>");
 }

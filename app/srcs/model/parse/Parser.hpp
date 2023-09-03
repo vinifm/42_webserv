@@ -24,11 +24,13 @@ class Location
 class Parser
 {
 private:
-	std::string	_root;
-	int			_port;
+	std::string					_root;
+	int							_port;
 
 public:
-	std::vector<Location> _location;
+	std::vector<std::string>	_index;
+	std::vector<Location> 		_location;
+	bool						_autoindex;
 	//occf
 	Parser(void);
 	~Parser(void);
