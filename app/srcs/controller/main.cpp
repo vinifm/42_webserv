@@ -35,7 +35,7 @@ void	init_parser_for_test(Parser& parser)
 	parser._index.push_back("index.html");
 	parser._index.push_back("index.php");
 	parser._location.push_back(Location("/", "srcs/view/www/default/", true));
-	parser._location.push_back(Location("/image", "srcs/view/www/examples/serve_image_example/", true));
+	parser._location.push_back(Location("/image", "srcs/view/www/examples/serve_image_example/", false));
 }
 
 

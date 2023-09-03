@@ -55,20 +55,9 @@ void		Request::setMethod(std::string method)
 	this->_method = method;
 }
 
-//methods
-// void Request::extract(void)
-// {
-// 	this->setMethod(extract_method(this->_str.c_str()));
-// 	this->setRoute(extract_route(this->_str.c_str()));
-// }
-
 int Request::executeRequest(Parser parser, Response& response)
 {
-	// exit(0);
 	this->setRoute(extract_route(this->_str.c_str()));
-	
-	std::cout << "#" << this->getRoute() << "#" << std::endl;
-	// return (1);
 	this->setResponseBody(parser, response);
 	this->setResponseHeader(response);
 	response.buildResponse();
@@ -122,26 +111,12 @@ std::string find_index_in_directory(std::vector<std::string> index, std::string 
 	return ("");
 }
 
-static	std::string	serve_route(std::string route, Parser& parser, Location *location, Response& response)
+static	std::string	serve_route(std::string route, Location *location, Response& response)
 {
 	std::string	buffer;
 	bool	autoindex;
 
 	autoindex = location->_autoindex;
-	(void) parser;
-	/*
-	 1) CHECK IF ROUTE IS DIRECTORY:
-	    YES:
-			a) LIST DIRECTORY, AND TRY FIND ONE OF _INDEX VECTOR FILE, IN DIRECTORY
-			    YES: SERVER FILE;
-				NO: b) CHECK IF AUTOINDEX EXIST:
-						YES: GENERATE AUTOINDEX;
-						NO: 403;
-		NO:
-		   2) CHECK IF IS FILE:
-		      YES: SERVE FILE;
-			  NO: 404;
-	*/
 	if (is_directory(route))
 	{
 		std::string index_found = find_index_in_directory(location->_index, route);
@@ -187,22 +162,17 @@ void	Request::setResponseBody(Parser& parser, Response& response)
 			std::string aux = "/";
 			aux.append(find);
 			find = aux;
-			// if ((*route_splited).size() > 1)
-			// 	find = add_final_bar(find); // guarantee that '/' is at final always, because maybe in .conf file, the route is location /rota {};
-
 			std::string replace = found_location._root;
-			// replace = add_final_bar(replace);
-
 			std::string new_route = route.replace(route.find(find), find.length(), replace);
 			std::cout << "find:" << find << std::endl;
 			std::cout << "replace:" << replace << std::endl;
 			std::cout << "new_rote:" << new_route << std::endl;
-			body = serve_route(new_route, parser, &found_location, response);
+			body = serve_route(new_route, &found_location, response);
 			response.setBody(body);
 			return ;
 		}
 	}
 	route = fix_route(parser, route);
-	body = serve_route(route, parser, &fake_location, response);
+	body = serve_route(route, &fake_location, response);
 	response.setBody(body);
 }
