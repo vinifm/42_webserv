@@ -4,6 +4,27 @@
 
 std::map <int, std::string> *g_http_codes;
 
+void	init_http_codes(std::map<int, std::string>& http_codes)
+{
+	http_codes.insert(std::pair<int, std::string>(200, "OK"));
+	http_codes.insert(std::pair<int, std::string>(201, "Created"));
+	http_codes.insert(std::pair<int, std::string>(202, "Accepted"));
+	http_codes.insert(std::pair<int, std::string>(204, "No Content"));
+	http_codes.insert(std::pair<int, std::string>(300, "Multiple Choice"));
+	http_codes.insert(std::pair<int, std::string>(301, "Moved Permanently"));
+	http_codes.insert(std::pair<int, std::string>(302, "Found"));
+	http_codes.insert(std::pair<int, std::string>(400, "Bad Request"));
+	http_codes.insert(std::pair<int, std::string>(401, "Unauthorized"));
+	http_codes.insert(std::pair<int, std::string>(403, "Forbidden"));
+	http_codes.insert(std::pair<int, std::string>(404, "Not Found"));
+	http_codes.insert(std::pair<int, std::string>(413, "Method Not Allowed"));
+	http_codes.insert(std::pair<int, std::string>(415, "Request Entity Too Large"));
+	http_codes.insert(std::pair<int, std::string>(500, "Unsupported Media Type"));
+	http_codes.insert(std::pair<int, std::string>(502, "Bad Gateway"));
+	http_codes.insert(std::pair<int, std::string>(504, "Gateway Timeout"));
+	http_codes.insert(std::pair<int, std::string>(505, "HTTP Version Not Supported"));
+}
+
 void	requests_loop(Socket socket)
 {
 	while (true)
@@ -31,19 +52,19 @@ void	requests_loop(Socket socket)
 void	init_parser_for_test(Parser& parser)
 {
 	parser.setPort(8080);
-	parser.setRoot("srcs/view/www/default/");
+	parser.setRoot("srcs/view/www/tour/");
 	parser._index.push_back("index.html");
 	parser._index.push_back("index.php");
 	parser._location.push_back(Location("/", "srcs/view/www/default/", true));
 	parser._location.push_back(Location("/image", "srcs/view/www/examples/serve_image_example/", false));
 }
 
-
 int main(int argc, char **argv)
 {
 	//0) setting http codes;
 	std::map<int, std::string> http_codes;
 	g_http_codes = &http_codes;
+	init_http_codes(http_codes);
 
 	//1) load_parser_file
 	if (argc <= 1)
@@ -59,8 +80,6 @@ int main(int argc, char **argv)
 		return (1);
 	}
 	init_parser_for_test(parser);
-
-	// std::cout << "#" << parser._location[1]._root << "#" << std::endl;
 	print_banner();
 
 	//2) if parseriguration file is ok, init socket using Parser file datas

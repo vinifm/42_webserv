@@ -57,24 +57,5 @@ std::string					itos(int n);
 //                   *
 //********************
 extern std::map <int, std::string> *g_http_codes;
-// {
-// 	CODE_200="OK",
-// 	CODE_201="Created",
-// 	CODE_202="Accepted",
-// 	CODE_204="No Content",
-// 	CODE_300="Multiple Choice",
-// 	CODE_301="Moved Permanently",
-// 	CODE_302="Found",
-// 	CODE_400="Bad Request",
-// 	CODE_401="Unauthorized",
-// 	CODE_403="Forbidden",
-// 	CODE_404="Not Found",
-// 	CODE_413="Method Not Allowed",
-// 	CODE_415="Request Entity Too Large",
-// 	CODE_500="Unsupported Media Type",
-// 	CODE_502="Bad Gateway",
-// 	CODE_504="Gateway Timeout",
-// 	CODE_505="HTTP Version Not Supported"
-// };
 
 #endif
