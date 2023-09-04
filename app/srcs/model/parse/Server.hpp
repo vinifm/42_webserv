@@ -19,12 +19,25 @@ public:
 
 	void	initServer(std::ifstream& inputFile);
 
+	void		printAllListen() const;
+	Listen		getListen(size_t index) const;
+	size_t		getListenSize() const;
+	void		printAllServerNames() const;
+	std::string	getServerName(size_t index) const;
+	size_t		getServerNameSize() const;
+	void		printAllLocation() const;
+	Location	getLocation(size_t index) const;
+	size_t		getLocationSize() const;
+	void		printAllIndex() const;
+	std::string	getIndex(size_t index) const;
+	size_t		getIndexSize() const;
+
 private:
 	std::vector<Listen>			_listens;
 	std::vector<std::string>	_serverNames;
 	std::vector<Location>		_locations;
-	// std::string				_root;
 	// std::vector<std::string>	_index;
+	// std::string				_root;
 	// bool						_autoindex;
 	// std::string				_client_max_body_size;
 	// ErrorPages				_error_pages;
@@ -38,5 +51,7 @@ private:
 	void	_setClientSize();
 	void	_setLocation();
 };
+
+std::ostream& operator<<(std::ostream& os, const Server& server);
 
 #endif

@@ -29,3 +29,15 @@ void	Listen::initListen(std::stringstream& values)
 			_setPort(word.substr(colon_pos + 1));
 	}
 }
+
+std::ostream& operator<<(std::ostream& os, const Listen& listen)
+{
+	std::cout << "Address: " << listen.getAddress()
+		<< "Port: " << listen.getPort()
+		<<std::endl;
+}
+
+/*--- GETTERS ----------------------------------------------------------------*/
+
+std::string	Listen::getAddress() const { return _address; }
+int			Listen::getPort() const { return _port; }
