@@ -13,6 +13,9 @@ public:
 
 	void	initListen(std::stringstream& values);
 
+	std::string	getAddress() const;
+	int			getPort() const;
+
 private:
 	std::string	_address;
 	int			_port;
@@ -20,6 +23,8 @@ private:
 	void	_setPort(const std::string& port);
 
 };
+
+std::ostream& operator<<(std::ostream& os, const Listen& listen);
 
 #endif
 

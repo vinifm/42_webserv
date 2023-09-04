@@ -14,6 +14,8 @@ public:
 	void	parseConfigFile(const std::string filename);
 
 	bool	getIsValid() const;
+	Server	getServer(size_t index) const;
+	size_t	getServerSize() const;
 
 private:
 	std::vector<Server>	_servers;
@@ -24,5 +26,7 @@ private:
 	bool	_checkFileExtension(const std::string& filename) const;
 	void	_addServer();
 };
+
+std::ostream& operator<<(std::ostream& os, const Parser& parser);
 
 #endif
