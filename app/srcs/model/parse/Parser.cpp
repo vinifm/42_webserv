@@ -62,11 +62,12 @@ void	Parser::_addServer()
 }
 
 /* Print all servers info */
-std::ostream& operator<<(std::ostream& os, const Parser& parser)
-{
-	for (size_t i = 0; i < parser.getServerSize(); ++i)
-		std::cout << parser.getServer(i) << std::endl;
-}
+// std::ostream& operator<<(std::ostream& os, const Parser& parser)
+// {
+	// for (size_t i = 0; i < parser.getServerSize(); ++i)
+		// os << parser.getServer(i) << std::endl;
+	// return os;
+// }
 
 /*--- GETTERS ----------------------------------------------------------------*/
 

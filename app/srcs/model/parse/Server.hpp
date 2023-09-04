@@ -36,7 +36,7 @@ private:
 	std::vector<Listen>			_listens;
 	std::vector<std::string>	_serverNames;
 	std::vector<Location>		_locations;
-	// std::vector<std::string>	_index;
+	std::vector<std::string>	_index;
 	// std::string				_root;
 	// bool						_autoindex;
 	// std::string				_client_max_body_size;
@@ -49,7 +49,7 @@ private:
 	void	_setServerName();
 	void	_setErrorPage();
 	void	_setClientSize();
-	void	_setLocation();
+	void	_setLocation(std::ifstream& inputFile, std::string prefix);
 };
 
 std::ostream& operator<<(std::ostream& os, const Server& server);

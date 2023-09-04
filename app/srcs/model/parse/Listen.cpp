@@ -6,7 +6,7 @@ Listen::~Listen() {}
 void Listen::_setPort(const std::string& word)
 {
 	std::stringstream	port_str(word);
-	if (port_str >> _port)
+	if (!(port_str >> _port))
 		throw std::runtime_error("invalid listen port");
 }
 
@@ -30,12 +30,13 @@ void	Listen::initListen(std::stringstream& values)
 	}
 }
 
-std::ostream& operator<<(std::ostream& os, const Listen& listen)
-{
-	std::cout << "Address: " << listen.getAddress()
-		<< "Port: " << listen.getPort()
-		<<std::endl;
-}
+// std::ostream& operator<<(std::ostream& os, const Listen& listen)
+// {
+// 	os << "Address: " << listen.getAddress()
+// 		<< "Port: " << listen.getPort()
+// 		<<std::endl;
+// 	return os;
+// }
 
 /*--- GETTERS ----------------------------------------------------------------*/
 
