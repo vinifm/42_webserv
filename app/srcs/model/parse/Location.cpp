@@ -3,17 +3,20 @@
 Location::Location() {}
 Location::~Location() {}
 
-void	Location::initLocation(std::ifstream& inputFile, std::string prefix)
+std::vector<std::string>::iterator&	Location::initLocation(std::vector<std::string>& inputFile, std::string prefix,
+	std::vector<std::string>::iterator& line)
 {
-	std::string	line;
 	std::string	directive;
 
 	_prefix = prefix;
-	while (std::getline(inputFile, line)) {
-		std::stringstream ss(line);
+	for (; line != inputFile.end(); ++line) {
+		std::stringstream ss(*line);
 		if (!(ss >> directive))
 			continue;
-		if (directive == "root")
+		std::cout << "\t\tloc directive: " << directive << std::endl;
+		if (directive == "#")
+			continue;
+		else if (directive == "root")
 			_setRoot(ss);
 		else if (directive == "index")
 			_setIndex(ss);
@@ -30,7 +33,7 @@ void	Location::initLocation(std::ifstream& inputFile, std::string prefix)
 		else if (directive == "cgi")
 			_setCGI(ss);
 		else if (directive == "}")
-			return ;
+			return line;
 		else {
 			std::cout << "Directive: " << directive << std::endl;
 			throw std::runtime_error("invalid location directive");
@@ -39,7 +42,6 @@ void	Location::initLocation(std::ifstream& inputFile, std::string prefix)
 	}
 	throw std::runtime_error("unclosed server block");
 }
-
 void	Location::_setRoot(std::stringstream& ss)
 {
 	std::string	root_path;

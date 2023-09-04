@@ -3,21 +3,27 @@
 Server::Server() {}
 Server::~Server() {}
 
-void	Server::initServer(std::ifstream& inputFile)
+std::vector<std::string>::iterator& Server::initServer(std::vector<std::string>& inputFile,
+	std::vector<std::string>::iterator& line)
 {
-	std::string	line;
 	std::string	directive;
 	std::string loc_prefix;
 
-	while (std::getline(inputFile, line)) {
-		std::stringstream ss(line);
+	for (_line = line; _line != inputFile.end(); ++_line) {
+		std::stringstream ss(*_line);
 		if (!(ss >> directive))
 			continue;
-		std::cout << "directive: " << directive << std::endl;
-		if (directive == "listen")
+		std::cout << "\tdirective: " << directive << std::endl;
+		if (directive == "#")
+			continue;
+		else if (directive == "listen")
 			_setListen(ss);
 		else if (directive == "root")
 			_setRoot();
+		else if (directive == "index")
+			_setIndex();
+		else if (directive == "autoindex")
+			_setAutoindex();
 		else if (directive == "server_name")
 			_setServerName();
 		else if (directive == "error_page")
@@ -28,10 +34,11 @@ void	Server::initServer(std::ifstream& inputFile)
 		{
 			if (!(ss >> loc_prefix))
 				throw std::runtime_error("location without prefix");
+			_line++;
 			_setLocation(inputFile, loc_prefix);
 		}
-		else if (line == "};")
-			return ;
+		else if (*_line == "};")
+			return _line;
 		else
 		{
 			// fechar fd
@@ -53,6 +60,12 @@ void	Server::_setListen(std::stringstream& values)
 void	Server::_setRoot()
 {
 }
+void	Server::_setIndex()
+{
+}
+void	Server::_setAutoindex()
+{
+}
 void	Server::_setServerName()
 {
 }
@@ -62,10 +75,10 @@ void	Server::_setErrorPage()
 void	Server::_setClientSize()
 {
 }
-void	Server::_setLocation(std::ifstream& inputFile, std::string prefix)
+void	Server::_setLocation(std::vector<std::string>& inputFile, std::string prefix)
 {
 	Location new_location;
-	new_location.initLocation(inputFile, prefix);
+	_line = new_location.initLocation(inputFile, prefix, _line);
 	_locations.push_back(new_location);
 }
 

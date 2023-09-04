@@ -4,6 +4,7 @@
 #include "Server.hpp"
 #include <fstream>
 #include <sstream>
+#include <vector>
 
 class Parser
 {
@@ -18,10 +19,10 @@ public:
 	size_t	getServerSize() const;
 
 private:
-	std::vector<Server>	_servers;
-	bool				_isValid;
-	std::ifstream		_inputFile;
-	std::string			_line;
+	std::vector<Server>			_servers;
+	bool						_isValid;
+	std::vector<std::string>	_inputFile;
+	std::vector<std::string>::iterator _line;
 
 	bool	_checkFileExtension(const std::string& filename) const;
 	void	_addServer();

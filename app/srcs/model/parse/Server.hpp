@@ -17,7 +17,8 @@ public:
 	Server();
 	~Server();
 
-	void	initServer(std::ifstream& inputFile);
+	std::vector<std::string>::iterator& initServer(std::vector<std::string>& inputFile,
+		std::vector<std::string>::iterator& line);
 
 	void		printAllListen() const;
 	Listen		getListen(size_t index) const;
@@ -42,14 +43,18 @@ private:
 	// std::string				_client_max_body_size;
 	// ErrorPages				_error_pages;
 	// std::vector<std::string>	_limit_except;
-	// std::string				_redirect;
+
+	std::vector<std::string>::iterator	_line;
+
 
 	void	_setListen(std::stringstream& values);
 	void	_setRoot();
+	void	_setIndex();
+	void	_setAutoindex();
 	void	_setServerName();
 	void	_setErrorPage();
 	void	_setClientSize();
-	void	_setLocation(std::ifstream& inputFile, std::string prefix);
+	void	_setLocation(std::vector<std::string>& inputFile, std::string prefix);
 };
 
 std::ostream& operator<<(std::ostream& os, const Server& server);

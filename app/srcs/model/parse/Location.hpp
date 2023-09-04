@@ -14,7 +14,8 @@ public:
 	Location();
 	~Location();
 
-	void	initLocation(std::ifstream& inputFile, std::string prefix);
+	std::vector<std::string>::iterator&	initLocation(std::vector<std::string>& inputFile, std::string prefix,
+		std::vector<std::string>::iterator& line);
 
 private:
 	std::string					_prefix;
