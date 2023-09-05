@@ -1,3 +1,13 @@
+## Http Methods (What they do? How they works?)
+- GET: Get resources from Server to Client.
+- HEAD:
+- POST:Send data to Server in order to create or update a resource.
+- PUT:
+- DELETE:
+- CONNECT:
+- OPTIONS:
+- TRACE:
+- PATCH:
 
 ## Http Response Status
 
