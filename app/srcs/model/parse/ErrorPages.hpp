@@ -9,7 +9,10 @@ public:
 	ErrorPages();
 	~ErrorPages();
 
+	void addPages(std::stringstream& values);
+
 private:
+	std::map<std::string, std::string>	_pages;
 };
 
 #endif

@@ -6,7 +6,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <vector>
 #include <stdexcept>
+#include <vector>
+#include <map>
 
 #endif

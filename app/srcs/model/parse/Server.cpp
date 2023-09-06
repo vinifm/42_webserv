@@ -3,7 +3,8 @@
 Server::Server() {}
 Server::~Server() {}
 
-std::vector<std::string>::iterator& Server::initServer(std::vector<std::string>& inputFile,
+std::vector<std::string>::iterator& Server::initServer(
+	std::vector<std::string>& inputFile,
 	std::vector<std::string>::iterator& line)
 {
 	std::string	directive;
@@ -78,7 +79,7 @@ void	Server::_setClientSize(std::stringstream& values)
 
 void	Server::_setErrorPage(std::stringstream& values)
 {
-	(void)values;
+	_error_pages.addPages(values);
 }
 
 void	Server::_setLocation(std::vector<std::string>& inputFile, std::string prefix)
@@ -99,6 +100,7 @@ std::ostream& operator<<(std::ostream& os, const Server& server)
 	}
 	os << "root:\n\t" << server.getRoot() << std::endl;
 	os << "client max body size:\n\t" << server.getClientMaxBodySize() << std::endl;
+	// os << server.getErrorPages() << std::endl;
 	return os;
 }
 
