@@ -20,8 +20,6 @@ std::vector<std::string>::iterator&	Location::initLocation(std::vector<std::stri
 			_setRoot(ss);
 		else if (directive == "index")
 			_setIndex(ss);
-		else if (directive == "error_page")
-			_setErrorPage();
 		else if (directive == "limit_except")
 			_setLimitExcept(ss);
 		else if (directive == "client_max_body_size")
@@ -54,9 +52,6 @@ void	Location::_setIndex(std::stringstream& ss)
 	std::string	file;
 	while (ss >> file)
 		_index.push_back(file);
-}
-void	Location::_setErrorPage()
-{
 }
 void	Location::_setLimitExcept(std::stringstream& ss)
 {

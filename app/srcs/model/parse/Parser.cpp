@@ -43,6 +43,7 @@ void	Parser::parseConfigFile(const std::string filename)
 		if (*_line++ == "server {")
 			_addServer();
 	}
+	std::cout << "\n\nSERVER:\n" << _servers.at(0) << "\n\n" << std::endl;
 	file_stream.close();
 }
 
@@ -64,7 +65,7 @@ void	Parser::_addServer()
 {
 	Server server;
 	_line = server.initServer(_inputFile, _line);
-	// _server.push_back(server);
+	_servers.push_back(server);
 }
 
 /* Print all servers info */

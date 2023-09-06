@@ -1,6 +1,6 @@
 #include "Listen.hpp"
 
-Listen::Listen() {}
+Listen::Listen() : _address("*"), _port(80) {}
 Listen::~Listen() {}
 
 void Listen::_setPort(const std::string& word)
@@ -30,13 +30,12 @@ void	Listen::initListen(std::stringstream& values)
 	}
 }
 
-// std::ostream& operator<<(std::ostream& os, const Listen& listen)
-// {
-// 	os << "Address: " << listen.getAddress()
-// 		<< "Port: " << listen.getPort()
-// 		<<std::endl;
-// 	return os;
-// }
+std::ostream& operator<<(std::ostream& os, const Listen& listen)
+{
+	os << "Listen:\n\tAddress: " << listen.getAddress()
+		<< "\n\tPort: " << listen.getPort();
+	return os;
+}
 
 /*--- GETTERS ----------------------------------------------------------------*/
 

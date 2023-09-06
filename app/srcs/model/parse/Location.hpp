@@ -1,11 +1,7 @@
 #ifndef LOCATION_HPP
 # define LOCATION_HPP
 
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <vector>
-
+#include "includes.hpp"
 #include "ErrorPages.hpp"
 
 class Location
@@ -21,7 +17,6 @@ private:
 	std::string					_prefix;
 	std::string					_root;
 	std::vector<std::string>	_index;
-	ErrorPages					_error_pages;
 	bool						_autoindex;
 	std::string					_client_max_body_size;
 	std::vector<std::string>	_limit_except;
@@ -29,7 +24,6 @@ private:
 
 	void	_setRoot(std::stringstream& ss);
 	void	_setIndex(std::stringstream& ss);
-	void	_setErrorPage();
 	void	_setLimitExcept(std::stringstream& ss);
 	void	_setClientSize(std::stringstream& ss);
 	void	_setAutoindex(std::stringstream& ss);

@@ -1,10 +1,8 @@
 #ifndef PARSER_HPP
 # define PARSER_HPP
 
+#include "includes.hpp"
 #include "Server.hpp"
-#include <fstream>
-#include <sstream>
-#include <vector>
 
 class Parser
 {

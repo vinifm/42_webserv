@@ -18,18 +18,14 @@ std::vector<std::string>::iterator& Server::initServer(std::vector<std::string>&
 			continue;
 		else if (directive == "listen")
 			_setListen(ss);
-		else if (directive == "root")
-			_setRoot();
-		else if (directive == "index")
-			_setIndex();
-		else if (directive == "autoindex")
-			_setAutoindex();
 		else if (directive == "server_name")
-			_setServerName();
-		else if (directive == "error_page")
-			_setErrorPage();
+			_setServerName(ss);
+		else if (directive == "root")
+			_setRoot(ss);
 		else if (directive == "client_max_body_size")
-			_setClientSize();
+			_setClientSize(ss);
+		else if (directive == "error_page")
+			_setErrorPage(ss);
 		else if (directive == "location")
 		{
 			if (!(ss >> loc_prefix))
@@ -54,26 +50,31 @@ void	Server::_setListen(std::stringstream& values)
 {
 	Listen new_listen;
 	new_listen.initListen(values);
-	// _listens.push_back(new_listen);
+	_listens.push_back(new_listen);
 }
 
-void	Server::_setRoot()
+void	Server::_setServerName(std::stringstream& values)
 {
+	std::string name;
+	while (values >> name)
+		_serverNames.push_back(name);
 }
-void	Server::_setIndex()
+
+void	Server::_setRoot(std::stringstream& values)
 {
+	std::string	path;
+	if (!(values >> path))
+		throw std::runtime_error("Missing root path");
+	_root = path;
 }
-void	Server::_setAutoindex()
+
+void	Server::_setErrorPage(std::stringstream& values)
 {
+	(void)values;
 }
-void	Server::_setServerName()
+void	Server::_setClientSize(std::stringstream& values)
 {
-}
-void	Server::_setErrorPage()
-{
-}
-void	Server::_setClientSize()
-{
+	(void)values;
 }
 void	Server::_setLocation(std::vector<std::string>& inputFile, std::string prefix)
 {
@@ -82,30 +83,28 @@ void	Server::_setLocation(std::vector<std::string>& inputFile, std::string prefi
 	_locations.push_back(new_location);
 }
 
-// std::ostream& operator<<(std::ostream& os, const Server& server)
-// {
-// 	os << "Listen: " << server.printAllListen() << std::endl
-// 		<< "Server Names: " << server.printAllServerNames() << std::endl;
-// 	return os;
-// }
+std::ostream& operator<<(std::ostream& os, const Server& server)
+{
+	for (size_t i = 0; i < server.getListenSize(); ++i)
+		os << server.getListen(i) << std::endl;
+
+	os << "server_name:" << std::endl;
+	for (size_t i = 0; i < server.getServerNameSize(); ++i) {
+		os << "\t" << server.getServerName(i) << std::endl;
+	}
+	os << "root:\n\t" << server.getRoot() << std::endl;
+	return os;
+}
 
 /*--- GETTERS ----------------------------------------------------------------*/
 
-// void	Server::printAllListen() const
-// {
-// 	for (size_t i = 0; i < getListenSize(); ++i)
-// 		std::cout << getListen(i) << std::endl;
-// }
-// Listen	Server::getListen(size_t index) const { return _listens.at(index); }
-// size_t	Server::getListenSize() const { return _listens.size(); }
+Listen		Server::getListen(size_t index) const { return _listens.at(index); }
+size_t		Server::getListenSize() const { return _listens.size(); }
 
-// void	Server::printAllServerNames() const
-// {
-// 	for (size_t i = 0; i < getServerNameSize(); ++i)
-// 		std::cout << getServerName(i) << std::endl;
-// }
-// std::string	Server::getServerName(size_t index) const { return _serverNames.at(index); }
-// size_t	Server::getServerNameSize() const { return _serverNames.size(); }
+std::string	Server::getServerName(size_t index) const { return _serverNames.at(index); }
+size_t		Server::getServerNameSize() const { return _serverNames.size(); }
+
+std::string	Server::getRoot() const { return _root; }
 
 // void	Server::printAllLocation() const
 // {

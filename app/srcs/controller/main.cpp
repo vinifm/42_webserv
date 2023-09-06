@@ -26,12 +26,13 @@ int main(int argc, char **argv)
 		std::cerr << "error: invalid number of args!" << std::endl;
 		return (1);
 	}
-	parser.parseConfigFile(argv[1]);
-	if (parser.getIsValid() == false)
-	{
-		std::cerr << "error: configuration file is invalid!" << std::endl;
-		return (1);
-	}
+	try { parser.parseConfigFile(argv[1]); }
+	catch (std::exception& e) { std::cout << e.what() << std::endl; }
+		// if (parser.getIsValid() == false)
+	// {
+	// 	std::cerr << "error: configuration file is invalid!" << std::endl;
+	// 	return (1);
+	// }
 	// print_banner();
 
 	// //2) if configuration file is ok, init socket using conf file datas
