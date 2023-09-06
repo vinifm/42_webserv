@@ -44,7 +44,7 @@ void	Location::_setRoot(std::stringstream& ss)
 {
 	std::string	root_path;
 	if (!(ss >> root_path))
-		throw std::runtime_error("Missing root path");
+		throw std::runtime_error("Missing location root path");
 	_root = root_path;
 }
 void	Location::_setIndex(std::stringstream& ss)

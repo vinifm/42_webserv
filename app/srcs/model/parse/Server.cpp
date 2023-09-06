@@ -98,6 +98,7 @@ std::ostream& operator<<(std::ostream& os, const Server& server)
 	for (size_t i = 0; i < server.getServerNameSize(); ++i) {
 		os << "\t" << server.getServerName(i) << std::endl;
 	}
+
 	os << "root:\n\t" << server.getRoot() << std::endl;
 	os << "client max body size:\n\t" << server.getClientMaxBodySize() << std::endl;
 	// os << server.getErrorPages() << std::endl;
@@ -114,20 +115,3 @@ size_t		Server::getServerNameSize() const { return _serverNames.size(); }
 
 std::string	Server::getRoot() const { return _root; }
 std::string	Server::getClientMaxBodySize() const { return _client_max_body_size; }
-
-// void	Server::printAllLocation() const
-// {
-// 	for (size_t i = 0; i < getLocationSize(); ++i)
-// 		std::cout << getLocation(i) << std::endl;
-// }
-// Location	Server::getLocation(size_t index) const { return _locations.at(index); }
-// size_t		Server::getLocationSize() const { return _locations.size(); }
-
-// void	Server::printAllIndex() const
-// {
-// 	for (size_t i = 0; i < getIndexSize(); ++i)
-// 		std::cout << getIndex(i) << std::endl;
-// }
-// std::string	Server::getIndex(size_t index) const { return _index.at(index); }
-// size_t		Server::getIndexSize() const { return _index.size(); }
-
