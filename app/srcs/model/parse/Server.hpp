@@ -20,6 +20,7 @@ public:
 	std::string	getServerName(size_t index) const;
 	size_t		getServerNameSize() const;
 	std::string	getRoot() const;
+	std::string	getClientMaxBodySize() const;
 	// void		printAllLocation() const;
 	// Location	getLocation(size_t index) const;
 	// size_t		getLocationSize() const;

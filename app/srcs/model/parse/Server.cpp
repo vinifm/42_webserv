@@ -68,14 +68,19 @@ void	Server::_setRoot(std::stringstream& values)
 	_root = path;
 }
 
+void	Server::_setClientSize(std::stringstream& values)
+{
+	std::string	size;
+	if (!(values >> size))
+		throw std::runtime_error("Missing max client body size");
+	_client_max_body_size = size;
+}
+
 void	Server::_setErrorPage(std::stringstream& values)
 {
 	(void)values;
 }
-void	Server::_setClientSize(std::stringstream& values)
-{
-	(void)values;
-}
+
 void	Server::_setLocation(std::vector<std::string>& inputFile, std::string prefix)
 {
 	Location new_location;
@@ -93,6 +98,7 @@ std::ostream& operator<<(std::ostream& os, const Server& server)
 		os << "\t" << server.getServerName(i) << std::endl;
 	}
 	os << "root:\n\t" << server.getRoot() << std::endl;
+	os << "client max body size:\n\t" << server.getClientMaxBodySize() << std::endl;
 	return os;
 }
 
@@ -105,6 +111,7 @@ std::string	Server::getServerName(size_t index) const { return _serverNames.at(i
 size_t		Server::getServerNameSize() const { return _serverNames.size(); }
 
 std::string	Server::getRoot() const { return _root; }
+std::string	Server::getClientMaxBodySize() const { return _client_max_body_size; }
 
 // void	Server::printAllLocation() const
 // {
