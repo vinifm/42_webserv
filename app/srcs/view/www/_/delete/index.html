@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MÉTODO DELETE</title>
+    <!-- Inclua os arquivos CSS e JavaScript do Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>MÉTODO <strong style="color:red;">DELETE</strong></h1>
+        <p>A tabela a seguir apresenta os arquivos presentes na pasta <strong>aws</strong>, um espaço em nosso servidor para armazenamento de arquivos. </p>
+        <form action="/delete" method="POST">
+            <input style="display:none;" type="text" name="filename" \>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nome do Arquivo</th>
+                        <th class="text-center">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    [__MILIONARIO__]
+                </tbody>
+            </table>
+        </form>
+    </div>
+
+    <!-- Rodapé personalizado -->
+    <footer class="footer mt-4 py-3 bg-dark text-white">
+        <div class="container text-center">
+            © 2023 <a target="_blank" href="https://github.com/vinifm/42_webserv">Webserv by vini, lipi e acapela-</a>, Todos os direitos reservados.<br>
+            
+        </div>
+    </footer>
+
+    <!-- Inclua o JavaScript do Bootstrap (opcional) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script type="text/JavaScript">
+        changeFileToDelete()
+        {
+            let filename
+        }
+
+    </script>
+
+
+ <!-- Seu CSS personalizado -->
+ <style>
+     body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            flex: 1;
+        }
+
+        a {
+            text-decoration: none;
+            color:red;
+        }
+
+        a:hover{
+            color:yellow;
+        }
+</style>
+
+</body>
+</html>
