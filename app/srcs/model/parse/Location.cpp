@@ -40,6 +40,9 @@ std::vector<std::string>::iterator&	Location::initLocation(std::vector<std::stri
 	}
 	throw std::runtime_error("unclosed server block");
 }
+
+/*--- SETTERS ----------------------------------------------------------------*/
+
 void	Location::_setRoot(std::stringstream& ss)
 {
 	std::string	root_path;
@@ -47,18 +50,21 @@ void	Location::_setRoot(std::stringstream& ss)
 		throw std::runtime_error("Missing location root path");
 	_root = root_path;
 }
+
 void	Location::_setIndex(std::stringstream& ss)
 {
 	std::string	file;
 	while (ss >> file)
 		_index.push_back(file);
 }
+
 void	Location::_setLimitExcept(std::stringstream& ss)
 {
 	std::string	method;
 	while (ss >> method)
 		_limit_except.push_back(method);
 }
+
 void	Location::_setClientSize(std::stringstream& ss)
 {
 	std::string	client_size;
@@ -66,6 +72,7 @@ void	Location::_setClientSize(std::stringstream& ss)
 		throw std::runtime_error("Missing client max body size option");
 	_client_max_body_size = client_size;
 }
+
 void	Location::_setAutoindex(std::stringstream& ss)
 {
 	std::string autoindex_option;
@@ -77,10 +84,12 @@ void	Location::_setAutoindex(std::stringstream& ss)
 	else
 		throw std::runtime_error("Invalid autoindex option");
 }
+
 void	Location::_setRedirect(std::stringstream& ss)
 {
 	(void)ss;
 }
+
 void	Location::_setCGI(std::stringstream& ss)
 {
 	(void)ss;

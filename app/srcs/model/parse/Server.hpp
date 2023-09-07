@@ -21,6 +21,7 @@ public:
 	size_t		getServerNameSize() const;
 	std::string	getRoot() const;
 	std::string	getClientMaxBodySize() const;
+	ErrorPages	getErrorPages() const;
 	// Location	getLocation(size_t index) const;
 	// size_t		getLocationSize() const;
 

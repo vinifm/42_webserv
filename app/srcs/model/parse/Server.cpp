@@ -47,6 +47,8 @@ std::vector<std::string>::iterator& Server::initServer(
 	throw std::runtime_error("unclosed server block");
 }
 
+/*--- SETTERS ----------------------------------------------------------------*/
+
 void	Server::_setListen(std::stringstream& values)
 {
 	Listen new_listen;
@@ -89,6 +91,21 @@ void	Server::_setLocation(std::vector<std::string>& inputFile, std::string prefi
 	_locations.push_back(new_location);
 }
 
+/*--- GETTERS ----------------------------------------------------------------*/
+
+Listen		Server::getListen(size_t index) const { return _listens.at(index); }
+size_t		Server::getListenSize() const { return _listens.size(); }
+
+std::string	Server::getServerName(size_t index) const { return _serverNames.at(index); }
+size_t		Server::getServerNameSize() const { return _serverNames.size(); }
+
+std::string	Server::getRoot() const { return _root; }
+std::string	Server::getClientMaxBodySize() const { return _client_max_body_size; }
+
+ErrorPages	Server::getErrorPages() const { return _error_pages; }
+
+/*--- INSERTION OVERLOAD -----------------------------------------------------*/
+
 std::ostream& operator<<(std::ostream& os, const Server& server)
 {
 	for (size_t i = 0; i < server.getListenSize(); ++i)
@@ -101,17 +118,6 @@ std::ostream& operator<<(std::ostream& os, const Server& server)
 
 	os << "root:\n\t" << server.getRoot() << std::endl;
 	os << "client max body size:\n\t" << server.getClientMaxBodySize() << std::endl;
-	// os << server.getErrorPages() << std::endl;
+	os << server.getErrorPages() << std::endl;
 	return os;
 }
-
-/*--- GETTERS ----------------------------------------------------------------*/
-
-Listen		Server::getListen(size_t index) const { return _listens.at(index); }
-size_t		Server::getListenSize() const { return _listens.size(); }
-
-std::string	Server::getServerName(size_t index) const { return _serverNames.at(index); }
-size_t		Server::getServerNameSize() const { return _serverNames.size(); }
-
-std::string	Server::getRoot() const { return _root; }
-std::string	Server::getClientMaxBodySize() const { return _client_max_body_size; }
