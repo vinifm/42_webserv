@@ -3,6 +3,7 @@
 //occf
 StatusLine::StatusLine(void)
 {
+	this->setProtocol("HTTP/1.1");
 }
 
 StatusLine::~StatusLine(void)
@@ -57,6 +58,6 @@ std::string     StatusLine::toString(void)
 {
 	std::stringstream ss;
 
-	ss << this->getProtocol() << " " << this->getCode() << " " << this->getResult();
+	ss << this->getProtocol() << " " << this->getCode() << " " << this->getCodeMessage();
 	return(ss.str());
 }

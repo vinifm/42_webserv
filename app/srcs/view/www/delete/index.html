@@ -12,8 +12,8 @@
         <h1>MÉTODO <strong style="color:red;">DELETE</strong></h1>
         <p>A tabela a seguir apresenta os arquivos presentes na pasta <strong>aws</strong>, um espaço em nosso servidor para armazenamento de arquivos. </p>
         <form action="/delete" method="POST">
-            <input style="display:none;" type="text" name="filename" \>
-            <table class="table">
+            <input id="filename" style="display:none;" type="text" name="filename" \>
+            <table class="table" id="tabela_delete">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -26,6 +26,9 @@
                 </tbody>
             </table>
         </form>
+
+        <a href="/" style="width:100px;" type="button" class="btn btn-primary">Home</a>
+        <a href="/upload" style="width:100px;" type="button" class="btn btn-success">POST</a>
     </div>
 
     <!-- Rodapé personalizado -->
@@ -36,16 +39,29 @@
         </div>
     </footer>
 
+    <script>
+        function changeFileToDelete(row)
+        {
+            // ISSO É UMA GAMBIARRA FEIA, MAS FUNCIONA
+
+            // 1) get the textbox filename
+            var input = document.getElementById("filename");
+
+            // 2) pega o nome do arquivo na tabela          
+            var filename = document.getElementById("tabela_delete").rows[row].cells[1].innerText;
+
+            // 3) joga o nome do arquivo clicado dentro do textbox a ser enviado na requisição POST do servidor
+            input.value = filename
+
+            alert("HTTP DELETE COMMAND SENT");
+        };
+
+    </script>
+
     <!-- Inclua o JavaScript do Bootstrap (opcional) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script type="text/JavaScript">
-        changeFileToDelete()
-        {
-            let filename
-        }
 
-    </script>
 
 
  <!-- Seu CSS personalizado -->

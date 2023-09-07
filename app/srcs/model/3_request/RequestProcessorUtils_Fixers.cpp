@@ -8,7 +8,7 @@ std::string	fix_route(Parser& parser, std::string route)
 		route = route.append(parser.getRoot());
 		add_final_bar(route);
 	}
-	if (route[0] == '/')
+ 	if (route[0] == '/')
 	{
 		route = del_final_bar(parser.getRoot()).append(route);
 	}

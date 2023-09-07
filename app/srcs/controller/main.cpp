@@ -18,7 +18,7 @@ void	print_banner(void)
 	while (!file.eof())
 	{
 		getline(file, line);
-		std::cout << BLUE << line << RESET_COLOR << std::endl;
+		std::cout << WHITE << line << RESET_COLOR << std::endl;
 	}
 }
 

@@ -91,10 +91,9 @@ int Request::executeRequest(Parser parser, Response& response)
 	this->setBody(extract_body(this->_str));
 	this->setHeader(extract_header(this->_str));
 	this->setMethod(extract_method(this->getHeader()));
-
 	this->setResponseBody(parser, response);
-	this->setResponseHeader(response);
 	execute_scripts(*this, response);
+	this->setResponseHeader(response);
 	response.buildResponse();
 	return (0);
 }

@@ -27,98 +27,80 @@ int	Socket::init()
 	std::string	msg;
 
 
-	print_log("socket.cpp", "webserv is on ✅", 1);
-	if ((this->_endpoint_connection_socket_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+	print_log("socket.cpp", "webserv on ✅", 1);
+	if ((this->_server_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
 	{
 		print_log("socket.cpp", "socket failed", 1);
 		exit(EXIT_FAILURE);
 	}
-	msg = "endpoint socket created successfuly (fd is ";
-	msg.append(itos(this->_endpoint_connection_socket_fd));
-	msg.append(")");
-	print_log("socket.cpp", msg, 1);
+	
+	std::ostringstream ss; ss << "(" << this->_server_fd << ") server_fd created"; print_log("socket.cpp", ss.str(), 1);
+	
 	int			opt = 1;
-	if (setsockopt(this->_endpoint_connection_socket_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt)))
+	if (setsockopt(this->_server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt)))
 	{
 		print_log("socket.cpp", "setsockopt, port setting failed", 1);
 		exit (EXIT_FAILURE);
 	}
 
-	fcntl(this->_endpoint_connection_socket_fd, F_SETFL, O_NONBLOCK, FD_CLOEXEC);
+	fcntl(this->_server_fd, F_SETFL, O_NONBLOCK, FD_CLOEXEC);
 
 	this->_address_struct.sin_family = AF_INET; // (IP family)
 	this->_address_struct.sin_addr.s_addr = INADDR_ANY; // (localhost)
 	this->_address_struct.sin_port = htons(this->_parser.getPort());
-	if (bind(this->_endpoint_connection_socket_fd, (struct sockaddr*) &this->_address_struct, sizeof(this->_address_struct)) < 0)
+	if (bind(this->_server_fd, (struct sockaddr*) &this->_address_struct, sizeof(this->_address_struct)) < 0)
 	{
 		print_log("socket.cpp", "bind failed", 1);
 		exit(EXIT_FAILURE);
 	}
-	msg = "endpoint socket (fd ";
-	msg.append(itos(this->_endpoint_connection_socket_fd));
-	msg.append(") was binded with address (localhost) and port (");
-	msg.append(itos(this->_parser.getPort()));
-	msg.append(") successfully");
-	print_log("socket.cpp", msg, 1);
-	if (listen(this->_endpoint_connection_socket_fd, 3) < 0)
+	
+	ss.str("");ss << "(" << this->_server_fd << ") server binded to address (localhost) and port (" << itos(this->_parser.getPort()) << ")";print_log("socket.cpp", ss.str(), 1);
+
+	if (listen(this->_server_fd, 3) < 0)
 	{
-		print_log("socket.cpp", "listen", 1);
+		print_log("socket.cpp", "error setting listen", 1);
 		exit(EXIT_FAILURE);
 	}
+	ss.str(""); ss << "(" << this->_server_fd << ") server setted to listen(passive) mode";print_log("socket.cpp", ss.str(), 1);
 
-	this->_epoll_fd = epoll_create(1);
-
-	this->_server_event.events = EPOLLIN;
-	this->_server_event.data.fd = this->_endpoint_connection_socket_fd;
-	epoll_ctl(this->_epoll_fd, EPOLL_CTL_ADD, this->_endpoint_connection_socket_fd, &this->_server_event);
-
-	msg = "endpoint socket (fd ";
-	msg.append(itos(this->_endpoint_connection_socket_fd));
-	msg.append(") is now in listen(passive) mode! (Can't try connect, it will just receive connection requests)");
-	print_log("socket.cpp", msg, 1);
-	std::cout << std::endl;
+	this->_server_epoll_fd = epoll_create(1);
+	this->_server_epoll_events.events = EPOLLIN;
+	this->_server_epoll_events.data.fd = this->_server_fd;
+	epoll_ctl(this->_server_epoll_fd, EPOLL_CTL_ADD, this->_server_fd, &this->_server_epoll_events);
+	ss.str(""); ss << "(" << this->_server_epoll_fd << ") server epoll created";print_log("socket.cpp", ss.str(), 1);
+	print_log("socket.cpp", "waiting for requests...", 1);
 	return (0);
 }
 
 int	Socket::get_next_connection()
 {
 	int			addrlen = sizeof(this->_address_struct);
-	
-	print_log("socket.cpp", "waiting a 'request' be done...", 1);
-	if ((this->_connection_socket_fd = accept(this->_endpoint_connection_socket_fd, (struct sockaddr*) &this->_address_struct, (socklen_t*)&addrlen)) < 0)
+
+	if ((this->_client_fd = accept(this->_server_fd, (struct sockaddr*) &this->_address_struct, (socklen_t*)&addrlen)) < 0)
 	{
 		print_log("socket.cpp", "accept", 1);
 		return (0);
 	}
-	std::ostringstream ss; ss << "a new connection was started, _connection_socket_fd is " << itos(this->_connection_socket_fd) << " and 'request' is: " << std::endl;print_log("socket.cpp", ss.str(), 1);
-
-	return (this->_connection_socket_fd);
+	return (this->_client_fd);
 }
 
-int	Socket::send_response(Response &response)
+int	Socket::send_response(int e_client_fd)
 {
-	(void) response;
-	return (0);
-}
+	if (this->_request.toString().length() > 0)
+	{
+		Response response(this->_request.http_codes);
 
-int	Socket::clean_for_next_connection()
-{
-	std::string	msg;
+		this->requestProcessor().executeRequest(this->parserProcessor(), response);
 
-	// close(this->_connection_socket_fd);
-	msg = "connection identified by _connection_socket_fd ";
-	msg.append(itos(this->_connection_socket_fd));
-	msg.append (" was closed");
-	print_log("socket.cpp", msg, 1);
-	this->_request.setRoute("");
-	std::cout << std::endl;
+		send(e_client_fd, response.toCString(), response.toString().length(), 0);
+		std::ostringstream ss; ss << "("<< e_client_fd <<")" << " response sent to client"; print_log("socket.cpp", ss.str(), 1); print_log("", response.toString(), 0);
+	}
 	return (0);
 }
 
 int	Socket::deinit(void)
 {
-	print_log("socket.cpp", "endpoint socket was destroyed successfuly", 1);
-	shutdown(this->_endpoint_connection_socket_fd, SHUT_RDWR);
+	shutdown(this->_server_fd, SHUT_RDWR);
 	print_log("main.cpp", "webserv is off 🔴", 1);
 	return (0);
 }

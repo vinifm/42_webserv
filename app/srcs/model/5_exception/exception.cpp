@@ -1,4 +1,4 @@
-#include <Response.hpp>
+#include <Request.hpp>
 
 void	init_http_codes(std::map<int, std::string>& http_codes)
 {
@@ -21,18 +21,20 @@ void	init_http_codes(std::map<int, std::string>& http_codes)
 	http_codes.insert(std::pair<int, std::string>(505, "HTTP Version Not Supported"));
 }
 
-std::string	error_404(Response& response)
+std::string	error_404(Request &request, Response& response)
 {
-	std::fstream file("srcs/view/www/_/404/index.html");
+	std::fstream file("srcs/view/www/404/index.html");
 	std::stringstream body;
 
 	body << file.rdbuf();
 	(void) response;
+	response._statusLine->setCode(request.http_codes.find(404));
 	return (body.str());
 }
 
-std::string	error_403(Response& response)
+std::string	error_403(Request &request, Response& response)
 {
 	(void) response;
+	response._statusLine->setCode(request.http_codes.find(403));
 	return ("<h1>403</h1>");
 }

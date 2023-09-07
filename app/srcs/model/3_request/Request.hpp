@@ -8,6 +8,11 @@
 #include <dirent.h>
 #include <stdlib.h>
 #include <bits/stdc++.h>
+#include <cstdio>
+#include <iostream>
+#include <algorithm>
+
+#define AWS "./srcs/view/www/aws/"
 
 class Request
 {
@@ -53,13 +58,14 @@ public:
 	std::string	execute_delete(Parser& parser, Response& response);
 };
 
-//extracts
+//extractors
 std::string		extract_method(std::string request);
 std::string		extract_route(std::string request);
 std::string		extract_body(std::string request);
 std::string		extract_header(std::string request);
 std::string		extract_file_name(std::string request);
 std::string		extract_just_file_content(std::string filename, std::string request);
+std::string		extract_delete_file_name(std::string delete_body);
 //fixes
 std::string		add_final_bar(std::string root);
 std::string		del_final_bar(std::string root);
@@ -72,10 +78,14 @@ int				is_directory(std::string path);
 //buffer generators
 std::string		load_file_bytes_in_body(std::string path);
 std::string		generate_autoindex(std::string path);
-std::string		serve_route(std::string route, Location *location, Response& response);
+std::string		serve_route(std::string route, Location *location, Request& request, Response& response);
 //validators
 std::string		find_index_in_directory(std::vector<std::string> index, std::string path);
 int				is_valid_location(std::string route, Parser& parser);
 //cgi
 void			execute_scripts(Request &request, Response &response);
+//http status
+void			init_http_codes(std::map<int, std::string>& http_codes);
+std::string		error_404(Request& request, Response &response);
+std::string		error_403(Request& request, Response &response);
 #endif

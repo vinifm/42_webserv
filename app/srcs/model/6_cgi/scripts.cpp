@@ -7,7 +7,7 @@ std::string	show_aws_directory_in_delete_table(std::string response)
 
 	new_response = response.substr(0, start);
 
-	DIR				*directory = opendir("./srcs/view/www/_/aws");
+	DIR				*directory = opendir("./srcs/view/www/aws");
 	std::string		rows="";
 	struct dirent	*file;
 
@@ -24,7 +24,7 @@ std::string	show_aws_directory_in_delete_table(std::string response)
 			   << "<td>"<< index << "</td>"
 			   << "<td>"<< file->d_name <<"</td>"
 			   << "<td class=\"text-center\">"
-			   << "<a href=\"/./srcs/view/www/_/aws/" << file->d_name << "\" class=\"btn btn-primary mx-1\">Abrir</a>"
+			   << "<a href=\"/./srcs/view/www/aws/" << file->d_name << "\" class=\"btn btn-primary mx-1\">Abrir</a>"
 			   << "<input type=\"submit\" onclick=\"changeFileToDelete("<< index <<");submit();\"<<" << file->d_name << " class=\"btn btn-danger mx-1\" value=\"Deletar\" \\>"
 			   << "</td></tr>";
 		rows.append(buffer.str());

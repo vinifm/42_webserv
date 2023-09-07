@@ -62,7 +62,7 @@ std::string	extract_body(std::string request)
 	std::size_t		limiter;
 
 	limiter = request.find("\r\n\r\n");
-	body = request.substr(limiter, request.length());
+	body = request.substr(limiter + 4, request.length());
 	return (body);
 }
 
@@ -82,6 +82,22 @@ std::string extract_just_file_content(std::string filename, std::string request)
 	transform(extension.begin(), extension.end(), extension.begin(), ::toupper);
 	std::string content = request.substr(request.find(extension) - 1, request.length());
 
-	std::cout << "#" << content << "#" << std::endl;
 	return (content);
+}
+
+std::string	extract_delete_file_name(std::string delete_body)
+{
+	std::vector<std::string> *deletar = ft_split(delete_body, '=');
+	std::string filename;
+	if ((*deletar).size() > 1)
+	{
+		filename = (*deletar)[1];
+		std::replace(filename.begin(), filename.end(), '+', ' ');
+	}
+	else
+	{
+		std::ostringstream ss; ss << "(" << delete_body << ") delete received wrong body"; print_log("RequestProcessor.cpp", ss.str(), 1);
+		filename = "";
+	}
+	return (filename);
 }

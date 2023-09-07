@@ -8,8 +8,8 @@ void	init_parser_for_test(Parser& parser)
 	parser._index.push_back("index.php");
 	parser._location.push_back(Location("/", "srcs/view/www/default/", true));
 	parser._location.push_back(Location("/drive", "srcs/view/www/drive/", false));
-	parser._location.push_back(Location("/delete", "srcs/view/www/_/delete/", false));
-	parser._location.push_back(Location("/post", "srcs/view/www/_/post/", true));
+	parser._location.push_back(Location("/delete", "srcs/view/www/delete/", false));
+	parser._location.push_back(Location("/upload", "srcs/view/www/default/", true));
 }
 
 std::vector<std::string> *ft_split(std::string str, char delimiter)
@@ -48,16 +48,23 @@ void	print_log(std::string file_name, std::string status, int type)
 		msg << 1900 + ltm->tm_year << "/" << 1 + ltm->tm_mon << "/" << 1 + ltm->tm_mday;
 		msg << " ";
 		msg	<< ltm->tm_hour << ":" << ltm->tm_min << ":" << ltm->tm_sec;
-		msg << " [ ";
+		msg << " (";
 		msg << file_name;
-		msg << " ] : ";
+		msg << ") : ";
 		msg << status;
-		std::cout << BOLD_YELLOW << msg.str() << RESET_COLOR << std::endl;
+		std::cout << YELLOW << msg.str() << RESET_COLOR << std::endl;
 	}
 	else if (type == 0)
 	{
-		msg << status;
-		std::cout << msg.str() << std::endl;
+		if (status.length() > 0)
+		{
+			msg << "----------------------------------------------------------------------------------" << std::endl;
+			msg << status;
+			msg << "\n----------------------------------------------------------------------------------" << std::endl;
+			std::cout << msg.str().substr(0, 900) << std::endl;
+			if (msg.str().length() >= 900)
+				std::cout << "----------------------------------------------------------------------------------" << std::endl;
+		}
 	}
 	logfile << msg.str() << std::endl;
 }

@@ -16,34 +16,34 @@ class Socket
 {
 private:
 	struct sockaddr_in		_address_struct;
-	int						_connection_socket_fd;
+	int						_client_fd;
 	Parser					_parser;
 
 public:
 	Request 				_request;
-	int						_endpoint_connection_socket_fd;
-	struct epoll_event		_server_event;
+	int						_server_fd;
+	struct epoll_event		_server_epoll_events;
 	struct epoll_event		_events[MAX_EVENTS];
-	int						_epoll_fd;
+	int						_server_epoll_fd;
 	//occf
 	Socket(void);
 	~Socket(void);
 	Socket(Parser parser);
 
 	//methods
-	int				init(void);
-	int				get_next_connection(void);
-	int				send_response(Response &response);
-	int				clean_for_next_connection(void);
-	int				deinit(void);
+	int						init(void);
+	int						get_next_connection(void);
+	int						send_response(int e_client_fd);
+	int						clean_for_next_connection(void);
+	int						deinit(void);
 
 	//getters & setters
-	Request		requestProcessor(void);
-	Response	responseProcessor(void);
-	Parser		parserProcessor(void);
+	Request					requestProcessor(void);
+	Response				responseProcessor(void);
+	Parser					parserProcessor(void);
 };
 
-	int     isSocketNonBlocking(int sockfd);
-	void	requests_loop(Socket& socket);
+	int						isSocketNonBlocking(int sockfd);
+	void					requests_loop(Socket& socket);
 
 #endif

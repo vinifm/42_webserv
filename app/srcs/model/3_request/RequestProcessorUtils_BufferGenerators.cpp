@@ -38,15 +38,14 @@ std::string	load_file_bytes_in_body(std::string path)
 	return (buffer.str());
 }
 
-std::string	serve_route(std::string route, Location *location, Response& response)
+std::string	serve_route(std::string route, Location *location, Request &request, Response& response)
 {
 	std::string	buffer;
 	bool		autoindex;
-	std::string	msg;
+	
+	
+	std::ostringstream ss; ss << "(" << route << ") trying to serve route";print_log("Request.cpp", ss.str(), 1);
 
-	msg = "The searched by this request is: ";
-	msg.append(route);
-	print_log("Request.cpp", msg, 1);
 	autoindex = location->_autoindex;
 	if (is_directory(route))
 	{
@@ -61,12 +60,15 @@ std::string	serve_route(std::string route, Location *location, Response& respons
 			if (autoindex == true)
 				buffer = generate_autoindex(route);
 			else
-				buffer = error_403(response);
+				buffer = error_403(request, response);
 		}
 	}
 	else if (file_exist(route))
 		buffer = load_file_bytes_in_body(route);
 	else
-		buffer = error_404(response);
+	{
+		
+		buffer = error_404(request, response);
+	}
 	return (buffer);
 }
