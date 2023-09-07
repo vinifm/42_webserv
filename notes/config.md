@@ -39,7 +39,7 @@ If not specified in a location block, server directives are used. If also not sp
 | [location](#location-uri)								| `---`						| 1+ | :white_check_mark:	| :x:[^1] |
 | [error_page](#error_page-code--uri)					| `---`						| 1+ | :white_check_mark:	| :x: |
 | [root](#root-path)									| `root html`				| 1  | :white_check_mark:	| :white_check_mark: |
-| [client_max_body_size](#client_max_body_size-size)	| `client_max_body_size 1m`	| 1  | :white_check_mark:	| :white_check_mark: |
+| [client_max_body_size](#client_max_body_size-size)	| `client_max_body_size 1m`	| 1  | :white_check_mark:	| :x: |
 | [index](#index-file)									| `index index.html`		| 1  | :x:					| :white_check_mark: |
 | [autoindex](#autoindex-on--off)						| `autoindex off`			| 1  | :x:					| :white_check_mark: |
 | [limit_except](#limit_except-method)					| `---`						| 1  | :x:					| :white_check_mark: |

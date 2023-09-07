@@ -1,6 +1,6 @@
 #include "Location.hpp"
 
-Location::Location() {}
+Location::Location() : _autoindex(false) {}
 Location::~Location() {}
 
 std::vector<std::string>::iterator&	Location::initLocation(std::vector<std::string>& inputFile, std::string prefix,
@@ -13,7 +13,6 @@ std::vector<std::string>::iterator&	Location::initLocation(std::vector<std::stri
 		std::stringstream ss(*line);
 		if (!(ss >> directive))
 			continue;
-		std::cout << "\t\tloc directive: " << directive << std::endl;
 		if (directive == "#")
 			continue;
 		else if (directive == "root")
@@ -22,8 +21,6 @@ std::vector<std::string>::iterator&	Location::initLocation(std::vector<std::stri
 			_setIndex(ss);
 		else if (directive == "limit_except")
 			_setLimitExcept(ss);
-		else if (directive == "client_max_body_size")
-			_setClientSize(ss);
 		else if (directive == "autoindex")
 			_setAutoindex(ss);
 		else if (directive == "redirect")
@@ -65,14 +62,6 @@ void	Location::_setLimitExcept(std::stringstream& ss)
 		_limit_except.push_back(method);
 }
 
-void	Location::_setClientSize(std::stringstream& ss)
-{
-	std::string	client_size;
-	if (!(ss >> client_size))
-		throw std::runtime_error("Missing client max body size option");
-	_client_max_body_size = client_size;
-}
-
 void	Location::_setAutoindex(std::stringstream& ss)
 {
 	std::string autoindex_option;
@@ -87,10 +76,51 @@ void	Location::_setAutoindex(std::stringstream& ss)
 
 void	Location::_setRedirect(std::stringstream& ss)
 {
-	(void)ss;
+	std::string path;
+	if (!(ss >> path))
+		throw std::runtime_error("Missing redirect path");
+	_redirect = path;
 }
 
 void	Location::_setCGI(std::stringstream& ss)
 {
 	(void)ss;
+}
+
+/*--- GETTERS ----------------------------------------------------------------*/
+
+std::string	Location::getPrefix() const { return _prefix; }
+std::string	Location::getRoot() const { return _root; }
+std::string	Location::getIndex(size_t index) const { return _index.at(index); }
+size_t		Location::getIndexSize() const { return _index.size(); }
+bool		Location::getAutoindex() const { return _autoindex; }
+std::string	Location::getLimitExcept(size_t index) const { return _limit_except.at(index); }
+size_t		Location::getLimitExceptSize() const { return _limit_except.size(); }
+std::string	Location::getRedirect() const { return _redirect; }
+
+/*--- INSERTION OVERLOAD -----------------------------------------------------*/
+
+std::ostream& operator<<(std::ostream& os, const Location loc)
+{
+	os << "prefix: " << loc.getPrefix() << std::endl;
+	if (loc.getRoot() != "")
+		os << "root: " << loc.getRoot() << std::endl;
+
+	if (loc.getIndexSize() != 0) {
+		os << "index: " << std::endl;
+		for (size_t i = 0; i < loc.getIndexSize(); ++i)
+			os << "\t" << loc.getIndex(i) << std::endl;
+	}
+
+	os << "autoindex: " << loc.getAutoindex() << std::endl;
+
+	if (loc.getLimitExceptSize() != 0) {
+		os << "limit_except:" << std::endl;
+		for (size_t i = 0; i < loc.getLimitExceptSize(); ++i)
+			os << "\t" << loc.getLimitExcept(i) << std::endl;
+	}
+
+	if (loc.getRedirect() != "")
+		os << "redirect: " << loc.getRedirect() << std::endl;
+	return os;
 }

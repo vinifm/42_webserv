@@ -26,7 +26,10 @@ int main(int argc, char **argv)
 		std::cerr << "error: invalid number of args!" << std::endl;
 		return (1);
 	}
-	try { parser.parseConfigFile(argv[1]); }
+	try {
+		parser.parseConfigFile(argv[1]);
+		std::cout << parser << std::endl;
+	}
 	catch (std::exception& e) { std::cout << e.what() << std::endl; }
 		// if (parser.getIsValid() == false)
 	// {

@@ -14,7 +14,6 @@ std::vector<std::string>::iterator& Server::initServer(
 		std::stringstream ss(*_line);
 		if (!(ss >> directive))
 			continue;
-		std::cout << "\tdirective: " << directive << std::endl;
 		if (directive == "#")
 			continue;
 		else if (directive == "listen")
@@ -38,7 +37,6 @@ std::vector<std::string>::iterator& Server::initServer(
 			return _line;
 		else
 		{
-			// fechar fd
 			std::cout << "Directive: " << directive << std::endl;
 			throw std::runtime_error("Invalid server directive");
 		}
@@ -104,6 +102,9 @@ std::string	Server::getClientMaxBodySize() const { return _client_max_body_size;
 
 ErrorPages	Server::getErrorPages() const { return _error_pages; }
 
+Location	Server::getLocation(size_t index) const { return _locations.at(index); }
+size_t		Server::getLocationSize() const { return _locations.size(); }
+
 /*--- INSERTION OVERLOAD -----------------------------------------------------*/
 
 std::ostream& operator<<(std::ostream& os, const Server& server)
@@ -119,5 +120,10 @@ std::ostream& operator<<(std::ostream& os, const Server& server)
 	os << "root:\n\t" << server.getRoot() << std::endl;
 	os << "client max body size:\n\t" << server.getClientMaxBodySize() << std::endl;
 	os << server.getErrorPages() << std::endl;
+
+	for (size_t i = 0; i < server.getLocationSize(); ++i) {
+		os << MAGENTA "LOCATION N." << i << RESET << std::endl;
+		os << server.getLocation(i) << std::endl;
+	}
 	return os;
 }

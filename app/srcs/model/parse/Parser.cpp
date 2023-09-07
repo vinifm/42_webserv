@@ -39,11 +39,9 @@ void	Parser::parseConfigFile(const std::string filename)
 		_inputFile.push_back(file_line);
 	}
 	for (_line = _inputFile.begin(); _line != _inputFile.end(); ++_line) {
-		std::cout << "Parser line: " << *_line << std::endl;
 		if (*_line++ == "server {")
 			_addServer();
 	}
-	std::cout << "\n\nSERVER:\n" << _servers.at(0) << "\n\n" << std::endl;
 	file_stream.close();
 }
 
@@ -68,16 +66,20 @@ void	Parser::_addServer()
 	_servers.push_back(server);
 }
 
-/* Print all servers info */
-// std::ostream& operator<<(std::ostream& os, const Parser& parser)
-// {
-	// for (size_t i = 0; i < parser.getServerSize(); ++i)
-		// os << parser.getServer(i) << std::endl;
-	// return os;
-// }
-
 /*--- GETTERS ----------------------------------------------------------------*/
 
 bool	Parser::getIsValid() const { return _isValid; }
 Server	Parser::getServer(size_t index) const { return _servers.at(index); }
 size_t	Parser::getServerSize() const {return _servers.size(); }
+
+/*--- INSERTION OVERLOAD -----------------------------------------------------*/
+
+/* Print all servers info */
+std::ostream& operator<<(std::ostream& os, const Parser& parser)
+{
+	for (size_t i = 0; i < parser.getServerSize(); ++i) {
+		os << YELLOW "SERVER N." << i << RESET << std::endl;
+		os << parser.getServer(i);
+	}
+	return os;
+}
