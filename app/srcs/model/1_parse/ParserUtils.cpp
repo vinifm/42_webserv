@@ -7,7 +7,6 @@ void	init_parser_for_test(Parser& parser)
 	parser._index.push_back("index.html");
 	parser._index.push_back("index.php");
 	parser._location.push_back(Location("/", "srcs/view/www/default/", true));
-	parser._location.push_back(Location("/drive", "srcs/view/www/drive/", false));
 	parser._location.push_back(Location("/delete", "srcs/view/www/delete/", false));
 	parser._location.push_back(Location("/upload", "srcs/view/www/upload/", false));
 	parser._location.push_back(Location("/autoindex", "srcs/view/www/autoindex/", true));

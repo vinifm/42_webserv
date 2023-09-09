@@ -60,7 +60,7 @@ std::string	serve_route(std::string& route, Location *location, Request &request
 			if (autoindex == true)
 			{
 				buffer = generate_autoindex(route);
-				request._last_root = route;
+				request.setLastRoot(route);
 			}
 			else
 				buffer = error_403(request, response);

@@ -1,10 +1,6 @@
 #include <Socket.hpp>
 
-/*****************
-*                *
-*      OCCF      *
-*                *
-*****************/
+//occf
 Socket::Socket(void)
 {}
 
@@ -14,12 +10,7 @@ Socket::~Socket(void)
 Socket::Socket(Parser Parser) : _parser(Parser)
 {}
 
-/*****************
-*                *
-*    METHODS     *
-*                *
-*****************/
-
+//methods
 int	Socket::init()
 {
 	init_http_codes(this->_request.http_codes);
@@ -69,8 +60,6 @@ int	Socket::init()
 	epoll_ctl(this->_server_epoll_fd, EPOLL_CTL_ADD, this->_server_fd, &this->_server_epoll_events);
 	ss.str(""); ss << "(" << this->_server_epoll_fd << ") server epoll created";print_log("socket.cpp", ss.str(), 1);
 	print_log("socket.cpp", "waiting for requests...", 1);
-
-	this->_request._www = "./srcs/view/www/";
 	return (0);
 }
 
@@ -91,9 +80,7 @@ int	Socket::send_response(int e_client_fd)
 	if (this->_request.toString().length() > 0)
 	{
 		Response response(this->_request.http_codes);
-
 		this->requestProcessor().executeRequest(this->parserProcessor(), response);
-
 		send(e_client_fd, response.toCString(), response.toString().length(), 0);
 		std::ostringstream ss; ss << "("<< e_client_fd <<")" << " response sent to client"; print_log("socket.cpp", ss.str(), 1); print_log("", response.toString(), 0);
 	}
@@ -116,4 +103,54 @@ Request		Socket::requestProcessor(void)
 Parser		Socket::parserProcessor(void)
 {
 	return (this->_parser);
+}
+
+Request 	Socket::getRequest(void)
+{
+	return (this->_request);
+}
+
+void		Socket::setRequest(Request request)
+{
+	this->_request = request;
+}
+
+int		 	Socket::getServerFd(void)
+{
+	return (this->_server_fd);
+}
+
+void		Socket::setServerFd(int server_fd)
+{
+	this->_server_fd = server_fd;
+}
+
+struct epoll_event	Socket::getServerEpollEvents(void)
+{
+	return (this->_server_epoll_events);
+}
+
+void				Socket::setServerEpollEvents(struct epoll_event epoll_events)
+{
+	this->_server_epoll_events = epoll_events;
+}
+
+struct epoll_event	Socket::getEvent(int event)
+{
+	return (this->_events[event]);
+}
+
+struct epoll_event	*Socket::getEvents(void)
+{
+	return (this->_events);
+}
+
+int					Socket::getServerEpollFd(void)
+{
+	return (this->_server_epoll_fd);
+}
+
+void				Socket::setServerEpollFd(int server_epoll_fd)
+{
+	this->_server_epoll_fd = server_epoll_fd;
 }

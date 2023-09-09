@@ -23,8 +23,9 @@ public:
 	Request 				_request;
 	int						_server_fd;
 	struct epoll_event		_server_epoll_events;
-	struct epoll_event		_events[MAX_EVENTS];
 	int						_server_epoll_fd;
+	struct epoll_event		_events[MAX_EVENTS];
+
 	//occf
 	Socket(void);
 	~Socket(void);
@@ -41,6 +42,17 @@ public:
 	Request					requestProcessor(void);
 	Response				responseProcessor(void);
 	Parser					parserProcessor(void);
+	Request 				getRequest(void);
+	void					setRequest(Request request);
+	int 	 				getServerFd(void);
+	void					setServerFd(int server_fd);
+	struct epoll_event		getServerEpollEvents(void);
+	void					setServerEpollEvents(struct epoll_event epoll_events);
+	struct epoll_event		getEvent(int event);
+	struct epoll_event		*getEvents(void);
+	void					setEvent(struct epoll_event events);
+	int						getServerEpollFd(void);
+	void					setServerEpollFd(int server_epoll_fd);
 };
 
 	int						isSocketNonBlocking(int sockfd);

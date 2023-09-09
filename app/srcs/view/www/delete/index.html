@@ -46,15 +46,17 @@
 
             // 1) get the textbox filename
             var input = document.getElementById("filename");
-            <!-- Rodapé personalizado -->
-            <footer class="footer mt-4 py-3 bg-dark text-white">
-                <div class="container text-center">
-                    © 2023 <a target="_blank" href="https://github.com/vinifm/42_webserv">Webserv by vini, lipi e acapela-</a>, Todos os direitos reservados.<br>
-                    
-                </div>
-            </footer>
 
+            // 2) pega o nome do arquivo na tabela          
+            var filename = document.getElementById("tabela_delete").rows[row].cells[1].innerText;
+
+            // 3) joga o nome do arquivo clicado dentro do textbox a ser enviado na requisição POST do servidor
+            input.value = filename
+
+            alert("HTTP DELETE COMMAND SENT");
+        }
     </script>
+
 
     <!-- Inclua o JavaScript do Bootstrap (opcional) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>

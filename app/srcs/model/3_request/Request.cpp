@@ -85,6 +85,16 @@ void		Request::setHeader(std::string header)
 	this->_header = header;
 }
 
+std::string	Request::getLastRoot(void)
+{
+	return (this->_last_root);
+}
+
+void		Request::setLastRoot(std::string last_root)
+{
+	this->_last_root = last_root;
+}
+
 // methods
 int Request::executeRequest(Parser parser, Response& response)
 {
@@ -97,4 +107,3 @@ int Request::executeRequest(Parser parser, Response& response)
 	response.buildResponse();
 	return (0);
 }
-

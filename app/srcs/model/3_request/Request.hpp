@@ -24,11 +24,9 @@ private:
 	std::string		_upload_file_name;
 	std::string		_header;
 	std::string		_body;
-
+	static std::string			_last_root;
 
 public:
-	std::string					_www;
-	static std::string			_last_root;
 	std::map<int, std::string>	http_codes;
 
 	//occf
@@ -37,28 +35,30 @@ public:
 	Request(std::string request_str);
 
 	//getters & setters
-	std::string	toString(void);
-	void		setStr(std::string str);
-	std::string	getUploadFileName(void);
-	void		setUploadFileName(std::string upload_file_name);
-	std::string	getRoute(void);
-	void		setRoute(std::string route);
-	std::string	getMethod(void);
-	void		setMethod(std::string method);
-	std::string	getType(void);
-	void		setType(std::string type);
-	std::string	getHeader(void);
-	void		setHeader(std::string header);
-	std::string	getBody(void);
-	void		setBody(std::string body);
+	std::string								toString(void);
+	void									setStr(std::string str);
+	std::string								getUploadFileName(void);
+	void									setUploadFileName(std::string upload_file_name);
+	std::string								getRoute(void);
+	void									setRoute(std::string route);
+	std::string								getMethod(void);
+	void									setMethod(std::string method);
+	std::string								getType(void);
+	void									setType(std::string type);
+	std::string								getHeader(void);
+	void									setHeader(std::string header);
+	std::string								getBody(void);
+	void									setBody(std::string body);
+	std::string								getLastRoot(void);
+	void									setLastRoot(std::string last_root);
 
 	//methods
 	int			executeRequest(Parser parser, Response& response);
 	void		setResponseBody(Parser& parser, Response& response);
 	void		setResponseHeader(Response& response);
 	std::string	execute_get(Parser& parser, Response& response);
-	std::string	execute_post(Parser& parser, Response& response);
-	std::string	execute_delete(Parser& parser, Response& response);
+	std::string	execute_post(Response& response);
+	std::string	execute_delete(Response& response);
 };
 
 //extractors
@@ -72,8 +72,9 @@ std::string		extract_delete_file_name(std::string delete_body);
 //fixes
 std::string		add_final_bar(std::string root);
 std::string		del_final_bar(std::string root);
-
 std::string		del_start_bar(std::string root);
+Location		*set_last_root(Parser &parser, std::string& _last_root, std::string& route);
+std::string		fix_route(std::string route, Location *location);
 //access
 int				can_execute(std::string path);
 int				can_read(std::string path);
