@@ -1,3 +1,12 @@
+# WEBSERV (by vini, lipi & acapela-)
+
+<details>
+<summary>PARSER (CONFIGURATION FILE)</summary>
+
+</details>
+
+<hr>
+
 <details>
 <summary>HTTP</summary>
 
@@ -159,16 +168,24 @@ Sec-Fetch-User: ?1
 Sources: [FORM TAG](https://www.geeksforgeeks.org/html-form-tag/), [CHUNKED TRANSFER ENCODING](https://en.wikipedia.org/wiki/Chunked_transfer_encoding)
 </details>
 
-<!-- <details> -->
-<!-- <summary>SOCKET</summary> -->
+<details>
+<summary>SOCKET</summary>
 
+
+</details>
+
+<details>
+<summary>MULTIPLEXING(I/O)/EPOLL</summary>
 ## PIPES & NON-BLOCKING MANNER SERVER
 It's a tube for communication between proccess.
 They use read and write functions to realize the data transference.
 
 - blocking-pipes: When you try to read a empty pipe the program will block and wait until the pipe have something, or when you try to write a full pipe, it will block until the pipe free space.
 - non-blocking-pipes: When you try to read a empty pipe, a message will be returned saying that the pipe is empty and the program will continue. If the pipe is full, the program will continue and a message will be presented that the pipe is full.
+</details>
 
+<hr> 
+<details>
+<summary>CGI(PYTHON)</summary>
 
-
-<!-- </details> -->
+</details>

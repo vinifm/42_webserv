@@ -68,7 +68,14 @@ std::string	serve_route(std::string& route, Location *location, Request &request
 	}
 	else if (file_exist(route))
 	{
-		buffer = load_file_bytes_in_body(route);
+		if (SE FOR PYTHON)
+		{
+			EXECUTAR CGI E JOGAR NO 
+		}
+		else
+		{
+			buffer = load_file_bytes_in_body(route);
+		}
 		response.setLastModified(getLastModifiedDate(route));
 		response.setContentType(getFileContentType(route));
 	}
