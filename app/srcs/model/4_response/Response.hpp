@@ -4,6 +4,11 @@
 #include <iostream>
 #include <fstream>
 #include <StatusLine.hpp>
+#include <ctime>
+#include <cstring>
+#include <cstdio>
+#include <sys/stat.h>
+#include <stdlib.h>
 
 class Response
 {
@@ -40,5 +45,9 @@ public:
 	std::string		getHeader(void);
 	const char		*toCString(void);
 };
+
+//utils
+std::string	getLastModifiedDate(std::string path);
+std::string	getFileContentType(std::string path);
 
 #endif

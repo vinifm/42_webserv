@@ -52,13 +52,14 @@ std::string	serve_route(std::string& route, Location *location, Request &request
 		{
 			route.append(index_found);
 			buffer = load_file_bytes_in_body(route);
+			response.setLastModified(getLastModifiedDate(route));
+			response.setContentType(getFileContentType(route));
 		}
 		else
 		{
 			if (autoindex == true)
 			{
 				buffer = generate_autoindex(route);
-				std::cout << "--" << buffer << "--" << std::endl;
 				request._last_root = route;
 			}
 			else
@@ -66,7 +67,11 @@ std::string	serve_route(std::string& route, Location *location, Request &request
 		}
 	}
 	else if (file_exist(route))
+	{
 		buffer = load_file_bytes_in_body(route);
+		response.setLastModified(getLastModifiedDate(route));
+		response.setContentType(getFileContentType(route));
+	}
 	else
 		buffer = error_404(request, response);
 	return (buffer);

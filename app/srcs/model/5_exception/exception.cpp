@@ -23,24 +23,24 @@ void	init_http_codes(std::map<int, std::string>& http_codes)
 
 std::string	error_404(Request &request, Response& response)
 {
-	std::fstream file("srcs/view/www/404/index.html");
-	// request._last_root = "srcs/view/www/404/";
-	std::stringstream body;
+	std::string			path = "./srcs/view/www/404/index.html";
+	std::fstream		file(path.c_str());
+	std::stringstream	body;
 
 	body << file.rdbuf();
-	(void) response;
 	response._statusLine->setCode(request.http_codes.find(404));
 	return (body.str());
 }
 
 std::string	error_403(Request &request, Response& response)
 {
-	std::fstream file("srcs/view/www/403/index.html");
-	// request._last_root = "srcs/view/www/404/";
-	std::stringstream body;
+	std::string			path = "./srcs/view/www/403/index.html";
+	std::fstream		file(path.c_str());
+	std::stringstream	body;
 
 	body << file.rdbuf();
-	(void) response;
 	response._statusLine->setCode(request.http_codes.find(404));
+	response.setLastModified(getLastModifiedDate(path));
+	response.setContentType(getFileContentType(path));
 	return (body.str());
 }

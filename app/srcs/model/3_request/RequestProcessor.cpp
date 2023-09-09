@@ -38,13 +38,8 @@ Location	*set_last_root(Parser &parser, std::string& _last_root, std::string& ro
 			_last_root = (*location)._root;
 		std::ostringstream ss;
 		ss << _last_root << route;
-		std::cout << "# location: " << (*location)._root << "\n" << "_last_root: " << _last_root << std::endl;
-
 		return (location);
 	}
-	
-	// if (location)
-		// fake_location->_route = location->_route;
 	return (fake_location);
 }
 
@@ -73,21 +68,15 @@ std::string	 Request::execute_get(Parser& parser, Response& response)
 	//2)SE FOR O CASO, MUDA O LAST ROOT:
 	location = set_last_root(parser, this->_last_root, route, type);
 
-	//3)SE FOR O CASO, ADICIONA O PRIMEIRO INDEX.HTML:
-	// route = fix_route(route, location);
-
-	//4)APPEND:
+	//3)APPEND:
 	last_root_and_route.str("");
 	this->_last_root = add_final_bar(this->_last_root);
 	last_root_and_route << this->_last_root << route;
 	ss.str(""); ss << "("<< this->_last_root << "|"<< route <<") full request route"; print_log("RequestProcessor.cpp", ss.str(), 1);
 	route = last_root_and_route.str();
 
-
-	std::cout << "---" << route << "----" << std::endl;
-	//5)DEPENDENDO DO TIPO DE REQUISIÇÃO, GERA O BODY:
+	//4)DEPENDENDO DO TIPO DE REQUISIÇÃO, GERA O BODY:
 	body = serve_route(route, location, *this, response);
-
 	return (body);
 }
 
@@ -151,6 +140,5 @@ void	 Request::setResponseBody(Parser& parser, Response& response)
 void	 Request::setResponseHeader(Response& response)
 {
 	response.setContentLength(response.getBody().length());
-	response.setLastModified("");
 	response.buildHeader();
 }
