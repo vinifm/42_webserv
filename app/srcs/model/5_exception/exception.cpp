@@ -24,6 +24,7 @@ void	init_http_codes(std::map<int, std::string>& http_codes)
 std::string	error_404(Request &request, Response& response)
 {
 	std::fstream file("srcs/view/www/404/index.html");
+	// request._last_root = "srcs/view/www/404/";
 	std::stringstream body;
 
 	body << file.rdbuf();
@@ -34,7 +35,12 @@ std::string	error_404(Request &request, Response& response)
 
 std::string	error_403(Request &request, Response& response)
 {
+	std::fstream file("srcs/view/www/403/index.html");
+	// request._last_root = "srcs/view/www/404/";
+	std::stringstream body;
+
+	body << file.rdbuf();
 	(void) response;
-	response._statusLine->setCode(request.http_codes.find(403));
-	return ("<h1>403</h1>");
+	response._statusLine->setCode(request.http_codes.find(404));
+	return (body.str());
 }

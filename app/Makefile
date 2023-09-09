@@ -30,7 +30,7 @@ INCLUDES=Parser.hpp \
 		StatusLine.hpp \
 		Socket.hpp
 OBJECTS_DIR=.objects
-INCLUDES_PATH=-I./srcs/model/1_parse/ -I./srcs/model/2_socket/ -I./srcs/model/3_request/ -I./srcs/model/4_response/ -I./srcs/model/5_exception/ -I./srcs/model/6_cgi -I./srcs/controller/ -I./srcs/view/
+INCLUDES_PATH=-I./srcs/model/1_parse/ -I./srcs/model/2_socket/ -I./srcs/model/3_request/ -I./srcs/model/4_response/ -I./srcs/model/5_exception/ -I./srcs/model/6_cgi -I./srcs/controller/ -I./srcs/view/ -I./srcs/controller/
 OBJECTS= $(SOURCES:%.cpp=$(OBJECTS_DIR)/%.o)
 DS= $(SOURCES:%.cpp=$(OBJETS_DIR)/%.d)
 

@@ -9,7 +9,11 @@ void	init_parser_for_test(Parser& parser)
 	parser._location.push_back(Location("/", "srcs/view/www/default/", true));
 	parser._location.push_back(Location("/drive", "srcs/view/www/drive/", false));
 	parser._location.push_back(Location("/delete", "srcs/view/www/delete/", false));
-	parser._location.push_back(Location("/upload", "srcs/view/www/default/", true));
+	parser._location.push_back(Location("/upload", "srcs/view/www/upload/", false));
+	parser._location.push_back(Location("/autoindex", "srcs/view/www/autoindex/", true));
+	parser._location.push_back(Location("/forbidden", "srcs/view/www/autoindex/", false));
+	parser._location.push_back(Location("/redition", "srcs/view/www/redirection/", false));
+	parser._location.push_back(Location("/cgi", "srcs/view/www/cgi/", false));
 }
 
 std::vector<std::string> *ft_split(std::string str, char delimiter)

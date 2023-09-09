@@ -69,6 +69,8 @@ int	Socket::init()
 	epoll_ctl(this->_server_epoll_fd, EPOLL_CTL_ADD, this->_server_fd, &this->_server_epoll_events);
 	ss.str(""); ss << "(" << this->_server_epoll_fd << ") server epoll created";print_log("socket.cpp", ss.str(), 1);
 	print_log("socket.cpp", "waiting for requests...", 1);
+
+	this->_request._www = "./srcs/view/www/";
 	return (0);
 }
 

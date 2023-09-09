@@ -1,16 +1,13 @@
 #include <Request.hpp>
 
-int	is_valid_location(std::string route, Parser& parser) // check if passed route exist in some location on Parser class;
+Location *is_valid_location(std::string first, Parser& parser) // check if passed route exist in some location on Parser class;
 {
-	int	index_location = 0;
-
 	for (std::vector<Location>::iterator it = parser._location.begin(); it < parser._location.end(); it++)
 	{
-		if (route == it->_route)
-			return (index_location);
-		index_location++;
+		if (first == it->_route)
+			return (&(*it));
 	}
-	return (-1);
+	return (NULL);
 }
 
 std::string find_index_in_directory(std::vector<std::string> index, std::string path)

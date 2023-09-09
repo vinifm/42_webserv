@@ -1,58 +1,93 @@
 #include <Request.hpp>
 
+std::string	fix_route(std::string route, Location *location)
+{
+	(void) location;
+	if (route == "")
+		route.append("index.html");
+	return (route);
+}
+
+Location	*set_last_root(Parser &parser, std::string& _last_root, std::string& route, int& type)
+{
+	(void) parser;
+	(void) route;
+	(void) type;
+	std::vector<std::string>	*route_split = ft_split(route, '/');
+	std::vector<std::string>	split = (*route_split);
+	Location *fake_location = new Location("/", parser.getRoot(), false);
+	if (split.size() <= 0)
+	{
+		if (route == "")
+			_last_root = parser.getRoot();
+		return (fake_location);
+	}
+	// SERÁ QUE É UMA ROTA VÁLIDA E PRECISA MUDAR O SITE?
+	std::string	first = split[0];
+	Location *location = is_valid_location(std::string("/").append(first), parser);
+	if (location && split.size() >= 1)
+	{
+		std::string find = (*location)._route;
+		find = del_start_bar(find);
+		route = route.replace(route.find(find), find.length(), "");
+		route = del_start_bar(route);
+	}
+	if (location && split.size() >= 1)
+	{
+		if (_last_root.find((*location)._root) == std::string::npos)
+			_last_root = (*location)._root;
+		std::ostringstream ss;
+		ss << _last_root << route;
+		std::cout << "# location: " << (*location)._root << "\n" << "_last_root: " << _last_root << std::endl;
+
+		return (location);
+	}
+	
+	// if (location)
+		// fake_location->_route = location->_route;
+	return (fake_location);
+}
+
+/*
+type=0 (erro)
+type=1 (autoindex)
+type=2 (file)
+*/
 std::string	 Request::execute_get(Parser& parser, Response& response)
 {
-	std::ostringstream ss; ss << "(HTTP GET)"; print_log("RequestProcessor.cpp", ss.str(), 1);
+	(void) response;
+
+	std::ostringstream	ss; ss << "(HTTP GET)"; print_log("RequestProcessor.cpp", ss.str(), 1);
+	std::string			body="", buffer="", route="";
+	std::ostringstream	last_root_and_route;
+	int					type=2;
+	Location			*location = NULL;
+
+	//1)EXTRAI A ROTA:
 	this->setRoute(extract_route(this->_str.c_str()));
-	std::string					body;
-	Location					fake_location("/", parser.getRoot(), parser._autoindex);
-	fake_location._index = parser._index;
+	route = this->getRoute();
+	route = route.substr(1, route.length());
+	route = del_final_bar(route);
+	ss.str(""); ss << "("<< route << ") request route"; print_log("RequestProcessor.cpp", ss.str(), 1);
 
-	std::string					route = this->getRoute();
-	std::vector<std::string>	*route_split = ft_split(route, '/');
-std::cout << "**" << route << "***" << std::endl;
+	//2)SE FOR O CASO, MUDA O LAST ROOT:
+	location = set_last_root(parser, this->_last_root, route, type);
 
-	if ((*route_split).size() >= 1)
-	{
-		int	location_index = -1;
-		std::string aux = "/";
-		aux.append((*route_split)[0]);
-		location_index = is_valid_location(aux, parser);
-		if (location_index != -1) // try serve route 'x' that is a location
-		{
-			Location found_location = parser._location[location_index];
-			std::string find = found_location._route.substr(1, parser._location[location_index]._route.length());
-			std::string aux = "/";
-			aux.append(find);
-			find = aux;
-			std::string replace = found_location._root;
-			std::string new_route = route.replace(route.find(find), find.length(), replace);
-			std::cout << "----" << new_route << "-----" << std::endl;
-			body = serve_route(new_route, &found_location, *this, response);
-			response.setBody(body);
-			return (body);
-		}
-		else
-		{
-			route = fix_route(parser, route);
+	//3)SE FOR O CASO, ADICIONA O PRIMEIRO INDEX.HTML:
+	// route = fix_route(route, location);
 
-			if (is_directory(route) == 0)
-			{
-				std::string find = (*route_split)[0];
-				std::string aux = "/";
-				aux.append(find);
-				find = aux;
-				std::string replace = "./srcs/view/www/404/";
-				std::string new_route = route.replace(route.find(find), find.length(), replace);
-				std::cout << "////" << new_route << "///////" << std::endl;
-				Location flocation(route, new_route, 1);
-				body = serve_route(new_route, &flocation, *this, response);
-				response.setBody(body);
-				return (body);
-			}
-		}
-	}
-	body = serve_route(route, &fake_location, *this, response);
+	//4)APPEND:
+	last_root_and_route.str("");
+	this->_last_root = add_final_bar(this->_last_root);
+	last_root_and_route << this->_last_root << route;
+	ss.str(""); ss << "("<< this->_last_root << "|"<< route <<") full request route"; print_log("RequestProcessor.cpp", ss.str(), 1);
+	route = last_root_and_route.str();
+
+
+	std::cout << "---" << route << "----" << std::endl;
+	//5)DEPENDENDO DO TIPO DE REQUISIÇÃO, GERA O BODY:
+	body = serve_route(route, location, *this, response);
+
 	return (body);
 }
 
@@ -64,7 +99,7 @@ std::string	 Request::execute_post(Parser& parser, Response& response)
 	upload.open(std::string("./srcs/view/www/aws/").append(upload_file_name).c_str(), std::ios::binary);
 	try
 	{
-		upload << extract_just_file_content(upload_file_name, this->_str);
+		upload << extract_just_file_content(this->getBody());
 		/* code */
 	}
 	catch(const std::exception& e)

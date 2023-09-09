@@ -25,8 +25,11 @@ private:
 	std::string		_header;
 	std::string		_body;
 
+
 public:
-	std::map<int, std::string> http_codes;
+	std::string					_www;
+	static std::string			_last_root;
+	std::map<int, std::string>	http_codes;
 
 	//occf
 	Request(void);
@@ -64,12 +67,13 @@ std::string		extract_route(std::string request);
 std::string		extract_body(std::string request);
 std::string		extract_header(std::string request);
 std::string		extract_file_name(std::string request);
-std::string		extract_just_file_content(std::string filename, std::string request);
+std::string		extract_just_file_content(std::string body);
 std::string		extract_delete_file_name(std::string delete_body);
 //fixes
 std::string		add_final_bar(std::string root);
 std::string		del_final_bar(std::string root);
-std::string		fix_route(Parser& parser, std::string route);
+
+std::string		del_start_bar(std::string root);
 //access
 int				can_execute(std::string path);
 int				can_read(std::string path);
@@ -78,10 +82,10 @@ int				is_directory(std::string path);
 //buffer generators
 std::string		load_file_bytes_in_body(std::string path);
 std::string		generate_autoindex(std::string path);
-std::string		serve_route(std::string route, Location *location, Request& request, Response& response);
+std::string		serve_route(std::string& route, Location *location, Request& request, Response& response);
 //validators
 std::string		find_index_in_directory(std::vector<std::string> index, std::string path);
-int				is_valid_location(std::string route, Parser& parser);
+Location		*is_valid_location(std::string first, Parser& parser);
 //cgi
 void			execute_scripts(Request &request, Response &response);
 //http status

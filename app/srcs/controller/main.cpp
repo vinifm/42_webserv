@@ -22,6 +22,8 @@ void	print_banner(void)
 	}
 }
 
+std::string Request::_last_root = "./srcs/view/www/";
+
 int main(int argc, char **argv)
 {
 	(void) argv;
@@ -40,6 +42,7 @@ int main(int argc, char **argv)
 	print_banner();
 	Socket	socket(parser);
 	socket.init();
+	socket._request._last_root = add_final_bar(parser.getRoot());
 	requests_loop(socket);
 	socket.deinit();
 	return (0);

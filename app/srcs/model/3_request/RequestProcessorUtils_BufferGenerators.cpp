@@ -12,11 +12,12 @@ std::string generate_autoindex(std::string path)
 		if (std::string(file->d_name) == "." || std::string(file->d_name) == "..")
 			continue ;
 		std::stringstream buffer;
-		std::string url = "/";
+		std::string url = "";
 		url.append(std::string(file->d_name));
-		buffer << "<a href=\"" << url <<"\">" << std::string(file->d_name) << "</a>";
+		buffer << "<a href=\"" << url <<"\">" << std::string(file->d_name) << "</a><br>";
 		body.append(buffer.str());
 	}
+	body.append("<br><br><a href=\"/\" class=\"btn btn-primary\">HOME</a>");
 	closedir(directory);
 	return (body);
 }
@@ -38,13 +39,10 @@ std::string	load_file_bytes_in_body(std::string path)
 	return (buffer.str());
 }
 
-std::string	serve_route(std::string route, Location *location, Request &request, Response& response)
+std::string	serve_route(std::string& route, Location *location, Request &request, Response& response)
 {
 	std::string	buffer;
 	bool		autoindex;
-	
-	
-	std::ostringstream ss; ss << "(" << route << ") trying to serve route";print_log("Request.cpp", ss.str(), 1);
 
 	autoindex = location->_autoindex;
 	if (is_directory(route))
@@ -58,7 +56,11 @@ std::string	serve_route(std::string route, Location *location, Request &request,
 		else
 		{
 			if (autoindex == true)
+			{
 				buffer = generate_autoindex(route);
+				std::cout << "--" << buffer << "--" << std::endl;
+				request._last_root = route;
+			}
 			else
 				buffer = error_403(request, response);
 		}
@@ -66,9 +68,6 @@ std::string	serve_route(std::string route, Location *location, Request &request,
 	else if (file_exist(route))
 		buffer = load_file_bytes_in_body(route);
 	else
-	{
-		
 		buffer = error_404(request, response);
-	}
 	return (buffer);
 }

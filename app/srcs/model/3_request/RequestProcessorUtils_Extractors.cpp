@@ -9,23 +9,6 @@ std::string	extract_route(std::string request)
 	request_split = NULL;
 	request_split = ft_split(request, ' ');
 	route = request_split->at(1);
-	for(std::vector<std::string>::iterator it = (*request_split).begin(); it < (*request_split).end(); it++)
-	{
-		if ((*it).find("Referer:") != std::string::npos)
-		{
-			it++;
-			std::string request = (*it);
-			request = request.substr(0, request.find("\n") - 1);
-			int	start = request.find_last_of(':');
-			referer = request.substr(start, request.length());
-			start = referer.find_first_of('/');
-			referer = referer.substr(start, referer.length());
-			if (referer == "/" || route.find(referer) != std::string::npos)
-				break ;
-			referer.append(route);
-			return (referer);
-		}
-	}
 	return (route);
 }
 
@@ -73,16 +56,10 @@ std::string	extract_file_name(std::string request)
 	return (filename);
 }
 
-std::string extract_just_file_content(std::string filename, std::string request)
+std::string extract_just_file_content(std::string body)
 {
-	//1) get extension
-	std::string extension = filename.substr(filename.find(".") + 1, filename.length());
-
-	//2) get file content
-	transform(extension.begin(), extension.end(), extension.begin(), ::toupper);
-	std::string content = request.substr(request.find(extension) - 1, request.length());
-
-	return (content);
+	body = extract_body(body);
+	return (body);
 }
 
 std::string	extract_delete_file_name(std::string delete_body)
