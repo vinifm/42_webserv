@@ -175,7 +175,6 @@ Sources: [FORM TAG](https://www.geeksforgeeks.org/html-form-tag/), [CHUNKED TRAN
 - Connected Socket: Once a client initiates a connection to the listening socket, the server creates a new connected socket dedicated to that client. This connected socket is used to send and receive data between the server and the client.
 
 </details>
-
 <details>
 <summary>MULTIPLEXING(I/O)/EPOLL</summary>
 ## PIPES & NON-BLOCKING MANNER SERVER
@@ -184,8 +183,7 @@ They use read and write functions to realize the data transference.
 
 - blocking-pipes: When you try to read a empty pipe the program will block and wait until the pipe have something, or when you try to write a full pipe, it will block until the pipe free space.
 - non-blocking-pipes: When you try to read a empty pipe, a message will be returned saying that the pipe is empty and the program will continue. If the pipe is full, the program will continue and a message will be presented that the pipe is full.
-</details>
-  
+
 ## poll() and epoll()
 poll() and epoll() are both I/O multiplexing mechanisms used in programming for efficiently handling multiple I/O sources, such as sockets, in a non-blocking manner. They are particularly useful in networking applications to manage and monitor multiple connections simultaneously. However, they have different implementations and capabilities, primarily based on the operating system they are designed for.
 
@@ -218,7 +216,7 @@ By contrast, when epoll is used as a level-triggered interface (the default, whe
 Manual pages:
 - [poll()](https://man7.org/linux/man-pages/man2/poll.2.html)
 - [epoll()](https://man7.org/linux/man-pages/man7/epoll.7.html)
-
+</details>
 <hr> 
 <details>
 <summary>CGI(PYTHON)</summary>
