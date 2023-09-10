@@ -175,6 +175,7 @@ Sources: [FORM TAG](https://www.geeksforgeeks.org/html-form-tag/), [CHUNKED TRAN
 - Connected Socket: Once a client initiates a connection to the listening socket, the server creates a new connected socket dedicated to that client. This connected socket is used to send and receive data between the server and the client.
 
 </details>
+
 <details>
 <summary>MULTIPLEXING(I/O)/EPOLL</summary>
 ## PIPES & NON-BLOCKING MANNER SERVER
@@ -217,6 +218,7 @@ Manual pages:
 - [poll()](https://man7.org/linux/man-pages/man2/poll.2.html)
 - [epoll()](https://man7.org/linux/man-pages/man7/epoll.7.html)
 </details>
+
 <hr> 
 <details>
 <summary>CGI(PYTHON)</summary>
