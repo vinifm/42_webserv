@@ -24,8 +24,8 @@ std::string	show_aws_directory_in_delete_table(std::string response)
 			   << "<td>"<< index << "</td>"
 			   << "<td>"<< file->d_name <<"</td>"
 			   << "<td class=\"text-center\">"
-			   << "<a href=\"/./srcs/view/www/aws/" << file->d_name << "\" class=\"btn btn-primary mx-1\">Abrir</a>"
-			   << "<input type=\"submit\" onclick=\"changeFileToDelete("<< index <<");submit();\"<<" << file->d_name << " class=\"btn btn-danger mx-1\" value=\"Deletar\" \\>"
+			   << "<a href=\"/aws/" << file->d_name << "\" class=\"btn btn-primary mx-1\">Abrir</a>"
+			   << "<input type=\"submit\" onclick=\"changeFileToDelete("<< index <<");\"<<" << file->d_name << " class=\"btn btn-danger mx-1\" value=\"Deletar\" \\>"
 			   << "</td></tr>";
 		rows.append(buffer.str());
 		index++;

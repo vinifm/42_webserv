@@ -45,7 +45,17 @@ std::string	extract_body(std::string request)
 	std::size_t		limiter;
 
 	limiter = request.find("\r\n\r\n");
-	body = request.substr(limiter + 4, request.length());
+	body = request.substr(limiter + 2, request.length());
+	for (int i = 0; i < 4; i++)
+	{
+		if (body[i] == '\n')
+			body = body.erase(i, 1);
+	}
+	for (int i = 0; i < 4; i++)
+	{
+		if (body[i] == '\r')
+			body = body.erase(i, 1);
+	}
 	return (body);
 }
 
@@ -64,12 +74,14 @@ std::string extract_just_file_content(std::string body)
 
 std::string	extract_delete_file_name(std::string delete_body)
 {
-	std::vector<std::string> *deletar = ft_split(delete_body, '=');
+	std::vector<std::string> *deletar = ft_split(delete_body, ':');
 	std::string filename;
 	if ((*deletar).size() > 1)
 	{
 		filename = (*deletar)[1];
 		std::replace(filename.begin(), filename.end(), '+', ' ');
+		filename = filename.substr(1);
+		filename = filename.substr(0, filename.find("\"}"));
 	}
 	else
 	{

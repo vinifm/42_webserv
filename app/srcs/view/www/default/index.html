@@ -42,6 +42,8 @@
          <a href="#about">About</a>
          <a href="#team">Our Team</a>
          <a href="#functionalities">Mandatory Functionalities</a>
+         <a href="#documentation">Documentation</a>
+         <a href="#thanks">Thanks</a>
          <!-- <a href="#testimonial">Testimonial</a>
          <a href="#contact">Contact Us</a> -->
       </div>
@@ -134,7 +136,7 @@
       </div>
       <!-- about section -->
       <!-- Our  team section -->
-      <div id="team" class="team">
+      <div id="team" class="team" style="background:rgb(146, 0, 0);">
          <div class="container">
             <div class="row">
                <div class="col-md-12">
@@ -147,7 +149,7 @@
             <div class="row">
                <div class="col-md-4">
                   <div class="team_box">
-                     <figure><img src="images/team_img1.jpg" alt="#"/></figure>
+                     <figure><img src="images/lipi.jpeg" alt="#"/></figure>
                      <div class="social_box">
                         <ul class="social_team">
                            <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
@@ -160,7 +162,7 @@
                </div>
                <div class="col-md-4">
                   <div class="team_box">
-                     <figure><img src="images/team_img2.jpg" alt="#"/></figure>
+                     <figure><img src="images/team_img1.jpg" alt="#"/></figure>
                      <div class="social_box">
                         <ul class="social_team">
                            <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
@@ -173,7 +175,7 @@
                </div>
                <div class="col-md-4">
                   <div class="team_box">
-                     <figure><img src="images/team_img3.jpg" alt="#"/></figure>
+                     <figure><img src="images/acapela.jpeg" alt="#"/></figure>
                      <div class="social_box">
                         <ul class="social_team">
                            <li><a href="https://www.linkedin.com/in/argelcapela"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
@@ -208,14 +210,14 @@
                </div>
             </div>
             <div class="row">
-               <div class="col-md-4">
+               <div class="col-md-4" id="get">
                   <div id="hover_color" class="we_box">
                      <span>1</span>
                      <h3>GET</h3>
                      <p>Get informations from server. This page is result of GET method.</p>
                   </div>
                </div>
-               <div class="col-md-4">
+               <div class="col-md-4" id="post">
                   <div id="hover_color" class="we_box">
                      <span>2</span>
                      <h3>POST</h3>
@@ -223,7 +225,7 @@
                      <a href="/upload" class="btn btn-danger">TESTAR</a>
                   </div>
                </div>
-               <div class="col-md-4">
+               <div class="col-md-4" id="delete">
                   <div id="hover_color" class="we_box">
                      <span>3</span>
                      <h3>DELETE</h3>
@@ -241,7 +243,7 @@
                </div>
             </div>
                <div class="row">
-                  <div class="col-md-4">
+                  <div class="col-md-4" id="autoindex">
                      <div id="hover_color" class="we_box">
                      <span>4</span>
                      <h3>AUTOINDEX</h3>
@@ -249,7 +251,7 @@
                      <a href="/autoindex" class="btn btn-danger">TESTAR</a>
                   </div>
                </div>
-               <div class="col-md-4">
+               <div class="col-md-4" id="redirection">
                   <div id="hover_color" class="we_box">
                      <span>5</span>
                      <h3>REDIRECTION</h3>
@@ -257,7 +259,7 @@
                      <a href="/redirection" class="btn btn-danger">TESTAR</a>
                   </div>
                </div>
-               <div class="col-md-4">
+               <div class="col-md-4" id="cgi">
                   <div id="hover_color" class="we_box">
                      <span>6</span>
                      <h3>CGI PYTHON</h3>
@@ -276,7 +278,7 @@
                </div>
             </div>
             <div class="row">
-               <div class="col-md-4">
+               <div class="col-md-4" id="404">
                   <div id="hover_color" class="we_box">
                      <span>7</span>
                      <h3>404 Not Found</h3>
@@ -286,13 +288,23 @@
                   </div>
                </div>
 
-               <div class="col-md-4">
+               <div class="col-md-4" id="403">
                   <div id="hover_color" class="we_box">
                      <span>8</span>
                      <h3>403 Forbidden</h3>
                      <p>It occurs when try to access one URL and don't have permission. (For example, try to access directory in some route and don't have autoindex allowed for that directory.)</p>
                      <br>
                      <a href="/forbidden" class="btn btn-danger">TESTAR</a>
+                  </div>
+               </div>
+              
+               <div class="col-md-4" id="400">
+                  <div id="hover_color" class="we_box">
+                     <span>9</span>
+                     <h3>400 Bad Request</h3>
+                     <p>It occurs when you send a request that is incomplete or has invalid parameters.</p>
+                     <br>
+                     <a href="/badrequest" class="btn btn-danger">TESTAR</a>
                   </div>
                </div>
 
@@ -302,20 +314,114 @@
          </div>
       </div>
       <!-- end We Do section -->
-      
-    
-      <!-- end testimonial section -->
-      <!--  footer -->
-       <!-- Rodapé personalizado -->
 
-    <footer class="footer mt-4 py-3 bg-dark text-white">
+       <!-- Documentation/Readme -->
+       <div id="documentation" class="team" style="background:rgb(1, 100, 1);">
+         <div class="container">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="titlepage">
+                     <h2>Documentation</h2>
+                     <p>Next, you can see our project readme from <a href="" target="_blank">github repository</a>, where we documented the project, and all technical knowledge acquired.</p>
+                  </div>
+               </div>
+            </div>
+            <div class="row" style="background:#292c2e;color:white !important;padding:50px 40px;">
+               <div class="col-md-12">
+                  <!-- // Seu código JavaScript aqui -->
+                  <div id="markdown-content">
+                     
+                  </div>
+                  
+               </div>
+            </div>
+         </div>
+      </div>
+      <pre><code class="language-javascript">
+      </code></pre>
+      <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+      <script>
+          // Token de acesso do GitHub
+          const accessToken = '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';
+  
+          // Nome do usuário e repositório
+          const username = 'argelcapela';
+          const repo = '42_webserv_fork';
+  
+          // URL da API do GitHub para obter o README
+          const apiUrl = `https://api.github.com/repos/${username}/${repo}/readme`;
+  
+          // Headers para incluir o token de acesso
+          const headers = {
+              Authorization: `token ${accessToken}`
+          };
+  
+          // Realiza a solicitação à API do GitHub
+          fetch(apiUrl, { headers })
+              .then(response => response.json())
+              .then(data => {
+                  // O conteúdo do README é codificado em base64, então decodificamos
+                  const readmeContent = atob(data.content);
+                  
+                  // Exibe o conteúdo do README na página
+                  const markdown_fixed = marked.parse(readmeContent);
+                  console.log(markdown_fixed);
+                  document.getElementById('markdown-content').innerHTML = markdown_fixed;
+              })
+              .catch(error => console.error('Erro:', error));
+
+              document.addEventListener('DOMContentLoaded', () => {
+               Prism.highlightAll();
+           });
+      </script>
+      <!-- end reamde -->
+
+      <!-- Thanks -->
+       <div id="functionalities" class="we_do" style="padding-bottom:200px;">
+         <div class="container">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="titlepage">
+                     <h2>Thank you very much!</h2>
+                     <br><br><br>
+                     <img src="images/team.jpg" />
+                  </div>
+               </div>             
+            </div>
+         </div>
+      </div>
+
+     
+   
+      <!--  footer -->
+    <footer class="footer mt-4 py-3  text-white">
       <div class="container text-center">
           © 2023 <a target="_blank" href="https://github.com/vinifm/42_webserv">Webserv by vini, lipi e acapela-</a>, Todos os direitos reservados.<br>
           
       </div>
   </footer>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+  <a href="#" class="btn btn-primary back-to-top" id="back-to-top"><i class="fa fa-arrow-up"></i></a>
+  <script>
+   $(document).ready(function() {
+      // Show or hide the button based on scroll position
+      $(window).scroll(function() {
+          if ($(this).scrollTop() > 100) {
+              $('#back-to-top').fadeIn();
+          } else {
+              $('#back-to-top').fadeOut();
+          }
+      });
 
-
+      // Scroll to top when the button is clicked
+      $('#back-to-top').click(function() {
+          $('html, body').animate({ scrollTop: 0 }, 'slow');
+          return false;
+      });
+  });
+  </script>
 
       <!-- end footer -->
       <!-- Javascript files-->
@@ -335,23 +441,7 @@
            document.getElementById("mySidepanel").style.width = "0";
          }
       </script>
-      <script>
-         // This example adds a marker to indicate the position of Bondi Beach in Sydney,
-         // Australia.
-         function initMap() {
-           var map = new google.maps.Map(document.getElementById('map'), {
-             zoom: 11,
-             center: {lat: 40.645037, lng: -73.880224},
-             });
-         
-         var image = 'images/maps-and-flags.png';
-         var beachMarker = new google.maps.Marker({
-             position: {lat: 40.645037, lng: -73.880224},
-             map: map,
-             icon: image
-           });
-         }
-      </script>
+      
       <!-- google map js -->
       <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8eaHt9Dh5H57Zh0xVTqxVdBFCvFMqFjQ&callback=initMap"></script>
       <!-- end google map js --> 
