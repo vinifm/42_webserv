@@ -52,8 +52,6 @@ Connection:  close
 </body>
 </html>
 ```
-
-
 Sources: [HTTP](https://en.wikipedia.org/wiki/HTTP), [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete), [MIME](https://en.wikipedia.org/wiki/Media_type), [RFC](https://en.wikipedia.org/wiki/Request_for_Comments), [HTTP HEADER FIELDS](https://en.wikipedia.org/wiki/List_of_HTTP_header_fields)
 
 ## Http Methods(Or verbs) (What they do? How they works?)
@@ -171,6 +169,10 @@ Sources: [FORM TAG](https://www.geeksforgeeks.org/html-form-tag/), [CHUNKED TRAN
 <details>
 <summary>SOCKET</summary>
 
+ A socket is a software abstraction that represents an endpoint for sending or receiving data over a computer network.
+
+- Listening Socket: The web server uses a listening socket to accept incoming connection requests from clients. It listens on a specific port and IP address and waits for clients to establish connections.
+- Connected Socket: Once a client initiates a connection to the listening socket, the server creates a new connected socket dedicated to that client. This connected socket is used to send and receive data between the server and the client.
 
 </details>
 
@@ -183,6 +185,39 @@ They use read and write functions to realize the data transference.
 - blocking-pipes: When you try to read a empty pipe the program will block and wait until the pipe have something, or when you try to write a full pipe, it will block until the pipe free space.
 - non-blocking-pipes: When you try to read a empty pipe, a message will be returned saying that the pipe is empty and the program will continue. If the pipe is full, the program will continue and a message will be presented that the pipe is full.
 </details>
+  
+## poll() and epoll()
+poll() and epoll() are both I/O multiplexing mechanisms used in programming for efficiently handling multiple I/O sources, such as sockets, in a non-blocking manner. They are particularly useful in networking applications to manage and monitor multiple connections simultaneously. However, they have different implementations and capabilities, primarily based on the operating system they are designed for.
+
+- Connection Management:
+	- poll(): Requires manual management of the descriptor set for new connections and disconnections.
+	- epoll(): Allows dynamic addition and removal of descriptors, simplifying connection handling.
+
+- Scalability:
+	- poll(): Performance can degrade as the number of clients increases due to linear scanning.
+	- epoll(): Scales efficiently for a large number of clients, making it suitable for high-connection scenarios.
+
+- Data Processing:
+	- poll(): Requires efficient reading/writing of data to avoid excessive notifications.
+	- epoll(): Offers more granular control over data processing, minimizing overconsumption.
+
+- CPU Usage:
+	- poll(): Can result in higher CPU usage as the number of clients grows.
+	- epoll(): Provides efficient event handling, reducing CPU usage and improving scalability.
+
+- Event Notification:
+	- poll(): Provides level-triggered event notification, which can lead to unnecessary notifications.
+	- epoll(): Supports both level-triggered and edge-triggered notification, reducing unnecessary notifications.
+
+### Level-triggered vs. Edge-triggered notifications
+- Level-triggered notifications generate events while the monitored condition remains true (e.g. data can be read), leading to continuous notifications until the condition changes.
+- Edge-triggered notifications generate events only when there's a change in the monitored condition, making them more efficient in terms of notification frequency and CPU usage.
+
+By contrast, when epoll is used as a level-triggered interface (the default, when EPOLLET is not specified), it is simply a faster poll(2), and can be used wherever the latter is used since it shares the same semantics.
+
+Manual pages:
+- [poll()](https://man7.org/linux/man-pages/man2/poll.2.html)
+- [epoll()](https://man7.org/linux/man-pages/man7/epoll.7.html)
 
 <hr> 
 <details>
