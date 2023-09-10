@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MÉTODO DELETE</title>
+    <!-- Inclua os arquivos CSS e JavaScript do Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <button class="home-button"><a href="/#delete">🏠</a></button>
+    <a href="/upload" id="go-post" class="btn btn-primary" style="width:100px;">UPLOAD</a>
+    <div class="container mt-4">
+        <h1>MÉTODO <strong style="color:red;">DELETE</strong></h1>
+        <p>A tabela a seguir apresenta os arquivos presentes na pasta <strong>aws</strong>, um espaço em nosso servidor para armazenamento de arquivos. </p>
+        
+            <input id="filename" style="display:none;" type="text" name="filename" \>
+            <table class="table" id="tabela_delete">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nome do Arquivo</th>
+                        <th class="text-center">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    [__MILIONARIO__]
+                </tbody>
+            </table>
+       
+
+    </div>
+
+    <!-- Rodapé personalizado -->
+    <footer class="footer mt-4 py-3 text-white" style="background:black;">
+        <div class="container text-center">
+            © 2023 <a target="_blank" href="https://github.com/vinifm/42_webserv">Webserv by vini, lipi e acapela-</a>, Todos os direitos reservados.<br>
+            
+        </div>
+    </footer>
+
+    <script>
+    
+        function changeFileToDelete(row)
+        {
+            // ISSO É UMA GAMBIARRA FEIA, MAS FUNCIONA
+
+            // 1) get the textbox filename
+            var input = document.getElementById("filename");
+
+            // 2) pega o nome do arquivo na tabela          
+            var filename = document.getElementById("tabela_delete").rows[row].cells[1].innerText;
+
+            // 3) joga o nome do arquivo clicado dentro do textbox a ser enviado na requisição POST do servidor
+            input.value = filename;
+
+            const json = 
+            {
+                filename: filename
+            };
+
+            const jsonString = JSON.stringify(json);
+
+            console.log(jsonString);
+
+            fetch('/delete', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: jsonString
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert("ARQUIVO DELETADO COM SUCESSO!");
+                    location.reload();
+                   
+                } else {
+                    alert("ERRO AO DELETAR ARQUIVO!");
+                    throw new Error('Erro ao enviar o arquivo.');
+                }
+            })
+            .then(data => {
+                // Manipule a resposta do servidor (se necessário)
+                
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+            });
+        } 
+    </script>
+
+
+    <!-- Inclua o JavaScript do Bootstrap (opcional) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+
+ <!-- Seu CSS personalizado -->
+ <style>
+     body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            flex: 1;
+        }
+
+        a {
+            text-decoration: none;
+            color:rgb(223, 122, 192);
+        }
+
+        a:hover{
+            color:yellow;
+        }
+        .home-button {
+            position: fixed;
+            top: 10px; /* Ajuste a posição vertical conforme necessário */
+            left: 10px; /* Ajuste a posição horizontal conforme necessário */
+           background:none;
+            color: #fff; /* Cor do texto do botão */
+            border: none;
+            border-radius: 50%; /* Bordas arredondadas para um visual de botão */
+            width: 40px; /* Largura do botão */
+            height: 40px; /* Altura do botão */
+            font-size: 24px; /* Tamanho da fonte do ícone */
+            text-align: center;
+            cursor: pointer;
+        }
+
+        #go-post
+        {
+            position:fixed;
+            top:10px;
+            right: 10px;
+        }
+</style>
+
+</body>
+</html>

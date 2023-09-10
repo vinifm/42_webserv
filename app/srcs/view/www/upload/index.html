@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MÉTODO POST</title>
+    <!-- Inclua os arquivos CSS e JavaScript do Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+   
+    <button class="home-button"><a href="/#post">🏠</a></button>
+    <a href="/delete" id="go-delete" class="btn btn-primary" style="width:100px;">DELETE</a>
+    <div class="container mt-4">
+        <h1>MÉTODO <strong style="color:red;">POST</strong> PARA UPLOAD</h1>
+        <p>A seguir você pode selecionar um arquivo e enviar para o servidor (upload), utilizando uma requisição com o método HTTP POST.<br> Os arquivos são armazenados dentro da pasta <strong>aws</strong>, um espaço em nosso servidor para armazenamento de arquivos. </p>
+        <form method="POST" enctype="multipart/form-data">
+
+            <div class="mb-3">
+ 
+                <!-- <input class="form-control" type="file" id="formFile">
+                <input type="submit" class="btn btn-success" value="U" /> -->
+                <input id="fileInput" name="userfile" type="file" class="form-control" /><br>
+                <input id="uploadButton" type="button" value="UPLOAD" class="btn btn-success" />
+                <br>
+                <br>
+               
+                
+              </div>
+
+        </form>
+    </div>
+
+    <!-- Rodapé personalizado -->
+    <footer class="footer mt-4 py-3 text-white" style="background:black;">
+        <div class="container text-center">
+            © 2023 <a target="_blank" href="https://github.com/vinifm/42_webserv">Webserv by vini, lipi e acapela-</a>, Todos os direitos reservados.<br>
+            
+        </div>
+    </footer>
+
+
+  
+
+    <!-- Inclua o JavaScript do Bootstrap (opcional) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+
+ <!-- Seu CSS personalizado -->
+ <style>
+     body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            flex: 1;
+        }
+
+        a {
+            text-decoration: none;
+            color:rgb(223, 122, 192);
+        }
+
+        a:hover{
+            color:yellow;
+        }
+        .home-button {
+            position: fixed;
+            top: 10px; /* Ajuste a posição vertical conforme necessário */
+            left: 10px; /* Ajuste a posição horizontal conforme necessário */
+            background: none;
+            color: #fff; /* Cor do texto do botão */
+            border: none;
+            border-radius: 50%; /* Bordas arredondadas para um visual de botão */
+            width: 40px; /* Largura do botão */
+            height: 40px; /* Altura do botão */
+            font-size: 24px; /* Tamanho da fonte do ícone */
+            text-align: center;
+            cursor: pointer;
+        }
+
+        #go-delete
+        {
+            position:fixed;
+            top:10px;
+            right: 10px;
+        }
+</style>
+
+<script>
+    document.getElementById('uploadButton').addEventListener('click', function () {
+        const fileInput = document.getElementById('fileInput');
+
+        if (fileInput.files.length===0)
+        {
+            alert("Você precisa selecionar um arquivo antes de tentar enviar ao servidor!");
+            return;
+        }
+
+        const file = fileInput.files[0];
+
+        if (file) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert("ARQUIVO ENVIADO AO SERVIDOR COM SUCESSO!");
+                    fileInput.value = '';
+                  
+                } else {
+                    alert("ERRO AO ENVIAR ARQUIVO PARA O SERVIDOR!");
+                    throw new Error('Erro ao enviar o arquivo.');
+                }
+            })
+            .then(data => {
+                // Manipule a resposta do servidor (se necessário)
+                
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+            });
+        } else {
+            console.error('Nenhum arquivo selecionado.');
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,17 +1,3 @@
-#*****************************
-#                            *
-#    WEBSERV_KINGS - TOUR    *
-#                            *
-#*****************************
-# The project try to implement MVC software arquitecture for a better organization and make software more manutanable.
-#
-# M (srcs/model): all classes, and builtin functions to make application works;
-# V (srcs/view): everything about user interface, our pages and Parseriguration files that deal direct with what the user will see on screen;
-# C (srcs/controller): all files that control the software flow, and how models and view connect themselves and the "business rules" of our software;
-#
-# enjoy the webserv_kings! Thank you very much!
-# By lipi, vini and acapela-
-
 #*************
 #            *
 #    VARS    *
@@ -19,30 +5,37 @@
 #*************
 NAME=webserv
 FLAGS=-Wall -Wextra -Werror -std=c++98 -g3
-BANNER_PATH=.banner
+BANNER_PATH=srcs/view/.banner
 SOURCES=Parser.cpp \
-		Request.cpp \
-		Response.cpp \
-		RequestUtils.cpp \
-		StatusLine.cpp \
+		ParserUtils.cpp \
 		Socket.cpp \
-		Webserv.cpp \
-		Utils.cpp \
+		SocketUtils.cpp \
+		Request.cpp \
+		RequestProcessor.cpp \
+		RequestProcessorUtils_Access.cpp \
+		RequestProcessorUtils_BufferGenerators.cpp \
+		RequestProcessorUtils_Extractors.cpp \
+		RequestProcessorUtils_Fixers.cpp \
+		RequestProcessorUtils_Validators.cpp \
+		Response.cpp \
+		StatusLine.cpp \
+		exception.cpp \
+		scripts.cpp \
 		main.cpp
-INCLUDES_PATH=-I./srcs/model/ -I./srcs/model/socket/ -I./srcs/model/parse/ -I./srcs/controller/utils
 INCLUDES=Parser.hpp \
+		ParserUtils.hpp \
 		Request.hpp \
+		RequestProcessor.hpp \
 		Response.hpp \
 		StatusLine.hpp \
-		Socket.hpp \
-		Utils.hpp \
-		Webserv.hpp
+		Socket.hpp
 OBJECTS_DIR=.objects
+INCLUDES_PATH=-I./srcs/model/1_parse/ -I./srcs/model/2_socket/ -I./srcs/model/3_request/ -I./srcs/model/4_response/ -I./srcs/model/5_exception/ -I./srcs/model/6_cgi -I./srcs/controller/ -I./srcs/view/ -I./srcs/controller/
 OBJECTS= $(SOURCES:%.cpp=$(OBJECTS_DIR)/%.o)
 DS= $(SOURCES:%.cpp=$(OBJETS_DIR)/%.d)
 
-vpath %.cpp srcs srcs/model srcs/model/socket srcs/model/parse srcs/controller srcs/controller/utils
-vpath %.hpp srcs srcs/model srcs/model/socket srcs/model/parse srcs/controller srcs/controller/utils
+vpath %.cpp srcs srcs/model srcs/model/1_parse srcs/model/2_socket srcs/model/3_request srcs/model/4_response srcs/model/5_exception srcs/model/6_cgi srcs/controller
+vpath %.hpp srcs srcs/model srcs/model/1_parse srcs/model/2_socket srcs/model/3_request srcs/model/4_response srcs/model/5_exception srcs/model/6_cgi srcs/controller
 
 #*******************
 #                  *
@@ -69,9 +62,12 @@ $(NAME): $(BANNER_PATH) $(OBJECTS_DIR) $(OBJECTS)
 $(OBJECTS_DIR):
 	mkdir -p $(OBJECTS_DIR)
 	mkdir -p srcs/model
-	mkdir -p srcs/model/parse
-	mkdir -p srcs/model/socket
-	mkdir -p srcs/controller/utils
+	mkdir -p srcs/model/1_parse
+	mkdir -p srcs/model/2_socket
+	mkdir -p srcs/model/3_request
+	mkdir -p srcs/model/4_response
+	mkdir -p srcs/model/5_exception
+	mkdir -p srcs/model/6_cgi
 	mkdir -p srcs/controller
 
 $(OBJECTS_DIR)/%.o: %.cpp
@@ -89,7 +85,7 @@ clean:
 
 fclean:
 	make clean
-	rm -rfd $(NAME) .banner log
+	rm -rfd $(NAME) $(BANNER_PATH) log
 
 .PHONY: all clean fclean re
 
@@ -123,10 +119,11 @@ $(BANNER_PATH):
 #     for debug reasons!    *
 #                           *
 #****************************
-DEFAULT=srcs/view/Parser/default
+DEFAULT=srcs/view/default
 run:
 	@make
 	@clear
+	@rm -rfd log
 	@./$(NAME) $(DEFAULT)
 
 runr:

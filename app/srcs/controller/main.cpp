@@ -1,79 +1,38 @@
-#include <Request.hpp>
 #include <Response.hpp>
+#include <Parser.hpp>
 #include <Socket.hpp>
 
-std::map <int, std::string> *g_http_codes;
-
-void	init_http_codes(std::map<int, std::string>& http_codes)
+void	print_banner(void)
 {
-	http_codes.insert(std::pair<int, std::string>(200, "OK"));
-	http_codes.insert(std::pair<int, std::string>(201, "Created"));
-	http_codes.insert(std::pair<int, std::string>(202, "Accepted"));
-	http_codes.insert(std::pair<int, std::string>(204, "No Content"));
-	http_codes.insert(std::pair<int, std::string>(300, "Multiple Choice"));
-	http_codes.insert(std::pair<int, std::string>(301, "Moved Permanently"));
-	http_codes.insert(std::pair<int, std::string>(302, "Found"));
-	http_codes.insert(std::pair<int, std::string>(400, "Bad Request"));
-	http_codes.insert(std::pair<int, std::string>(401, "Unauthorized"));
-	http_codes.insert(std::pair<int, std::string>(403, "Forbidden"));
-	http_codes.insert(std::pair<int, std::string>(404, "Not Found"));
-	http_codes.insert(std::pair<int, std::string>(413, "Method Not Allowed"));
-	http_codes.insert(std::pair<int, std::string>(415, "Request Entity Too Large"));
-	http_codes.insert(std::pair<int, std::string>(500, "Unsupported Media Type"));
-	http_codes.insert(std::pair<int, std::string>(502, "Bad Gateway"));
-	http_codes.insert(std::pair<int, std::string>(504, "Gateway Timeout"));
-	http_codes.insert(std::pair<int, std::string>(505, "HTTP Version Not Supported"));
-}
+	std::string		path;
+	std::fstream	file;
+	std::string		line;
 
-void	requests_loop(Socket socket)
-{
-	while (true)
+	path = "srcs/view/.banner";
+	file.open(path.c_str());
+	if (!file.is_open())
 	{
-		try
-		{
-			int	talk_fd = socket.get_next_connection();
-			if (talk_fd > 0)
-			{
-				Response response;
-				if (socket.requestProcessor().executeRequest(socket.parserProcessor(), response) == 0)
-					socket.send_response(response);
-			}
-		}
-		catch(const std::exception& e)
-		{
-			std::string error = "Error: error exception was activated in socket (";
-			error.append(e.what());
-			error.append(")");
-			print_log("main.cpp", error);
-		}
+		std::cout << "webserv banner file not found!" << std::endl;
+		return ;
+	}
+	while (!file.eof())
+	{
+		getline(file, line);
+		std::cout << WHITE << line << RESET_COLOR << std::endl;
 	}
 }
 
-void	init_parser_for_test(Parser& parser)
-{
-	parser.setPort(8080);
-	parser.setRoot("srcs/view/www/tour/");
-	parser._index.push_back("index.html");
-	parser._index.push_back("index.php");
-	parser._location.push_back(Location("/", "srcs/view/www/default/", true));
-	parser._location.push_back(Location("/image", "srcs/view/www/examples/serve_image_example/", false));
-}
+std::string Request::_last_root = "./srcs/view/www/";
 
 int main(int argc, char **argv)
 {
-	//0) setting http codes;
-	std::map<int, std::string> http_codes;
-	g_http_codes = &http_codes;
-	init_http_codes(http_codes);
-
-	//1) load_parser_file
+	(void) argv;
 	if (argc <= 1)
 	{
 		std::cout << "error: invalid number of args!" << std::endl;
 		return (1);
 	}
 	Parser parser(argv[1]);
-
 	if (parser.is_valid() == 0)
 	{
 		std::cout << "error:  file is invalid!" << std::endl;
@@ -81,15 +40,10 @@ int main(int argc, char **argv)
 	}
 	init_parser_for_test(parser);
 	print_banner();
-
-	//2) if parseriguration file is ok, init socket using Parser file datas
 	Socket	socket(parser);
 	socket.init();
-
-	//3) loop for process requests
+	socket.getRequest().setLastRoot(add_final_bar(parser.getRoot()));
 	requests_loop(socket);
-
-	//4)end_socket
 	socket.deinit();
 	return (0);
 }

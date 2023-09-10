@@ -6,7 +6,7 @@ if [[ $1 ]]; then
 	make clean -C tester
 	git add .
 	git commit -m " $1 "
-	git push
+	git push origin main
 	echo "Repository pushed successfuly!"
 
 else
