@@ -74,6 +74,10 @@ void	Parser::_addServer()
 {
 	Server server;
 	_line = server.initServer(_inputFile, _line);
+	if (server.getRoot() == "")
+		throw std::runtime_error("server block: missing root");
+	if (server.getIndexSize() == 0)
+		throw std::runtime_error("server block: missing index");
 	_servers.push_back(server);
 }
 
