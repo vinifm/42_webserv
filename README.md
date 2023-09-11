@@ -31,6 +31,10 @@
 - [x] files must end with ".conf"
 - [x] root path must end with "/"
 - [x] location prefix must start with "/"
+- [x] server block must have root and index directives;
+- [ ]
+- [ ] directives must not be empty
+	- [x] listen
 
 # NGINX configuration
 - directives: a statement that controls nginx's behaviour;
@@ -192,10 +196,10 @@ Connection:  close
 
 <html>
 <head>
-      <title>An Example Page</title>
+			<title>An Example Page</title>
 </head>
 <body>
-     <p>Hello World, this is a very simple HTML document.</p>
+		 <p>Hello World, this is a very simple HTML document.</p>
 </body>
 </html>
 ```
@@ -221,67 +225,67 @@ They are used to indicate the action to be executed in server.
 ## Http Response Status
 
  - 10x: Just informative answer;
-   - 100:
-   - 101:
-   - 102:
-   - 103:
+	 - 100:
+	 - 101:
+	 - 102:
+	 - 103:
  - 20x: Success answer;
-   - 200:
-     - GET:
-     - HEAD:
-     - PUT OU POST:
-     - TRACE:
-   - 201:
-   - 202:
-   - 203:
-   - 204:
-   - 205:
-   - 206:
-   - 207:
-   - 208:
-   - 226:
+	 - 200:
+		 - GET:
+		 - HEAD:
+		 - PUT OU POST:
+		 - TRACE:
+	 - 201:
+	 - 202:
+	 - 203:
+	 - 204:
+	 - 205:
+	 - 206:
+	 - 207:
+	 - 208:
+	 - 226:
  - 30x: Redirection Error;
-   - 300:
-   - 301:
-   - 302:
-   - 303:
-   - 304:
-   - 305:
-   - 306:
-   - 307:
-   - 308:
+	 - 300:
+	 - 301:
+	 - 302:
+	 - 303:
+	 - 304:
+	 - 305:
+	 - 306:
+	 - 307:
+	 - 308:
  - 40x: Client Error;
-   - 400:
-   - 401:
-   - 402:
-   - 403 (Forbidden): Client is not authorized do access the requested resource (autoindex off on certain route, and you try to access a directory).
-   - 404 (Not found): URL don't exist.
-   - 405:
-   - 406:
-   - 407:
-   - 408:
-   - 409:
-   - 410:
-   - 423:
-   - 424:
-   - 425:
-   - 426:
-   - 428:
-   - 429:
-   - 431:
-   - 451:
+	 - 400:
+	 - 401:
+	 - 402:
+	 - 403 (Forbidden): Client is not authorized do access the requested resource (autoindex off on certain route, and you try to access a directory).
+	 - 404 (Not found): URL don't exist.
+	 - 405:
+	 - 406:
+	 - 407:
+	 - 408:
+	 - 409:
+	 - 410:
+	 - 423:
+	 - 424:
+	 - 425:
+	 - 426:
+	 - 428:
+	 - 429:
+	 - 431:
+	 - 451:
 - 50x: Server Error;
-   - 500:
-   - 501:
-   - 502:
-   - 503:
-   - 504:
-   - 505:
-   - 506:
-   - 507:
-   - 508:
-   - 510:
-   - 511:
+	 - 500:
+	 - 501:
+	 - 502:
+	 - 503:
+	 - 504:
+	 - 505:
+	 - 506:
+	 - 507:
+	 - 508:
+	 - 510:
+	 - 511:
 
 ## HANDLING POST METHOD
 Now let's understand how can I receive a POST REQUEST from Server and proccess it? Let's first analyse an file upload operation.

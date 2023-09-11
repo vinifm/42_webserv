@@ -60,9 +60,14 @@ void	Server::_setListen(std::stringstream& values)
 
 void	Server::_setServerName(std::stringstream& values)
 {
-	std::string name;
-	while (values >> name)
+	std::string	name;
+	int			valid = 0;
+	while (values >> name) {
+		valid = 1;
 		_serverNames.push_back(name);
+	}
+	if (!valid)
+		throw std::runtime_error("server_name: missing option");
 }
 
 void	Server::_setRoot(std::stringstream& values)

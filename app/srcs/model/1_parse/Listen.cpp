@@ -15,8 +15,10 @@ void	Listen::initListen(std::stringstream& values)
 	std::string			word;
 	size_t				colon_pos;
 	size_t				dot_pos;
+	int					valid = 0;
 
 	while (values >> word) {
+		valid = 1;
 		colon_pos = word.find(":");
 		dot_pos = word.find(".");
 		if (colon_pos != std::string::npos) {
@@ -28,6 +30,8 @@ void	Listen::initListen(std::stringstream& values)
 		else
 			_setPort(word.substr(colon_pos + 1));
 	}
+	if (!valid)
+		throw std::runtime_error("listen: missing options");
 }
 
 std::ostream& operator<<(std::ostream& os, const Listen& listen)
