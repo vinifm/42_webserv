@@ -4,7 +4,7 @@
 #            *
 #*************
 NAME=webserv
-FLAGS=-Wall -Wextra -Werror -std=c++98 -g3
+FLAGS=-Wall -Wextra -Werror -std=c++98 -g3 -fstandalone-debug
 BANNER_PATH=srcs/view/.banner
 SOURCES=Parser.cpp \
 		ParserUtils.cpp \

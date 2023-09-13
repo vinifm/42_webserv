@@ -8,7 +8,7 @@
 			"request": "launch",	// start program in debug mode;
 			"program": "${workspaceFolder}/app/webserv",
 			"cwd": "${workspaceFolder}/app/",
-			"args": ["../conf/example.conf"],
+			"args": ["../conf/error5.conf"],
 			// "externalConsole": true,
 			"MIMode": "gdb",
 			"setupCommands": [

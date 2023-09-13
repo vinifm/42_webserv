@@ -32,8 +32,7 @@ std::vector<std::string>::iterator& Server::initServer(
 			_setAutoindex(ss);
 		else if (directive == "location")
 		{
-			if (!(ss >> loc_prefix))
-				throw std::runtime_error("location without prefix");
+			loc_prefix = _check_location(ss);
 			_line++;
 			_setLocation(inputFile, loc_prefix);
 		}
@@ -142,6 +141,23 @@ std::string	Server::getIndex(size_t index) const { return _index.at(index); }
 size_t		Server::getIndexSize() const { return _index.size(); }
 bool		Server::getAutoindex() const { return _autoindex; }
 std::vector<std::string>	Server::getIndex() const { return _index; }
+
+/*--- ERROR CHECK ------------------------------------------------------------*/
+
+/* Check if locatin directive line is valid and if so, return prefix */
+std::string	Server::_check_location(std::stringstream& ss) const
+{
+	std::string loc_prefix;
+	std::string loc_bracket;
+
+	if (!(ss >> loc_prefix) || loc_prefix == "{")
+		throw std::runtime_error("location: missing prefix");
+	else if (!(ss >> loc_bracket))
+		throw std::runtime_error("location: unopened brackets");
+	else if (loc_bracket != "{")
+		throw std::runtime_error("invalid location");
+	return (loc_prefix);
+}
 
 /*--- INSERTION OVERLOAD -----------------------------------------------------*/
 

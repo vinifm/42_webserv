@@ -12,8 +12,6 @@ Parser&	Parser::operator=(const Parser& rhs) {
 	return *this;
 }
 
-
-
 static std::string trim(const std::string& line)
 {
 	std::string trimmed = line;
@@ -37,23 +35,29 @@ void	Parser::parseConfigFile(const std::string filename)
 
 	file_stream.open(filename.c_str(), std::ifstream::in);
 	if (_checkFileExtension(filename) == false) {
-		std::cerr << "Error: not a .conf file" << std::endl;
+		std::cerr << BOLD_RED << "ERROR: " << RESET_COLOR
+			<< "not a .conf file" << std::endl;
 		return ;
 	}
 	else if (!file_stream.is_open())
 	{
-		std::cerr << "Error: could not open config file" << std::endl;
+		std::cerr << BOLD_RED << "ERROR: " << RESET_COLOR
+			<< "could not open .conf file" << std::endl;
 		return ;
 	}
 	while (std::getline(file_stream, file_line)) {
 		file_line = trim(file_line);
 		_inputFile.push_back(file_line);
 	}
+	file_stream.close();
 	for (_line = _inputFile.begin(); _line != _inputFile.end(); ++_line) {
+		if (*_line == "" || (*_line)[0] == '#')
+			continue;
 		if (*_line++ == "server {")
 			_addServer();
 	}
-	file_stream.close();
+	if (getServerSize() == 0)
+		throw std::runtime_error("parsing failed: no servers added");
 }
 
 /* Return true if file ends with '.conf' */

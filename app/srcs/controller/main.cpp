@@ -29,7 +29,8 @@ int main(int argc, char **argv)
 	Parser parser;
 	if (argc != 2)
 	{
-		std::cerr << "error: invalid number of args!" << std::endl;
+		std::cerr << BOLD_RED << "ERROR: " << RESET_COLOR
+			<< "invalid number of args!" << std::endl;
 		return (1);
 	}
 	try {
@@ -46,6 +47,10 @@ int main(int argc, char **argv)
 		requests_loop(socket);
 		socket.deinit();
 	}
-	catch (std::exception& e) { std::cout << e.what() << std::endl; }
+	catch (std::exception& e) {
+		std::cerr << BOLD_RED << "ERROR: " << RESET_COLOR
+			<< e.what() << std::endl;
+		return (1);
+	}
 	return (0);
 }

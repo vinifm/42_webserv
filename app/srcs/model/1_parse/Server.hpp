@@ -50,6 +50,7 @@ private:
 	void	_setErrorPage(std::stringstream& values);
 	void	_setClientSize(std::stringstream& values);
 	void	_setLocation(std::vector<std::string>& inputFile, std::string prefix);
+	std::string	_check_location(std::stringstream& ss) const;
 };
 
 std::ostream& operator<<(std::ostream& os, const Server& server);
