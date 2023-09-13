@@ -19,7 +19,6 @@ std::string	show_aws_directory_in_delete_table(std::string response)
 		std::stringstream buffer;
 		std::string url = "/";
 		url.append(std::string(file->d_name));
-
 		buffer << "<tr>"
 			   << "<td>"<< index << "</td>"
 			   << "<td>"<< file->d_name <<"</td>"

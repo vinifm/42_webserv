@@ -48,6 +48,7 @@
 		"streambuf": "cpp",
 		"typeinfo": "cpp",
 		"map": "cpp"
+        "*.tcc": "cpp"
 	},
 	"editor.tabSize": 4
 }

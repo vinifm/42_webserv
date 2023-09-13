@@ -43,7 +43,6 @@ std::string	Request::execute_post(Response& response)
 		response._statusLine->setCode(this->http_codes.find(400));
 		std::cerr << e.what() << '\n';
 	}
-
 	upload.close();
 	response._statusLine->setCode(this->http_codes.find(201));
 	return ("");
